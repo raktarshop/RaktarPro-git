@@ -20,7 +20,7 @@ egyszerűen kereshetnek és rendelhetnek termékeket egy modern online felülete
 ## 📂 Mappa struktúra
 - `frontend/` → kliensoldali kód (UI, design, interakciók)
 - `backend/` → szerveroldali kód (API, logika)
-- `database/` → adatbázis modellek, seed fájlok
+- `adatbazis/` → adatbázis modellek, seed fájlok
 - `docs/` → dokumentáció, vizsgaremek anyagok
 
 ## 🚀 Indítás (tervezett)
