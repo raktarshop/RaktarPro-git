@@ -1,43 +1,54 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Központi Raktár Webshop</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Raktár Pro Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <div class="logo">Központi Raktár</div>
-    <nav>
-      <a href="#">Főoldal</a>
-      <a href="#">Termékek</a>
-      <a href="#">Kosár 🛒 <span id="cart-count">0</span></a>
-      <a href="#">Bejelentkezés</a>
-    </nav>
-  </header>
-
-  <main>
-    <section class="hero">
-      <h1>Üdvözlünk a Központi Raktár Webshopban!</h1>
-      <p>Itt mindent megtalálsz egy helyen – gyorsan és kényelmesen.</p>
-      <button>Vásárlás indítása</button>
-    </section>
-
-    <section class="products">
-      <h2>Kiemelt termékek</h2>
-      <div class="product-grid">
-        <div class="product-card">
-          <h3>Termék neve</h3>
-          <p>Ár: 5000 Ft</p>
-          <button>Kosárba</button>
-        </div>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>RaktárPro</h2>
       </div>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Központi Raktár Webshop</p>
-  </footer>
+      <nav class="menu">
+        <a href="#" class="menu-item active">Dashboard</a>
+        <a href="#" class="menu-item">Raktárak</a>
+        <a href="#" class="menu-item">Bejövő</a>
+        <a href="#" class="menu-item">Kimenő</a>
+        <a href="#" class="menu-item">Beállítások</a>
+      </nav>
+    </aside>
+    <div class="main-content">
+      <header class="top-bar">
+        <div class="search-wrapper">
+          <input type="text" placeholder="Keresés..." class="search-input">
+          <button class="btn btn-icon">🔍</button>
+        </div>
+        <div class="profile">
+          <img src="profile.jpg" alt="Profil" class="profile-img">
+        </div>
+      </header>
+      <section class="stats-card">
+        <h3>Statisztika</h3>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <p class="stat-number">150</p>
+            <p class="stat-label">Összes tételek</p>
+          </div>
+          <div class="stat-item">
+            <p class="stat-number">45</p>
+            <p class="stat-label">Készleten</p>
+          </div>
+          <div class="stat-item">
+            <p class="stat-number">10</p>
+            <p class="stat-label">Hiány</p>
+          </div>
+        </div>
+      </section>
+      <!-- További tartalmak jöhetnek -->
+    </div>
+  </div>
 </body>
 </html>
