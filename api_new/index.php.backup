@@ -1,0 +1,183 @@
+<?php
+/**
+ * REST API Entry Point
+ * Main router - minden kérés ide érkezik
+ */
+
+// CORS headers
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
+// Handle preflight
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+
+// Error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 0); // Production: 0, Dev: 1
+
+// Timezone
+date_default_timezone_set('Europe/Budapest');
+
+// Load controllers
+require_once __DIR__ . '/controllers/AuthController.php';
+require_once __DIR__ . '/controllers/ProductController.php';
+require_once __DIR__ . '/controllers/CategoryController.php';
+require_once __DIR__ . '/controllers/OrderController.php';
+require_once __DIR__ . '/utils/Response.php';
+
+// Get request info
+$method = $_SERVER['REQUEST_METHOD'];
+$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+// Remove base path if exists (adjust to your setup)
+// Automatikus base path detection
+$scriptName = dirname($_SERVER['SCRIPT_NAME']);
+if ($scriptName !== '/' && strpos($path, $scriptName) === 0) {
+    $path = substr($path, strlen($scriptName));
+}
+
+$path = rtrim($path, '/');
+if (empty($path)) {
+    $path = '/';
+}
+
+// Parse path segments
+$segments = explode('/', trim($path, '/'));
+
+// Route Handler
+try {
+    
+    // Health check
+    if ($path === '/' || $path === '') {
+        Response::success([
+            'api' => 'Raktár Pro REST API',
+            'version' => '1.0',
+            'status' => 'running'
+        ]);
+    }
+    
+    // ===== AUTH ROUTES =====
+    if ($segments[0] === 'auth') {
+        $authController = new AuthController();
+        
+        switch ($segments[1] ?? '') {
+            case 'register':
+                if ($method === 'POST') {
+                    $authController->register();
+                }
+                break;
+                
+            case 'login':
+                if ($method === 'POST') {
+                    $authController->login();
+                }
+                break;
+                
+            case 'logout':
+                if ($method === 'POST') {
+                    $authController->logout();
+                }
+                break;
+        }
+    }
+    
+    // ===== PRODUCT ROUTES =====
+    if ($segments[0] === 'products') {
+        $productController = new ProductController();
+        
+        if (!isset($segments[1])) {
+            // /products
+            if ($method === 'GET') {
+                $productController->index();
+            } elseif ($method === 'POST') {
+                $productController->create();
+            }
+        } else {
+            // /products/{id}
+            $id = (int)$segments[1];
+            
+            if ($method === 'GET') {
+                $productController->show($id);
+            } elseif ($method === 'PUT') {
+                $productController->update($id);
+            } elseif ($method === 'DELETE') {
+                $productController->delete($id);
+            }
+        }
+    }
+    
+    // ===== CATEGORY ROUTES =====
+    if ($segments[0] === 'categories') {
+        $categoryController = new CategoryController();
+        
+        if (!isset($segments[1])) {
+            // /categories
+            if ($method === 'GET') {
+                $categoryController->index();
+            } elseif ($method === 'POST') {
+                $categoryController->create();
+            }
+        } else {
+            // /categories/{id}
+            $id = (int)$segments[1];
+            
+            if ($method === 'GET') {
+                $categoryController->show($id);
+            } elseif ($method === 'PUT') {
+                $categoryController->update($id);
+            } elseif ($method === 'DELETE') {
+                $categoryController->delete($id);
+            }
+        }
+    }
+    
+    // ===== ORDER ROUTES =====
+    if ($segments[0] === 'orders') {
+        $orderController = new OrderController();
+        
+        if (!isset($segments[1])) {
+            // /orders
+            if ($method === 'GET') {
+                $orderController->index();
+            } elseif ($method === 'POST') {
+                $orderController->create();
+            }
+        } else {
+            // /orders/{id}
+            $id = (int)$segments[1];
+            
+            if ($method === 'GET') {
+                $orderController->show($id);
+            }
+        }
+    }
+    
+    // ===== ADMIN ORDER ROUTES =====
+    if ($segments[0] === 'admin' && ($segments[1] ?? '') === 'orders') {
+        $orderController = new OrderController();
+        
+        if (!isset($segments[2])) {
+            // /admin/orders
+            if ($method === 'GET') {
+                $orderController->adminIndex();
+            }
+        } else {
+            // /admin/orders/{id}/status
+            $id = (int)$segments[2];
+            
+            if (($segments[3] ?? '') === 'status' && $method === 'PUT') {
+                $orderController->updateStatus($id);
+            }
+        }
+    }
+    
+    // If no route matched
+    Response::error('Endpoint nem található', 404, 'NOT_FOUND');
+    
+} catch (Throwable $e) {
+    Response::serverError('Váratlan hiba: ' . $e->getMessage());
+}
