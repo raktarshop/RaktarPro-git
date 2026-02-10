@@ -1,0 +1,67 @@
+/* auth-light-fix.css – CSAK az auth oldal light kontraszt + keretek */
+
+html[data-theme="light"] body.rp-auth{
+  background:
+    radial-gradient(1200px 700px at 20% 0%, rgba(49,86,255,.10), transparent 60%),
+    radial-gradient(900px 600px at 90% 30%, rgba(11,197,255,.08), transparent 55%),
+    var(--bg);
+}
+
+/* Kártya keret + árnyék lightban erősebb */
+html[data-theme="light"] body.rp-auth .rp-auth-card{
+  border-color: rgba(11,26,47,.18);
+  box-shadow: 0 18px 55px rgba(11,26,47,.14);
+}
+
+/* Tabs */
+html[data-theme="light"] body.rp-auth .rp-tabs{
+  background: rgba(11,26,47,.04);
+  border-color: rgba(11,26,47,.16);
+}
+html[data-theme="light"] body.rp-auth .rp-tab-btn{
+  color: rgba(11,26,47,.70);
+}
+html[data-theme="light"] body.rp-auth .rp-tab-btn.active{
+  background: var(--primary);
+  color: var(--primary-text);
+}
+
+/* Label + placeholder */
+html[data-theme="light"] body.rp-auth .rp-label{
+  color: rgba(11,26,47,.88);
+}
+html[data-theme="light"] body.rp-auth .rp-input::placeholder{
+  color: rgba(11,26,47,.55);
+}
+
+/* Input keretek: sötétebb */
+html[data-theme="light"] body.rp-auth .rp-input{
+  border-color: rgba(11,26,47,.22) !important;
+}
+
+/* “Mutat / Rejt” gomb */
+html[data-theme="light"] body.rp-auth .rp-eye{
+  background: rgba(11,26,47,.04);
+  border-color: rgba(11,26,47,.18);
+  color: rgba(11,26,47,.92);
+}
+
+/* Nyelv select */
+html[data-theme="light"] body.rp-auth .rp-lang-label{
+  color: rgba(11,26,47,.82);
+}
+
+/* Guest link */
+html[data-theme="light"] body.rp-auth .rp-guest{
+  color: rgba(11,26,47,.80);
+}
+html[data-theme="light"] body.rp-auth .rp-guest:hover{
+  color: rgba(11,26,47,1);
+}
+
+/* Logo badge */
+html[data-theme="light"] body.rp-auth .rp-logo{
+  background: rgba(11,26,47,.04);
+  border-color: rgba(11,26,47,.16);
+  color: rgba(11,26,47,1);
+}
