@@ -1,29 +1,36 @@
-# 📦 Központi Raktár Webshop
+# Raktár Pro – v7 (Login FIX + Windows MAMP)
 
-## 👥 Csapattagok
-- **Projekt Manager / Frontend / Designer:** Molnár Dániel
-- **Backend fejlesztő:** Trubics Gorán
-- **Adatbázis kezelő:** Molnár Máté
+## Miért ez a verzió?
+- A korábbi 500-as hiba tipikusan azért volt, mert a backend DB kapcsolatnál **Mac socket path** volt beégetve.
+- Ebben a verzióban a `backend/api_new/config/Database.php` **nem használ socket-et**, ezért Windows MAMP-on is stabil.
 
-## 🎯 Projekt célja
-Egy központi webshop felület létrehozása, ahol a vásárlók és partnerek
-egyszerűen kereshetnek és rendelhetnek termékeket egy modern online felületen.
+## Indítás (MAMP)
+1. Másold a teljes mappát a MAMP/htdocs alá (pl. `RaktarPro_n`)
+2. Start Servers (Apache + MySQL)
 
-## 🛠 Technológiák
-- **Frontend:** HTML5, CSS3, JavaScript
-- **Backend:** Node.js / PHP
-- **Adatbázis:** MongoDB
-- **Verziókezelés:** Git, GitHub
-- **Design:** Figma
-- **Projektmenedzsment:** Jira
+## Adatbázis import
+- phpMyAdmin: `http://localhost:8888/phpMyAdmin/`
+- Importáld: `database/webaruhaz1.sql` az adatbázisba: `webaruhaz1`
 
-## 📂 Mappa struktúra
-- `frontend/` → kliensoldali kód (UI, design, interakciók)
-- `backend/` → szerveroldali kód (API, logika)
-- `adatbazis/` → adatbázis modellek, seed fájlok
-- `docs/` → dokumentáció, vizsgaremek anyagok
+## Backend DB beállítás
+- Fájl: `backend/api_new/config/Database.php`
+- Alap MAMP értékek (Windows):
+  - host: localhost
+  - port: 8889
+  - user: root
+  - pass: root
+  - db: webaruhaz1
 
-## 🚀 Indítás (tervezett)
-1. `cd backend`
-2. `npm install`
-3. `npm start`
+## Frontend
+- Bejelentkezés / regisztráció: `http://localhost:8888/<mappanév>/frontend/public/auth.html`
+- Terméklista: `http://localhost:8888/<mappanév>/frontend/public/products.html`
+- Kosár: `http://localhost:8888/<mappanév>/frontend/public/cart.html`
+
+A frontend **automatikusan kitalálja** az API_BASE-t a mappanévből.
+
+## Teszt endpoint
+- `http://localhost:8888/<mappanév>/backend/api_new/` (API root)
+- `http://localhost:8888/<mappanév>/backend/api_new/ping` (gyors ping)
+
+## Tipp: ha a bejelentkezésnél HTML-t kapsz a Network-ben
+Ez általában rossz RewriteBase / .htaccess miatt van. A `backend/api_new/.htaccess` fájlban a RewriteBase ki van kommentelve – hagyd így, vagy állítsd be a saját mappanevedre.

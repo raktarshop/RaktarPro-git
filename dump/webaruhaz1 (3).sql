@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:8889
--- Létrehozás ideje: 2026. Jan 13. 15:27
+-- Létrehozás ideje: 2026. Jan 16. 08:44
 -- Kiszolgáló verziója: 8.0.40
 -- PHP verzió: 8.3.14
 
@@ -278,7 +278,21 @@ INSERT INTO `app_order_items` (`id`, `order_id`, `product_id`, `quantity`, `unit
 (17, 10, 12, 1, 799, 799),
 (18, 11, 15, 1, 2999, 2999),
 (19, 12, 14, 1, 5999, 5999),
-(20, 13, 14, 1, 5999, 5999);
+(20, 13, 14, 1, 5999, 5999),
+(21, 14, 12, 1, 799, 799),
+(22, 15, 6, 2, 5999, 11998),
+(23, 15, 12, 2, 799, 1598),
+(24, 15, 14, 2, 5999, 11998),
+(25, 16, 11, 1, 99999, 99999),
+(26, 16, 12, 1, 799, 799),
+(27, 16, 14, 2, 5999, 11998),
+(28, 16, 15, 4, 2999, 11996),
+(29, 17, 1, 1, 399999, 399999),
+(30, 17, 12, 1, 799, 799),
+(31, 18, 12, 1, 799, 799),
+(32, 18, 14, 1, 5999, 5999),
+(33, 19, 14, 1, 5999, 5999),
+(34, 20, 16, 2, 3222, 6444);
 
 -- --------------------------------------------------------
 
@@ -432,7 +446,7 @@ INSERT INTO `orders` (`id`, `user_id`, `name`, `email`, `address`, `payment_meth
 (1, 17, 'Molnar Mate', 'mmate06625@gmail.com', 'pécs', 'utanvet', 3798, 'teljesitve', '2025-10-10 10:39:41'),
 (2, 17, 'Molnar Mate', 'mmate06625@gmail.com', 'pécs', 'utanvet', 799, 'uj', '2025-10-10 10:39:48'),
 (3, NULL, 'Molnar Mate', 'teszt@valami.hu', 'pécs', 'utanvet', 8997, 'uj', '2025-11-07 10:26:02'),
-(4, 17, 'Molnar Mate', 'mmate06625@gmail.com', 'pécs', 'utanvet', 18663, 'uj', '2026-01-13 11:21:42'),
+(4, 17, 'Molnar Mate', 'mmate06625@gmail.com', 'pécs', 'utanvet', 18663, 'kiszallitva', '2026-01-13 11:21:42'),
 (5, 17, 'Molnar Mate', 'mmate06625@gmail.com', 'pécs', 'utanvet', 6221, 'uj', '2026-01-13 11:22:47'),
 (6, 17, 'Molnar Mate', 'mmate06625@gmail.com', 'pécs', 'utanvet', 2999, 'uj', '2026-01-13 11:23:36'),
 (7, 17, 'Molnar Mate', 'mmate06625@gmail.com', 'pécs', 'utanvet', 9666, 'uj', '2026-01-13 11:29:16'),
@@ -441,7 +455,14 @@ INSERT INTO `orders` (`id`, `user_id`, `name`, `email`, `address`, `payment_meth
 (10, 17, 'Molnar Mate', 'mmate06625@gmail.com', 'pecs', 'utanvet', 799, 'uj', '2026-01-13 13:40:09'),
 (11, 17, 'Molnar Mate', 'mmate06625@gmail.com', 'pecs', 'utanvet', 2999, 'uj', '2026-01-13 13:41:32'),
 (12, 17, 'Molnar Mate', 'mmate06625@gmail.com', 'pecs', 'utanvet', 5999, 'uj', '2026-01-13 13:41:47'),
-(13, 17, 'Molnar Mate', 'mmate06625@gmail.com', 'pecs', 'utanvet', 5999, 'uj', '2026-01-13 13:49:03');
+(13, 17, 'Molnar Mate', 'mmate06625@gmail.com', 'pecs', 'utanvet', 5999, 'uj', '2026-01-13 13:49:03'),
+(14, 17, 'Molnar Mate', 'mmate06625@gmail.com', 'pecs', 'utanvet', 799, 'uj', '2026-01-13 16:41:25'),
+(15, 17, 'Molnar Mate', 'mmate06625@gmail.com', 'pecs', 'utanvet', 25594, 'uj', '2026-01-13 16:52:04'),
+(16, 17, 'Molnar Mate', 'mmate06625@gmail.com', 'pecs', 'utanvet', 124792, 'uj', '2026-01-13 17:13:36'),
+(17, 17, 'Molnar Mate', 'mmate06625@gmail.com', 'pecs', 'utanvet', 400798, 'uj', '2026-01-13 17:30:59'),
+(18, 18, 'Molnar Mate', 'mmate2577@gmail.com', 'pecs', 'utanvet', 6798, 'uj', '2026-01-14 10:54:51'),
+(19, 17, 'Molnar Mate', 'mmate06625@gmail.com', 'pecs', 'utanvet', 5999, 'kiszallitva', '2026-01-14 11:09:34'),
+(20, 17, 'Molnar Mate', 'mmate06625@gmail.com', 'pecs', 'utanvet', 6444, 'uj', '2026-01-14 12:52:33');
 
 -- --------------------------------------------------------
 
@@ -469,9 +490,9 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `sku`, `name`, `description`, `image_url`, `category_id`, `supplier_id`, `unit_price`, `weight`, `created_at`, `updated_at`, `stock`) VALUES
-(1, 'T001', 'iPhone 14', 'Okostelefon Apple', 'https://picsum.photos/400?random=1', 2, 1, 399999.00, 0.180, '2025-08-28 17:21:19', NULL, 45),
+(1, 'T001', 'iPhone 14', 'Okostelefon Apple', NULL, 2, 1, 399999.00, 0.180, '2025-08-28 17:21:19', '2026-01-16 09:33:39', 45),
 (2, 'T002', 'Samsung Galaxy', 'Androidos mobil', NULL, 2, 1, 299999.00, 0.170, '2025-08-28 17:21:19', NULL, 36),
-(3, 'T003', 'Dell Inspiron', 'Laptop 15\"', '/raktar_pro/uploads/products/3_1765360606.png', 3, 1, 249999.00, 2.100, '2025-08-28 17:21:19', NULL, 27),
+(3, 'T003', 'Dell Inspiron', 'Laptop 15\"', NULL, 3, 1, 249999.00, 2.100, '2025-08-28 17:21:19', '2026-01-16 09:33:34', 27),
 (4, 'T004', 'HP Pavilion', 'Laptop 14\"', NULL, 3, 1, 239999.00, 2.000, '2025-08-28 17:21:19', NULL, 23),
 (5, 'T005', 'Férfi póló', 'Fekete, pamut', NULL, 5, 3, 4999.00, 0.250, '2025-08-28 17:21:19', NULL, 54),
 (6, 'T006', 'Női póló', 'Fehér, pamut', NULL, 6, 3, 5999.00, 0.240, '2025-08-28 17:21:19', NULL, 63),
@@ -481,9 +502,9 @@ INSERT INTO `products` (`id`, `sku`, `name`, `description`, `image_url`, `catego
 (10, 'T010', 'Lego Classic', 'Készlet 500db', NULL, 10, 14, 14999.00, 2.000, '2025-08-28 17:21:19', NULL, 18),
 (11, 'T011', 'Étkezőasztal', 'Fa, 6 személyes', NULL, 11, 6, 99999.00, 30.000, '2025-08-28 17:21:19', NULL, 14),
 (12, 'T012', 'Jegyzetfüzet', 'A5, 100 lap', NULL, 12, 7, 799.00, 0.300, '2025-08-28 17:21:19', NULL, 88),
-(14, 'T014', 'Csavarhúzó készlet', '10 db-os', '/raktar_pro/uploads/termekek/14_1768308157.jpg', 14, 13, 5999.00, 2.500, '2025-08-28 17:21:19', '2026-01-13 13:42:37', 90),
+(14, 'T014', 'Csavarhúzó készlet', '10 db-os', NULL, 14, 13, 5999.00, 2.500, '2025-08-28 17:21:19', '2026-01-16 09:33:25', 90),
 (15, 'T015', 'Olajszűrő', 'Autóhoz', NULL, 15, 15, 2999.00, 0.700, '2025-08-28 17:21:19', '2026-01-13 11:23:36', 103),
-(16, '211', 'olaj', 'finomitott', '/raktar_pro/uploads/termekek/16_1768308060.png', 3, 3, 3222.00, 0.500, '2025-12-10 11:07:51', '2026-01-13 13:41:00', 0);
+(16, '211', 'olaj', 'finomitott', NULL, 3, 3, 3222.00, 0.500, '2025-12-10 11:07:51', '2026-01-16 09:33:29', 122);
 
 -- --------------------------------------------------------
 
@@ -689,7 +710,15 @@ INSERT INTO `refresh_tokens` (`id`, `user_id`, `token_hash`, `expires_at`, `revo
 (149, 17, '1ce199915791564f93e389bbcac8dffdec92a4d994bac6907af57cdd90e0139d', '2025-12-07 14:58:13', 0, '2025-11-23 14:58:13', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', '::1'),
 (150, 17, '7df07303198b745fd4620aaec9d73959c31bc0ed1ccfdab32f5e91442fbf9a3d', '2025-12-24 10:55:36', 0, '2025-12-10 10:55:36', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '::1'),
 (151, 17, 'c1067335f4a6dbbaaa7b84e80941a8d09c0cf1dc4880814273651f4f5abbd3f2', '2026-01-27 10:30:27', 0, '2026-01-13 10:30:27', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '::1'),
-(152, 17, '680592c92f717bb22ec6a5df544b0a8a71dd58bcf41a42082a72d957edc69ab1', '2026-01-27 10:43:06', 0, '2026-01-13 10:43:06', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '::1');
+(152, 17, '680592c92f717bb22ec6a5df544b0a8a71dd58bcf41a42082a72d957edc69ab1', '2026-01-27 10:43:06', 0, '2026-01-13 10:43:06', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '::1'),
+(153, 17, 'a42e69925fe3607247be8ef5209959d28e8b222e07c13c38107161678da9779c', '2026-01-27 16:41:13', 0, '2026-01-13 16:41:13', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '::1'),
+(154, 17, 'afa19cf5d4ab7a3ae018158cdc7a9e7c1a5e72109dc8f31bd376fb32e909c6f3', '2026-01-28 10:48:10', 0, '2026-01-14 10:48:10', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '::1'),
+(155, 17, '7c3d71129bde16df5bed7fea6a8f16d1ed2a8989d6fa020fe4dfbf49ce908c73', '2026-01-28 10:54:13', 0, '2026-01-14 10:54:13', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '::1'),
+(156, 17, '81ee4e01ad5a136c03efd8b9cc3b8ba482b66085bff465e3b44f7373b1458dcc', '2026-01-28 10:54:19', 0, '2026-01-14 10:54:19', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '::1'),
+(157, 18, 'aa7b1677e5dfaaeb05cfe95cfd7a168e087f198f7dd9c852003b15c41bb8cca5', '2026-01-28 10:54:30', 0, '2026-01-14 10:54:30', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '::1'),
+(158, 17, '30563d787c2175e951cf394a731cfade0f9a39f2e2befbe7870dc40e6058ea57', '2026-01-28 10:56:19', 0, '2026-01-14 10:56:19', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '::1'),
+(159, 17, '4125fd9baa15af91e426accf8127aa49a3544a5b2aa5d711fb353e3698417ba5', '2026-01-29 10:20:22', 0, '2026-01-15 10:20:22', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '::1'),
+(160, 17, '0040e05703ed0b4056dc27c7780b161e26db75df1c9c526259e914729db629fa', '2026-01-30 09:28:42', 0, '2026-01-16 09:28:42', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '::1');
 
 -- --------------------------------------------------------
 
@@ -748,20 +777,34 @@ CREATE TABLE `stock` (
 --
 
 INSERT INTO `stock` (`id`, `product_id`, `location_id`, `quantity`, `reserved_quantity`, `reorder_level`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 50, 5, 10, '2025-08-28 17:21:19', NULL),
+(1, 1, 1, 49, 5, 10, '2025-08-28 17:21:19', '2026-01-13 17:30:59'),
 (2, 2, 1, 40, 4, 8, '2025-08-28 17:21:19', NULL),
 (3, 3, 2, 30, 3, 6, '2025-08-28 17:21:19', NULL),
 (4, 4, 2, 25, 2, 5, '2025-08-28 17:21:19', NULL),
 (5, 5, 3, 60, 6, 12, '2025-08-28 17:21:19', NULL),
-(6, 6, 3, 70, 7, 14, '2025-08-28 17:21:19', NULL),
+(6, 6, 3, 68, 7, 14, '2025-08-28 17:21:19', '2026-01-13 16:52:04'),
 (7, 7, 4, 34, 3, 7, '2025-08-28 17:21:19', '2026-01-13 13:39:56'),
 (8, 8, 5, 80, 8, 16, '2025-08-28 17:21:19', NULL),
 (9, 9, 6, 90, 9, 18, '2025-08-28 17:21:19', NULL),
 (10, 10, 7, 20, 2, 4, '2025-08-28 17:21:19', NULL),
-(11, 11, 8, 15, 1, 3, '2025-08-28 17:21:19', NULL),
-(12, 12, 9, 98, 10, 20, '2025-08-28 17:21:19', '2026-01-13 13:40:09'),
-(14, 14, 11, 101, 12, 24, '2025-08-28 17:21:19', '2026-01-13 13:49:03'),
-(15, 15, 12, 116, 13, 26, '2025-08-28 17:21:19', '2026-01-13 13:41:32');
+(11, 11, 8, 14, 1, 3, '2025-08-28 17:21:19', '2026-01-13 17:13:36'),
+(12, 12, 9, 92, 10, 20, '2025-08-28 17:21:19', '2026-01-14 10:54:51'),
+(14, 14, 11, 97, 12, 24, '2025-08-28 17:21:19', '2026-01-13 17:13:36'),
+(15, 15, 12, 112, 13, 26, '2025-08-28 17:21:19', '2026-01-13 17:13:36'),
+(16, 1, 9, 45, 10, 0, '2026-01-13 17:30:16', NULL),
+(17, 2, 9, 36, 0, 0, '2026-01-13 17:30:16', NULL),
+(18, 3, 9, 27, 0, 0, '2026-01-13 17:30:16', NULL),
+(19, 4, 9, 23, 0, 0, '2026-01-13 17:30:16', NULL),
+(20, 5, 9, 54, 0, 0, '2026-01-13 17:30:16', NULL),
+(21, 6, 9, 63, 0, 0, '2026-01-13 17:30:16', NULL),
+(22, 7, 9, 31, 0, 0, '2026-01-13 17:30:16', NULL),
+(23, 8, 9, 72, 0, 0, '2026-01-13 17:30:16', NULL),
+(24, 9, 9, 81, 0, 0, '2026-01-13 17:30:16', NULL),
+(25, 10, 9, 18, 0, 0, '2026-01-13 17:30:16', NULL),
+(26, 11, 9, 14, 0, 0, '2026-01-13 17:30:16', NULL),
+(27, 14, 9, 88, 0, 0, '2026-01-13 17:30:16', '2026-01-14 11:09:34'),
+(28, 15, 9, 103, 0, 0, '2026-01-13 17:30:16', NULL),
+(29, 16, 9, 104, 10, 0, '2026-01-13 17:30:16', '2026-01-14 12:52:33');
 
 -- --------------------------------------------------------
 
@@ -1010,7 +1053,7 @@ ALTER TABLE `app_orders`
 -- AUTO_INCREMENT a táblához `app_order_items`
 --
 ALTER TABLE `app_order_items`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT a táblához `categories`
@@ -1040,7 +1083,7 @@ ALTER TABLE `locations`
 -- AUTO_INCREMENT a táblához `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT a táblához `products`
@@ -1058,7 +1101,7 @@ ALTER TABLE `product_reviews`
 -- AUTO_INCREMENT a táblához `refresh_tokens`
 --
 ALTER TABLE `refresh_tokens`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
 
 --
 -- AUTO_INCREMENT a táblához `roles`
@@ -1070,7 +1113,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT a táblához `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT a táblához `suppliers`
