@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Raktár Pro – Rendeléseim</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="./assets/css/common.css">
+  <link rel="stylesheet" href="./assets/css/admin.css">
+</head>
+<body>
+  <main class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1 class="fw-bold m-0" data-i18n="orders_title">Rendeléseim</h1>
+      <div class="d-flex gap-2">
+        <a class="btn rp-admin-btn" href="./products.html"><i class="bi bi-arrow-left rp-icon" aria-hidden="true"></i> <span data-i18n="orders_back_store">Bolt</span></a>
+        <a class="btn rp-admin-btn" href="./cart.html"><i class="bi bi-cart3 rp-icon" aria-hidden="true"></i> <span data-i18n="orders_cart">Kosár</span></a>
+      </div>
+    </div>
+
+    <div class="rp-admin-card rp-reveal p-3 mb-3">
+      <div class="d-flex flex-column flex-md-row gap-2 align-items-md-center justify-content-between">
+        <input id="ordersSearch" class="form-control rp-admin-input" data-i18n-ph="orders_search_ph" placeholder="Keresés (id, státusz)..." />
+        <button id="ordersReload" class="btn rp-admin-btn" data-i18n="orders_reload">Újratöltés</button>
+      </div>
+      <div id="ordersMsg" class="mt-2" style="opacity:.85;"></div>
+    </div>
+
+    <div class="rp-admin-card rp-reveal p-3">
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0 rp-admin-table">
+          <thead>
+            <tr>
+              <th data-i18n="orders_table_date">Dátum</th>
+              <th data-i18n="orders_table_status">Státusz</th>
+              <th data-i18n="orders_table_total">Összeg</th>
+              <th data-i18n="orders_table_payment">Fizetés</th>
+              <th data-i18n="orders_table_action">Művelet</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content" style="background:var(--card); border:1px solid var(--border);">
+          <div class="modal-header" style="border-bottom-color:var(--border);">
+            <h5 class="modal-title">Rendelés részletei</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div id="orderDetailsBody"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script defer src="./assets/js/api.js"></script>
+  <script defer src="./assets/js/lang.js"></script>
+  <script defer src="./assets/js/nav.js"></script>
+  <script defer src="./assets/js/animate.js"></script>
+  <script defer src="./assets/js/orders.js"></script>
+</body>
+</html>

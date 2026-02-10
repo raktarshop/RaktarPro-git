@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Raktár Pro – Admin</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/common.css">
+  <link rel="stylesheet" href="./assets/css/admin.css">
+</head>
+<body>
+
+  <!-- NAV (nyelv csak auth.html-en állítható) -->
+  <nav class="rp-nav py-3">
+    <div class="container d-flex align-items-center justify-content-between gap-3">
+
+      <a class="rp-brand" href="./products.html">
+        <div class="rp-logo">RP</div>
+        <div>
+          <div class="fw-bold">Raktár Pro</div>
+          <div class="rp-subtitle" data-i18n="nav_subtitle">Professzionális raktári megoldások</div>
+        </div>
+      </a>
+
+      <div class="d-flex align-items-center gap-2">
+        <button id="themeToggle" class="btn rp-pill-btn" type="button" data-i18n-title="theme_title_dark" title="Sötét mód">🌙</button>
+
+        <a class="btn rp-pill-btn position-relative" href="./cart.html" title="Kosár">
+          🛒 <span id="cartBadge" class="rp-badge" style="display:none;">0</span>
+        </a>
+
+        <div class="dropdown">
+          <button class="btn rp-pill-btn d-flex align-items-center gap-2 dropdown-toggle"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="rp-avatar">A</span>
+            <span class="d-none d-md-inline" data-i18n="nav_account">Fiók</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li id="adminMenuItem"><a class="dropdown-item" href="./admin.html" data-i18n="nav_admin">Admin</a></li>
+            <li><a class="dropdown-item" href="./account.html" data-i18n="nav_account_settings">Fiókbeállítások</a></li>
+            <li><a class="dropdown-item" href="./cart.html" data-i18n="nav_cart">Kosár</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="#" id="logoutBtn" data-i18n="nav_logout">Kijelentkezés</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+
+    <!-- Header + quick actions (mint a 2. képen) -->
+    <div class="rp-admin-header mb-3">
+      <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
+        <div class="d-flex align-items-center gap-3">
+          <div class="rp-admin-icon" aria-hidden="true">📦</div>
+          <div>
+            <h1 class="rp-admin-title m-0" data-i18n="admin_title">Admin – Készlet / Ár frissítés</h1>
+            <div class="rp-admin-sub" style="opacity:.75;">Termékek kezelése</div>
+          </div>
+        </div>
+
+        <div class="d-flex flex-wrap align-items-center justify-content-lg-end gap-2">
+          <a class="btn rp-admin-topbtn" href="./admin.html" title="Dashboard">⬅ Dashboard</a>
+          <button class="btn rp-admin-topbtn" id="adminCategoriesBtn" type="button" title="Kategóriák">🏷️ Kategóriák</button>
+          <a class="btn rp-admin-topbtn" href="./products.html" title="Bolt nézete">🛒 Bolt nézete</a>
+          <span class="rp-admin-pill" id="adminNamePill">Admin</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search + reload -->
+    <div class="rp-admin-card p-3 mb-3">
+      <div class="d-flex flex-column flex-lg-row gap-2 align-items-lg-center justify-content-between">
+        <input id="adminSearch" class="form-control rp-admin-input" data-i18n-ph="admin_search_ph" placeholder="Keresés (név)..." />
+        <div class="d-flex gap-2">
+          <button id="adminSearchBtn" class="btn rp-admin-btn" type="button">🔎 Keresés</button>
+          <button id="adminReload" class="btn rp-admin-btn" data-i18n="admin_reload" type="button">Újratöltés</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div id="adminTableWrap" class="rp-admin-card p-3">
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0 rp-admin-table">
+          <thead>
+            <tr>
+              <th data-i18n="admin_th_id">ID</th>
+              <th data-i18n="admin_th_name">Név</th>
+              <th data-i18n="admin_th_price">Ár</th>
+              <th data-i18n="admin_th_stock">Készlet</th>
+              <th data-i18n="admin_th_action">Művelet</th>
+            </tr>
+          </thead>
+          <tbody id="adminTbody"></tbody>
+        </table>
+      </div>
+      <div id="adminMsg" class="mt-2" style="opacity:.8;"></div>
+    </div>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script defer src="./assets/js/api.js"></script>
+  <script defer src="./assets/js/lang.js"></script>
+  <script defer src="./assets/js/nav.js"></script>
+  <script defer src="./assets/js/admin.js"></script>
+</body>
+</html>

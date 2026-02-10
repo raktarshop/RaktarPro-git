@@ -1,0 +1,190 @@
+/* Admin vizuál + dark/light konzisztencia */
+
+/* ✅ Admin oldal háttér – ez tünteti el a fehér body-t dark módban */
+body{
+  background:
+    radial-gradient(1100px 700px at 20% 0%, rgba(49,86,255,.12), transparent 60%),
+    radial-gradient(900px 600px at 90% 30%, rgba(11,197,255,.08), transparent 55%),
+    var(--bg);
+  color: var(--text);
+}
+
+/* Kártyák */
+.rp-admin-card{
+  border-radius: 22px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+/* Inputok */
+.rp-admin-input{
+  border-radius: 14px !important;
+  border: 1px solid var(--border) !important;
+  background: var(--input) !important;
+  color: var(--text) !important;
+}
+
+.rp-admin-input::placeholder{
+  color: var(--placeholder) !important;
+  opacity: 1;
+}
+
+/* Gomb */
+.rp-admin-btn{
+  border-radius: 14px !important;
+  border: 1px solid var(--border) !important;
+  background: rgba(255,255,255,.06) !important;
+  color: var(--text) !important;
+  font-weight: 900 !important;
+}
+
+/* ✅ Bootstrap dropdown-menu fehér hátterének kivégzése */
+.dropdown-menu{
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow) !important;
+}
+.dropdown-item{
+  color: var(--text) !important;
+}
+.dropdown-item:hover{
+  background: rgba(255,255,255,.06) !important;
+}
+
+/* ✅ Table: Bootstrap alapból fehéres – ezt felül kell írni */
+.table{
+  color: var(--text) !important;
+}
+.table thead th{
+  color: var(--muted) !important;
+  border-color: var(--border) !important;
+}
+
+.rp-admin-table select,
+.rp-admin-table .form-select{
+  color: var(--text) !important;
+  background: var(--input) !important;
+  border-color: var(--border) !important;
+}
+
+.rp-admin-table select option{
+  background: #071426; /* stabil dark háttér az option-öknek */
+  color: var(--text);
+}
+
+/* ✅ FIX: native <select> lenyíló lista (nem csak a táblában) */
+[data-theme="dark"] select option,
+[data-theme="dark"] select optgroup{
+  background: #071426;
+  color: var(--text);
+}
+[data-theme="light"] select option,
+[data-theme="light"] select optgroup{
+  background: #fff;
+  color: #111;
+}
+
+.table td, .table th{
+  border-color: var(--border) !important;
+}
+.table tbody tr{
+  background: transparent !important;
+}
+
+/* a te class-od is marad */
+.rp-admin-table{
+  color: var(--text);
+}
+.rp-admin-table td, .rp-admin-table th{
+  border-color: var(--border) !important;
+}
+
+/* ✅ Modal (ha adminban van “kisablak”) */
+.modal-content,
+.modal-header,
+.modal-body,
+.modal-footer{
+  background: var(--card) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+/* Close gomb látható legyen darkban */
+.btn-close{ filter: invert(1) grayscale(1); }
+[data-theme="light"] .btn-close{ filter: none; }
+
+.rp-mini{
+  width: 110px;
+}
+
+/* Admin name pill */
+.rp-admin-pill{
+  border-radius: 999px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+  font-weight: 800;
+}
+
+/* ✅ FIX: admin tábla szöveg dark módban is legyen világos */
+.rp-admin-table,
+.rp-admin-table * {
+  color: var(--text) !important;
+}
+
+.rp-admin-table thead th{
+  color: var(--muted) !important;
+}
+
+.rp-admin-table a{
+  color: var(--text) !important;
+}
+
+.rp-admin-table input,
+.rp-admin-table .form-control{
+  color: var(--text) !important;
+  background: var(--input) !important;
+  border-color: var(--border) !important;
+}
+
+.rp-admin-table input::placeholder,
+.rp-admin-table .form-control::placeholder{
+  color: var(--placeholder) !important;
+  opacity: 1;
+}
+
+.table td,
+.table th{
+  color: var(--text) !important;
+}
+
+
+/* ✅ FIX: Support/Admin táblák ne legyenek fehérek dark módban */
+.rp-admin-card .table-responsive{
+  background: rgba(10, 24, 45, .55);
+  border-radius: 18px;
+  padding: 10px;
+}
+
+.rp-admin-table{
+  background: transparent !important;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(255,255,255,.03);
+  --bs-table-hover-bg: rgba(255,255,255,.04);
+  --bs-table-color: var(--text);
+}
+
+.table{
+  background: transparent !important;
+}
+
+.rp-admin-table td,
+.rp-admin-table th{
+  color: var(--text) !important;
+}
+
+.rp-admin-table thead th{
+  color: var(--text-dim) !important;
+}

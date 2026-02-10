@@ -1,0 +1,136 @@
+body{
+  background:
+    radial-gradient(1100px 700px at 20% 0%, rgba(49,86,255,.12), transparent 60%),
+    radial-gradient(900px 600px at 90% 30%, rgba(11,197,255,.08), transparent 55%),
+    var(--bg);
+}
+
+.rp-page-title{
+  font-weight: 900;
+  letter-spacing: .2px;
+}
+
+.rp-search, .rp-sort{
+  border-radius: 14px !important;
+  border: 1px solid var(--border) !important;
+  background: var(--input) !important;
+  color: var(--text) !important;
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, transform 120ms ease;
+}
+
+.rp-search:focus, .rp-sort:focus{
+  transform: translateY(-1px);
+}
+
+/* Placeholder legyen olvasható dark módban is */
+.rp-search::placeholder{
+  color: var(--placeholder) !important;
+  opacity: 1;
+}
+
+/* DARK MODE: rendezés select legyen kék + fehér betű (mint kérted) */
+html[data-theme="dark"] .rp-sort{
+  background: rgba(49,86,255,.88) !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.16) !important;
+}
+
+html[data-theme="dark"] .rp-sort option{
+  /* Firefox/egyes böngészők: itt működik. Chrome-nál OS-native lehet. */
+  background: rgba(49,86,255,.95);
+  color: #ffffff;
+}
+
+.rp-card{
+  border-radius: 22px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 160ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+
+.rp-card:hover{
+  transform: translateY(-2px);
+}
+
+.rp-img{
+  height: 170px;
+  display:grid;
+  place-items:center;
+  background: rgba(255,255,255,.06);
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.rp-img img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.rp-tag{
+  font-size: 12px;
+  font-weight: 900;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.10);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.rp-price{
+  font-size: 22px;
+  font-weight: 900;
+}
+
+/* Készlet badge (olvashatóbb) */
+.rp-stock{
+  font-size: 12px;
+  font-weight: 900;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(60,255,170,.40);
+  background: rgba(60,255,170,.12);
+  color: var(--text);
+}
+
+/* Leírás (ne legyen túl szürke dark módban) */
+.rp-desc{
+  color: var(--muted-2);
+}
+
+/* Részletek ghost gomb kontrasztos */
+.rp-btn{
+  border-radius: 14px !important;
+  background: var(--btn-ghost-bg) !important;
+  border: 1px solid var(--btn-ghost-border) !important;
+  color: var(--text) !important;
+  font-weight: 900 !important;
+  transition: transform 120ms ease, filter 120ms ease, border-color 200ms ease;
+}
+
+.rp-btn:hover{ filter: brightness(1.08); transform: translateY(-1px); }
+.rp-btn:active{ transform: translateY(0px) scale(.98); }
+
+/* Kosárba gomb */
+.rp-btn-primary{
+  border-radius: 14px !important;
+  border: 0 !important;
+  background: var(--primary) !important;
+  color: var(--primary-text) !important;
+  font-weight: 900 !important;
+  transition: transform 120ms ease, filter 120ms ease;
+}
+.rp-btn-primary:hover{ filter: brightness(1.06); transform: translateY(-1px); }
+.rp-btn-primary:active{ transform: translateY(0px) scale(.98); }
+
+.rp-empty{
+  margin-top: 16px;
+  opacity: .75;
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px dashed var(--border);
+  text-align: center;
+}

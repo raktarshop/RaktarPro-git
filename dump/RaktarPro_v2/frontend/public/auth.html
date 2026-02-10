@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="hu">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Raktár Pro – Belépés</title>
+
+  <!-- Bootstrap CSS (CDN) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Saját CSS -->
+  <link rel="stylesheet" href="./assets/css/common.css">
+  <link rel="stylesheet" href="./assets/css/auth.css">
+  <link rel="stylesheet" href="./assets/css/auth-light-fix.css">
+</head>
+
+<body class="rp-auth">
+  <main class="rp-auth-wrap">
+    <section class="rp-auth-card">
+
+      <!-- Topbar: Nyelv + Theme -->
+      <div class="rp-auth-topbar mb-3">
+        <div class="rp-lang-flags" aria-label="Language">
+          <button class="rp-lang-btn" type="button" data-lang="hu" aria-pressed="false" title="Magyar">🇭🇺</button>
+          <button class="rp-lang-btn" type="button" data-lang="en" aria-pressed="false" title="English">🇬🇧</button>
+          <button class="rp-lang-btn" type="button" data-lang="de" aria-pressed="false" title="Deutsch">🇩🇪</button>
+        </div>
+
+        <button id="authThemeToggle" class="btn rp-pill-btn rp-theme-btn" type="button" data-i18n-title="theme_title_dark" title="Sötét mód">🌙</button>
+      </div>
+
+      <div class="rp-brand text-center mb-3">
+        <div class="rp-logo">RP</div>
+        <div class="rp-title">Raktár Pro</div>
+      </div>
+
+      <h1 class="rp-h1 text-center mb-3" data-i18n="headline">Kezdjük!</h1>
+
+      <!-- Tabs -->
+      <div class="rp-tabs mb-3">
+        <button class="rp-tab-btn active" type="button" data-tab="login" data-i18n="tab_login">Bejelentkezés</button>
+        <button class="rp-tab-btn" type="button" data-tab="register" data-i18n="tab_register">Regisztráció</button>
+      </div>
+
+      <!-- LOGIN -->
+      <div class="rp-tab-panel show" id="tab-login">
+        <form id="loginForm" action="javascript:void(0)" novalidate>
+          <div class="mb-2">
+            <label class="form-label rp-label" data-i18n="email_label">E-mail cím</label>
+            <input class="form-control rp-input rp-input-sm" type="email" id="loginEmail" autocomplete="email" required data-i18n-ph="email_ph">
+          </div>
+
+          <div class="mb-1">
+            <label class="form-label rp-label" data-i18n="password_label">Jelszó</label>
+            <div class="input-group">
+              <input class="form-control rp-input rp-input-sm" type="password" id="loginPassword"
+                autocomplete="current-password" required data-i18n-ph="password_ph">
+              <button class="btn rp-eye rp-eye-sm" type="button" id="toggleLoginPw" data-i18n="show_btn">Mutat</button>
+            </div>
+          </div>
+
+          <div class="rp-error mt-2" id="loginError" style="display:none;"></div>
+
+          <button class="btn rp-primary w-100 mt-3 rp-primary-sm" type="submit" data-i18n="login_btn">Bejelentkezés</button>
+        </form>
+
+        <div class="text-center mt-2">
+          <a class="rp-guest" id="guestBtn" href="./products.html" data-i18n="continue_guest">Folytatás vendégként →</a>
+        </div>
+      </div>
+
+      <!-- REGISTER -->
+      <div class="rp-tab-panel" id="tab-register">
+        <form id="registerForm" action="javascript:void(0)" novalidate>
+          <div class="mb-2">
+            <label class="form-label rp-label" data-i18n="fullname_label">Teljes név</label>
+            <input class="form-control rp-input rp-input-sm" type="text" id="regName" autocomplete="name" required data-i18n-ph="fullname_ph">
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label rp-label" data-i18n="email_label">E-mail cím</label>
+            <input class="form-control rp-input rp-input-sm" type="email" id="regEmail" autocomplete="email" required data-i18n-ph="email_ph">
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label rp-label" data-i18n="company_label">Cégnév</label>
+            <input class="form-control rp-input rp-input-sm" type="text" id="regCompany" autocomplete="organization" data-i18n-ph="company_ph">
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label rp-label" data-i18n="password_label">Jelszó</label>
+            <div class="input-group">
+              <input class="form-control rp-input rp-input-sm" type="password" id="regPassword"
+                autocomplete="new-password" required minlength="6" data-i18n-ph="password_ph">
+              <button class="btn rp-eye rp-eye-sm" type="button" id="toggleRegPw" data-i18n="show_btn">Mutat</button>
+            </div>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label rp-label" data-i18n="password2_label">Jelszó mégegyszer</label>
+            <div class="input-group">
+              <input class="form-control rp-input rp-input-sm" type="password" id="regPassword2"
+                autocomplete="new-password" required minlength="6" data-i18n-ph="password2_ph">
+              <button class="btn rp-eye rp-eye-sm" type="button" id="toggleRegPw2" data-i18n="show_btn">Mutat</button>
+            </div>
+          </div>
+
+          <div class="rp-error mt-2" id="regError" style="display:none;"></div>
+          <div class="rp-success mt-2" id="regSuccess" style="display:none;"></div>
+
+          <button class="btn rp-primary w-100 mt-3 rp-primary-sm" type="submit" data-i18n="register_btn">Regisztráció</button>
+        </form>
+
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Bootstrap JS bundle (CDN) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Saját JS -->
+  <script defer src="./assets/js/api.js"></script>
+  <script defer src="./assets/js/lang.js"></script>
+  <script defer src="./assets/js/auth.js"></script>
+
+  <!-- Tab váltás -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tabBtns = document.querySelectorAll(".rp-tab-btn");
+      const tabLogin = document.getElementById("tab-login");
+      const tabRegister = document.getElementById("tab-register");
+
+      tabBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          tabBtns.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          const tab = btn.dataset.tab;
+          if (tab === "login") {
+            tabLogin.classList.add("show");
+            tabRegister.classList.remove("show");
+          } else {
+            tabRegister.classList.add("show");
+            tabLogin.classList.remove("show");
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
