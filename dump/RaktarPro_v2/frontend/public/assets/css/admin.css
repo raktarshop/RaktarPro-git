@@ -1,0 +1,193 @@
+/* Admin vizuál + dark/light konzisztencia */
+
+/* ✅ Admin oldal háttér – ez tünteti el a fehér body-t dark módban */
+body{
+  background:
+    radial-gradient(1100px 700px at 20% 0%, rgba(49,86,255,.12), transparent 60%),
+    radial-gradient(900px 600px at 90% 30%, rgba(11,197,255,.08), transparent 55%),
+    var(--bg);
+  color: var(--text);
+}
+
+
+.rp-admin-icon{
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,.06);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  font-size: 22px;
+}
+
+.rp-admin-title{
+  font-weight: 900;
+  letter-spacing: .2px;
+}
+
+.rp-admin-topbtn{
+  border-radius: 14px !important;
+  border: 1px solid var(--border) !important;
+  background: rgba(255,255,255,.06) !important;
+  color: var(--text) !important;
+  font-weight: 800 !important;
+}
+
+.rp-admin-pill{
+  border-radius: 999px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+  font-weight: 800;
+}
+
+/* Kártyák */
+.rp-admin-card{
+  border-radius: 22px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+/* Inputok */
+.rp-admin-input{
+  border-radius: 14px !important;
+  border: 1px solid var(--border) !important;
+  background: var(--input) !important;
+  color: var(--text) !important;
+}
+
+.rp-admin-input::placeholder{
+  color: var(--placeholder) !important;
+  opacity: 1;
+}
+
+/* Gomb */
+.rp-admin-btn{
+  border-radius: 14px !important;
+  border: 1px solid var(--border) !important;
+  background: rgba(255,255,255,.06) !important;
+  color: var(--text) !important;
+  font-weight: 900 !important;
+}
+
+/* ✅ Bootstrap dropdown-menu fehér hátterének kivégzése */
+.dropdown-menu{
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow) !important;
+}
+.dropdown-item{
+  color: var(--text) !important;
+}
+.dropdown-item:hover{
+  background: rgba(255,255,255,.06) !important;
+}
+
+/* ✅ Table: Bootstrap alapból fehéres – ezt felül kell írni */
+.table{
+  color: var(--text) !important;
+}
+
+/* ✅ Bootstrap 5 táblázat cella háttér alapból fehér lehet – ezt 100%-ra kiütjük */
+.table>:not(caption)>*>*{
+  background-color: transparent !important;
+}
+
+.table thead{
+  background: rgba(255,255,255,.04) !important;
+}
+.table thead th{
+  color: var(--muted) !important;
+  border-color: var(--border) !important;
+}
+.table td, .table th{
+  border-color: var(--border) !important;
+}
+.table tbody tr{
+  background: transparent !important;
+}
+
+/* Finom sor hover */
+.table tbody tr:hover{
+  background: rgba(255,255,255,.04) !important;
+}
+
+/* a te class-od is marad */
+.rp-admin-table{
+  color: var(--text);
+}
+.rp-admin-table td, .rp-admin-table th{
+  border-color: var(--border) !important;
+}
+
+/* ✅ Modal (ha adminban van “kisablak”) */
+.modal-content,
+.modal-header,
+.modal-body,
+.modal-footer{
+  background: var(--card) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+/* Close gomb látható legyen darkban */
+.btn-close{ filter: invert(1) grayscale(1); }
+[data-theme="light"] .btn-close{ filter: none; }
+
+.rp-mini{
+  width: 110px;
+  border-radius: 12px !important;
+  border: 1px solid var(--border) !important;
+  background: var(--input) !important;
+  color: var(--text) !important;
+}
+
+.rp-mini::placeholder{ color: var(--placeholder) !important; opacity: 1; }
+
+/* Kisebb akciógombok a táblában */
+.rp-act{
+  border-radius: 12px !important;
+  border: 1px solid var(--border) !important;
+  background: rgba(255,255,255,.06) !important;
+  color: var(--text) !important;
+  font-weight: 800 !important;
+}
+/* ✅ FIX: admin tábla szöveg dark módban is legyen világos */
+.rp-admin-table,
+.rp-admin-table * {
+  color: var(--text) !important;
+}
+
+/* fejléc picit halványabb, de látszódjon */
+.rp-admin-table thead th{
+  color: var(--muted) !important;
+}
+
+/* soron belüli linkek se legyenek kék/fekete */
+.rp-admin-table a{
+  color: var(--text) !important;
+}
+
+/* input szöveg + placeholder */
+.rp-admin-table input,
+.rp-admin-table .form-control{
+  color: var(--text) !important;
+  background: var(--input) !important;
+  border-color: var(--border) !important;
+}
+
+.rp-admin-table input::placeholder,
+.rp-admin-table .form-control::placeholder{
+  color: var(--placeholder) !important;
+  opacity: 1;
+}
+
+/* ha valahol a Bootstrap ráteszi a td-re a color-t, ez visszahúzza */
+.table td,
+.table th{
+  color: var(--text) !important;
+}

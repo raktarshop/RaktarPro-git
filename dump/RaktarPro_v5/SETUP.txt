@@ -1,0 +1,49 @@
+RaktarPro setup (MAMP)
+
+1) Copy project
+- Put the whole folder into:
+  C:\MAMP\htdocs\RaktarPro_n\
+
+2) Start MAMP
+- Apache port: 8888
+- MySQL port: 8899
+
+3) Import DB
+- Open:
+  http://localhost:8888/phpMyAdmin/
+- Use database name:
+  webaruhaz1
+- Import file:
+  database/webaruhaz1.sql
+
+4) Configure backend DB
+- File:
+  backend/api_new/config/Database.php
+- Defaults inside are:
+  host 127.0.0.1
+  port 8899
+  user root
+  pass root
+  db webaruhaz1
+- If your MySQL password is empty, set password to "".
+
+5) Test backend
+- Open:
+  http://localhost:8888/RaktarPro_n/backend/api_new/ping
+- Expected:
+  {"ok":true}
+
+6) Open login page
+- Open:
+  http://localhost:8888/RaktarPro_n/frontend/public/auth.html
+- Register, then login.
+
+If you get DB_CONNECTION
+- Check MAMP MySQL port, and put the same number into Database.php
+- Check MySQL password root or empty
+
+If you get 404 HTML page in Network
+- Check that backend/api_new/.htaccess has no RewriteBase line
+
+If inputs clear after you click outside
+- The form should not reload. This version blocks reload with form action javascript:void(0).

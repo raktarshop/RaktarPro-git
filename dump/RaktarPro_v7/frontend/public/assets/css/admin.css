@@ -1,0 +1,142 @@
+/* =========================
+   ADMIN – Dark/Light styling
+   ========================= */
+
+body{
+  background:
+    radial-gradient(1100px 700px at 20% 0%, rgba(49,86,255,.12), transparent 60%),
+    radial-gradient(900px 600px at 90% 30%, rgba(11,197,255,.08), transparent 55%),
+    var(--bg);
+  color: var(--text);
+}
+
+/* Panel/kártya */
+.rp-admin-card{
+  border-radius: 22px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+/* Table wrapper */
+.rp-admin-table-wrap,
+.rp-admin-card .table-responsive{
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,.10);
+  overflow: hidden;
+}
+
+/* -------------------------
+   ✅ TÁBLÁK – csak a táblát/cellákat színezzük
+   (NE nyúljunk a gombokhoz/linkekhez global *)
+   ------------------------- */
+
+html[data-theme="dark"] .rp-admin-card table,
+html[data-theme="dark"] .rp-admin-card table.table,
+html[data-theme="dark"] .rp-admin-card .rp-admin-table{
+  background: transparent !important;
+  color: var(--text) !important;
+
+  --bs-table-bg: transparent;
+  --bs-table-accent-bg: transparent;
+  --bs-table-color: var(--text);
+  --bs-table-striped-color: var(--text);
+  --bs-table-hover-color: var(--text);
+}
+
+html[data-theme="dark"] .rp-admin-card table th,
+html[data-theme="dark"] .rp-admin-card table td{
+  background: transparent !important;
+  color: var(--text) !important;
+  border-color: rgba(255,255,255,.10) !important;
+}
+
+html[data-theme="dark"] .rp-admin-card table thead th{
+  color: var(--text-dim) !important;
+  font-weight: 800;
+  border-bottom-color: rgba(255,255,255,.14) !important;
+}
+
+html[data-theme="dark"] .rp-admin-card .table-striped>tbody>tr:nth-of-type(odd)>*{
+  background: rgba(255,255,255,.03) !important;
+}
+html[data-theme="dark"] .rp-admin-card .table-hover>tbody>tr:hover>*{
+  background: rgba(255,255,255,.05) !important;
+}
+
+/* -------------------------
+   ✅ INPUTOK / SELECTEK (adminban)
+   ------------------------- */
+
+html[data-theme="dark"] .rp-admin-card .form-control,
+html[data-theme="dark"] .rp-admin-card input,
+html[data-theme="dark"] .rp-admin-card textarea{
+  background: var(--input) !important;
+  color: #ffffff !important;
+  border-color: var(--border) !important;
+  border-radius: 10px;
+}
+
+html[data-theme="dark"] .rp-admin-card .form-control::placeholder,
+html[data-theme="dark"] .rp-admin-card input::placeholder,
+html[data-theme="dark"] .rp-admin-card textarea::placeholder{
+  color: var(--placeholder) !important;
+  opacity: 1;
+}
+
+html[data-theme="dark"] .rp-admin-card .form-select,
+html[data-theme="dark"] .rp-admin-card select{
+  background: var(--input) !important;
+  color: #ffffff !important;
+  border-color: var(--border) !important;
+  border-radius: 10px;
+}
+
+/* option háttér (különben fehér popup jön) */
+html[data-theme="dark"] .rp-admin-card select option{
+  background: #071426 !important;
+  color: #ffffff !important;
+}
+
+/* -------------------------
+   ✅ "BUBORÉK" gombok / pill-ek vissza (Support + admin nav)
+   ------------------------- */
+
+/* ezek a navbar / tab jellegű buborék gombok */
+html[data-theme="dark"] .rp-pill-btn,
+html[data-theme="dark"] .rp-admin-btn,
+html[data-theme="dark"] .btn.rp-admin-btn,
+html[data-theme="dark"] .btn.btn-outline-light{
+  background: rgba(255,255,255,.08) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,.18) !important;
+  border-radius: 999px !important;
+}
+
+html[data-theme="dark"] .rp-pill-btn:hover,
+html[data-theme="dark"] .rp-admin-btn:hover,
+html[data-theme="dark"] .btn.btn-outline-light:hover{
+  background: rgba(255,255,255,.12) !important;
+}
+
+/* Piros törlés gomb maradjon piros, de olvasható */
+html[data-theme="dark"] .rp-admin-btn-danger,
+html[data-theme="dark"] .btn.btn-danger{
+  color: #ffffff !important;
+}
+
+/* Linkek színe adminban */
+html[data-theme="dark"] a,
+html[data-theme="dark"] .dropdown-item{
+  color: #ffffff;
+}
+html[data-theme="dark"] .dropdown-item:hover{
+  background: rgba(255,255,255,.08);
+}
+
+/* Biztonsági: ha valahol sima .table td/th override-olva volt */
+.table td,
+.table th{
+  color: inherit;
+}
