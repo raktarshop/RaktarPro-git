@@ -1,0 +1,32 @@
+/* Unify header button sizing across all pages */
+.rp-nav .rp-pill-btn{
+  padding: 6px 10px !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  line-height: 1 !important;
+}
+
+.rp-nav .rp-avatar{
+  width: 28px !important;
+  height: 28px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  display: inline-grid !important;
+  place-items: center !important;
+}
+
+.rp-nav .rp-icon,
+.rp-nav i.bi{
+  font-size: 16px !important;
+  line-height: 1 !important;
+}
+
+.rp-nav .dropdown-toggle{
+  white-space: nowrap !important;
+}
+
+.rp-nav .dropdown-toggle::after{
+  margin-left: 6px !important;
+}
