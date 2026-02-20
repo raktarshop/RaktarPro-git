@@ -1,0 +1,116 @@
+function setMsg(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text || "";
+}
+
+function safeJson(s) {
+  try { return JSON.parse(s); } catch { return null; }
+}
+
+function loadUser() {
+  return safeJson(localStorage.getItem("rp_user") || "null");
+}
+
+function saveUser(u) {
+  localStorage.setItem("rp_user", JSON.stringify(u));
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const user = loadUser();
+  if (!user?.email) {
+    window.location.href = "./login.html";
+    return;
+  }
+
+  const userLine = document.getElementById("accUserLine");
+  if (userLine) userLine.textContent = user.email;
+
+  const nameEl = document.getElementById("accName");
+  const emailEl = document.getElementById("accEmail");
+  const addrEl = document.getElementById("accAddress");
+
+  if (nameEl) nameEl.value = user.full_name || user.name || "";
+  if (emailEl) emailEl.value = user.email || "";
+
+  try {
+    const res = await window.api.get("/account");
+    const data = res?.data?.data ?? res?.data ?? res;
+    if (data?.address && addrEl) addrEl.value = data.address;
+    if (data?.full_name && nameEl) nameEl.value = data.full_name;
+  } catch {
+  }
+
+  document.getElementById("accSaveProfile")?.addEventListener("click", async () => {
+    const full_name = (nameEl?.value || "").trim();
+    if (!full_name) {
+      setMsg("accMsgProfile", "Add meg a nevet.");
+      return;
+    }
+
+    setMsg("accMsgProfile", "Mentés...");
+    try {
+      const res = await window.api.put("/account/profile", { full_name });
+      const data = res?.data?.data ?? res?.data ?? res;
+
+      const u = loadUser() || {};
+      u.full_name = data?.full_name ?? full_name;
+      u.name = u.full_name;
+      saveUser(u);
+
+      setMsg("accMsgProfile", "Mentve.");
+    } catch (e) {
+      setMsg("accMsgProfile", `Hiba: ${e?.message || String(e)}`);
+    }
+  });
+
+  document.getElementById("accSaveAddress")?.addEventListener("click", async () => {
+    const address = (addrEl?.value || "").trim();
+    if (!address) {
+      setMsg("accMsgAddress", "Add meg a címet.");
+      return;
+    }
+
+    setMsg("accMsgAddress", "Mentés...");
+    try {
+      await window.api.put("/account/address", { address });
+      setMsg("accMsgAddress", "Mentve.");
+    } catch (e) {
+      setMsg("accMsgAddress", `Hiba: ${e?.message || String(e)}`);
+    }
+  });
+
+  document.getElementById("accSavePw")?.addEventListener("click", async () => {
+    const old_password = (document.getElementById("accPwOld")?.value || "").trim();
+    const new_password = (document.getElementById("accPwNew")?.value || "").trim();
+
+    if (new_password.length < 6) {
+      setMsg("accMsgPw", "Az új jelszó rövid.");
+      return;
+    }
+
+    setMsg("accMsgPw", "Mentés...");
+    try {
+      await window.api.put("/account/password", { old_password, new_password });
+      setMsg("accMsgPw", "Kész.");
+      const a = document.getElementById("accPwOld");
+      const b = document.getElementById("accPwNew");
+      if (a) a.value = "";
+      if (b) b.value = "";
+    } catch (e) {
+      setMsg("accMsgPw", `Hiba: ${e?.message || String(e)}`);
+    }
+  });
+
+  document.getElementById("accLogoutAll")?.addEventListener("click", async () => {
+    setMsg("accMsgSec", "Kiléptetés...");
+    try {
+      await window.api.post("/logout", {});
+    } catch {
+    }
+
+    localStorage.removeItem("rp_token");
+    localStorage.removeItem("rp_user");
+    setMsg("accMsgSec", "Kijelentkezve.");
+    setTimeout(() => window.location.href = "./login.html", 400);
+  });
+});
