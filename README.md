@@ -218,8 +218,4 @@ A tokenek `localStorage`-ban tárolódnak. Védett végpontokhoz az `Authorizati
 - Az online fizetés (bankkártya) jelenleg nem aktív, csak utánvét érhető el
 - A `dump/` mappa a fejlesztés korábbi verzióit (v2–v13) tartalmazza, archiválási céllal
 
----
 
-## 📄 Licenc
-
-Iskolai projekt – belső használatra.
