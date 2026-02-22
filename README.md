@@ -22,8 +22,4 @@ egyszerűen kereshetnek és rendelhetnek termékeket egy modern online felülete
 - `backend/` → szerveroldali kód (API, logika)
 - `adatbazis/` → adatbázis modellek, seed fájlok
 - `docs/` → dokumentáció, vizsgaremek anyagok
-
-## 🚀 Indítás (tervezett)
-1. `cd backend`
-2. `npm install`
-3. `npm start`
+- 'dump/` → előző verziók.
