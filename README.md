@@ -21,5 +21,5 @@ egyszerűen kereshetnek és rendelhetnek termékeket egy modern online felülete
 - `frontend/` → kliensoldali kód (UI, design, interakciók)
 - `backend/` → szerveroldali kód (API, logika)
 - `adatbazis/` → adatbázis modellek, seed fájlok
-- `docs/` → dokumentáció, vizsgaremek anyagok
-- 'dump/` → előző verziók.
+- `docs/` → tesztek, prezentáció
+- `dump/` → előző verziók
