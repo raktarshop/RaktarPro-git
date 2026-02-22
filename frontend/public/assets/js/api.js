@@ -34,12 +34,19 @@
 
     if (!res.ok) {
       // Backend: { success:false, error:{ message:"...", code:"..." } }
+      // Prefer the inner message field first, so we don't print objects like {"message":"..."}
       let msg =
-        data?.message ||
-        data?.error ||
-        data?.error?.message ||
-        data?.raw ||
+        data?.message ??
+        data?.error?.message ??
+        data?.error ??
+        data?.raw ??
         `HTTP ${res.status} hiba`;
+
+      // If we still got an object, try to unwrap common shapes
+      if (msg && typeof msg === "object") {
+        const inner = msg?.message || msg?.error || msg?.details;
+        if (typeof inner === "string") msg = inner;
+      }
 
       // If backend returned an Apache/HTML error page, show a clean message
       if (typeof msg === "string" && (msg.includes("<!DOCTYPE") || msg.includes("<html"))) {

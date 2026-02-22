@@ -92,8 +92,8 @@ function renderTable() {
       </td>
       <td>
         <div class="d-flex gap-2">
-          <button class="btn btn-sm rp-admin-btn" data-act="save" data-id="${escapeHtml(c.id)}">${escapeHtml(t("admin_orders_save","Mentés"))}</button>
-          <button class="btn btn-sm btn-outline-danger" data-act="del" data-id="${escapeHtml(c.id)}">${escapeHtml(t("admin_categories_delete","Törlés"))}</button>
+          <button class="btn btn-sm rp-admin-btn rp-icon-btn" data-act="save" data-id="${escapeHtml(c.id)}" title="${escapeHtml(t('admin_orders_save','Mentés'))}" style="transition:all 200ms ease;"><i class="bi bi-check2"></i></button>
+          <button class="btn btn-sm rp-admin-btn-danger rp-icon-btn" data-act="del" data-id="${escapeHtml(c.id)}" title="${escapeHtml(t('admin_categories_delete','Törlés'))}" style="transition:all 200ms ease;"><i class="bi bi-x-lg"></i></button>
         </div>
       </td>
     `;
@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const pill = document.getElementById("adminNamePill");
   if (pill) {
     const n = user?.full_name || user?.name || user?.email || "Admin";
-    pill.textContent = `Admin: ${n}`;
+    pill.innerHTML = `<span class="rp-admin-pill"><i class="bi bi-person-fill me-1"></i>Bejelentkezve: <strong>${n}</strong></span>`;
   }
 
   document.getElementById("catReload")?.addEventListener("click", load);

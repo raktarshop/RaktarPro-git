@@ -1,197 +1,192 @@
-/* Admin vizuál + dark/light konzisztencia */
+/* admin.css – glassmorphism admin oldalak stílusa */
 
-/* ✅ Admin oldal háttér – ez tünteti el a fehér body-t dark módban */
-body{
+body {
   background:
-    radial-gradient(1100px 700px at 20% 0%, rgba(49,86,255,.12), transparent 60%),
-    radial-gradient(900px 600px at 90% 30%, rgba(11,197,255,.08), transparent 55%),
-    var(--bg);
+    radial-gradient(ellipse 1100px 700px at 15% 0%, rgba(59,92,255,0.14), transparent 60%),
+    radial-gradient(ellipse 900px 600px at 88% 20%, rgba(11,197,255,0.09), transparent 55%),
+    radial-gradient(ellipse 600px 500px at 50% 90%, rgba(120,40,255,0.07), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
   color: var(--text);
 }
 
-/* Kártyák */
-.rp-admin-card{
+/* === GLASS CARDS === */
+.rp-admin-card {
   border-radius: 22px;
   background: var(--card);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(18px) saturate(1.3);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
 }
 
-/* Inputok */
-.rp-admin-input{
+/* === INPUTS === */
+.rp-admin-input, .form-control, .form-select {
   border-radius: 14px !important;
-  border: 1px solid var(--border) !important;
+  border: 1px solid var(--input-border) !important;
   background: var(--input) !important;
   color: var(--text) !important;
+  backdrop-filter: blur(8px);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.rp-admin-input:focus, .form-control:focus, .form-select:focus {
+  border-color: rgba(59,92,255,.45) !important;
+  box-shadow: 0 0 0 3px rgba(59,92,255,.18) !important;
+  outline: none !important;
+}
+.rp-admin-input::placeholder, .form-control::placeholder { color: var(--placeholder) !important; opacity: 1; }
+.form-select option { background: #0b1628; color: #e8f1ff; }
+[data-theme="light"] .form-select option { background: #f8faff; color: #0b1628; }
+[data-theme="light"] .form-control, [data-theme="light"] .form-select {
+  background: rgba(255,255,255,.85) !important;
 }
 
-.rp-admin-input::placeholder{
-  color: var(--placeholder) !important;
-  opacity: 1;
-}
-
-/* Gomb */
-.rp-admin-btn{
+/* === BUTTONS === */
+.rp-admin-btn {
   border-radius: 14px !important;
-  border: 1px solid var(--border) !important;
-  background: rgba(255,255,255,.06) !important;
+  border: 1px solid var(--glass-border) !important;
+  background: var(--glass) !important;
   color: var(--text) !important;
-  font-weight: 900 !important;
+  font-weight: 700 !important;
+  backdrop-filter: blur(10px);
+  transition: all 140ms ease;
 }
-
-/* ✅ Bootstrap dropdown-menu fehér hátterének kivégzése */
-.dropdown-menu{
-  background: var(--card) !important;
-  border: 1px solid var(--border) !important;
-  box-shadow: var(--shadow) !important;
+.rp-admin-btn:hover {
+  background: rgba(255,255,255,.10) !important;
+  border-color: rgba(255,255,255,.18) !important;
+  transform: translateY(-1px);
 }
-.dropdown-item{
-  color: var(--text) !important;
-}
-.dropdown-item:hover{
-  background: rgba(255,255,255,.06) !important;
-}
-
-/* ✅ Table: Bootstrap alapból fehéres – ezt felül kell írni */
-.table{
+.rp-admin-btn:active { transform: translateY(0) scale(.98); }
+.rp-admin-btn.active {
+  background: rgba(59,92,255,.22) !important;
+  border-color: rgba(59,92,255,.40) !important;
   color: var(--text) !important;
 }
-.table thead th{
-  color: var(--muted) !important;
-  border-color: var(--border) !important;
+[data-theme="light"] .rp-admin-btn { background: rgba(255,255,255,.60) !important; }
+[data-theme="light"] .rp-admin-btn:hover { background: rgba(255,255,255,.85) !important; }
+
+/* === TABLES === */
+.table { color: var(--text) !important; background: transparent !important; --bs-table-bg: transparent; --bs-table-color: var(--text); }
+.table thead th { color: var(--text-dim) !important; border-color: var(--border) !important; font-weight: 700; font-size: 12px; letter-spacing: .4px; text-transform: uppercase; }
+.table td, .table th { border-color: var(--border) !important; color: var(--text) !important; }
+.table tbody tr { background: transparent !important; transition: background 120ms ease; }
+.table tbody tr:hover { background: rgba(255,255,255,.03) !important; }
+[data-theme="light"] .table tbody tr:hover { background: rgba(11,26,47,.03) !important; }
+.rp-admin-table, .rp-admin-table * { color: var(--text) !important; }
+.rp-admin-table thead th { color: var(--text-dim) !important; }
+.rp-admin-table .form-select, .rp-admin-table .form-control { color: var(--text) !important; background: var(--input) !important; border-color: var(--input-border) !important; }
+.table-responsive { border-radius: 14px; overflow: hidden; }
+
+/* === MODAL === */
+.modal-content { background: var(--card) !important; color: var(--text) !important; border: 1px solid var(--glass-border) !important; border-radius: 22px !important; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); }
+.modal-header, .modal-footer { border-color: var(--border) !important; }
+.btn-close { filter: invert(1) grayscale(1); opacity: .7; }
+[data-theme="light"] .btn-close { filter: none; opacity: .7; }
+
+/* === ADMIN NAME PILL === */
+.rp-admin-pill {
+  border-radius: 999px; padding: 8px 16px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  color: var(--text); font-weight: 700; font-size: 13px;
+  backdrop-filter: blur(10px);
+  display: inline-flex; align-items: center; gap: 8px;
 }
 
-.rp-admin-table select,
-.rp-admin-table .form-select{
-  color: var(--text) !important;
-  background: var(--input) !important;
-  border-color: var(--border) !important;
+/* === MINI INPUTS === */
+.rp-mini { width: 110px; }
+
+/* === PAGE HEADER === */
+.rp-admin-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.rp-admin-title {
+  font-weight: 900;
+  font-size: 1.6rem;
+  margin: 0;
+  background: linear-gradient(135deg, var(--text) 60%, rgba(59,92,255,.8));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+[data-theme="light"] .rp-admin-title {
+  background: linear-gradient(135deg, #0b1628 60%, #2847e8);
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
-.rp-admin-table select option{
-  background: #071426; /* stabil dark háttér az option-öknek */
-  color: var(--text);
+/* === ICON-ONLY ACTION BUTTONS === */
+.rp-icon-btn {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px !important;
+  font-size: 16px !important;
+}
+.rp-icon-btn:hover { transform: translateY(-2px) scale(1.08) !important; }
+.rp-icon-btn:active { transform: scale(.94) !important; }
+
+/* Danger icon button */
+.rp-admin-btn-danger {
+  border-radius: 14px !important;
+  border: 1px solid rgba(239,68,68,.35) !important;
+  background: rgba(239,68,68,.12) !important;
+  color: #fca5a5 !important;
+  backdrop-filter: blur(10px);
+  transition: all 140ms ease;
+}
+.rp-admin-btn-danger:hover {
+  background: rgba(239,68,68,.22) !important;
+  border-color: rgba(239,68,68,.55) !important;
+  color: #fff !important;
+  transform: translateY(-1px);
+}
+[data-theme="light"] .rp-admin-btn-danger { color: #b91c1c !important; }
+
+/* === NOTIFICATION BUBBLE === */
+.rp-notif-bubble {
+  font-size: 10px; font-weight: 800;
+  border-radius: 999px; padding: 1px 7px;
+  background: linear-gradient(135deg, #ff4b4b, #ff2222);
+  color: #fff; border: 2px solid var(--bg);
+  animation: rp-pulse 2s infinite;
 }
 
-/* ✅ FIX: admin oldalak dropdownja (pl. Kategóriák -> Szülő kategória) dark módban se legyen fehér */
-html[data-theme="dark"] select.form-select,
-html[data-theme="dark"] .form-select{
-  background: var(--input) !important;
-  color: var(--text) !important;
-  border-color: var(--border) !important;
+/* === ANIMATIONS === */
+@keyframes rp-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes rp-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.12); }
 }
 
-html[data-theme="dark"] select.form-select option,
-html[data-theme="dark"] .form-select option{
-  background: #071426 !important;
-  color: var(--text) !important;
+/* === SAVE FEEDBACK === */
+#adminMsg, #ordersMsg, #supportMsg {
+  transition: opacity 0.3s ease;
+  min-height: 1.2em;
 }
 
-.table td, .table th{
-  border-color: var(--border) !important;
-}
-.table tbody tr{
-  background: transparent !important;
-}
+/* Rows animate in staggered */
+.rp-admin-table tbody tr:nth-child(1)  { animation-delay: 0ms; }
+.rp-admin-table tbody tr:nth-child(2)  { animation-delay: 30ms; }
+.rp-admin-table tbody tr:nth-child(3)  { animation-delay: 60ms; }
+.rp-admin-table tbody tr:nth-child(4)  { animation-delay: 90ms; }
+.rp-admin-table tbody tr:nth-child(5)  { animation-delay: 120ms; }
+.rp-admin-table tbody tr:nth-child(6)  { animation-delay: 150ms; }
+.rp-admin-table tbody tr:nth-child(7)  { animation-delay: 180ms; }
+.rp-admin-table tbody tr:nth-child(8)  { animation-delay: 210ms; }
 
-/* a te class-od is marad */
-.rp-admin-table{
-  color: var(--text);
-}
-.rp-admin-table td, .rp-admin-table th{
-  border-color: var(--border) !important;
-}
-
-/* ✅ Modal (ha adminban van “kisablak”) */
-.modal-content,
-.modal-header,
-.modal-body,
-.modal-footer{
-  background: var(--card) !important;
-  color: var(--text) !important;
-  border-color: var(--border) !important;
-}
-
-/* Close gomb látható legyen darkban */
-.btn-close{ filter: invert(1) grayscale(1); }
-[data-theme="light"] .btn-close{ filter: none; }
-
-.rp-mini{
-  width: 110px;
-}
-
-/* Admin name pill */
-.rp-admin-pill{
-  border-radius: 999px;
-  padding: 10px 14px;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,.06);
-  color: var(--text);
-  font-weight: 800;
-}
-
-/* ✅ FIX: admin tábla szöveg dark módban is legyen világos */
-.rp-admin-table,
-.rp-admin-table * {
-  color: var(--text) !important;
-}
-
-.rp-admin-table thead th{
-  color: var(--muted) !important;
-}
-
-.rp-admin-table a{
-  color: var(--text) !important;
-}
-
-.rp-admin-table input,
-.rp-admin-table .form-control{
-  color: var(--text) !important;
-  background: var(--input) !important;
-  border-color: var(--border) !important;
-}
-
-.rp-admin-table input::placeholder,
-.rp-admin-table .form-control::placeholder{
-  color: var(--placeholder) !important;
-  opacity: 1;
-}
-
-.table td,
-.table th{
-  color: var(--text) !important;
-}
-
-
-/* ✅ FIX: Support/Admin táblák ne legyenek fehérek dark módban */
-html[data-theme="dark"] .rp-admin-card .table-responsive{
-  background: rgba(10, 24, 45, .55);
-  border-radius: 18px;
-  padding: 10px;
-}
-
-html[data-theme="light"] .rp-admin-card .table-responsive{
-  background: transparent;
-  padding: 0;
-}
-
-.rp-admin-table{
-  background: transparent !important;
-  --bs-table-bg: transparent;
-  --bs-table-striped-bg: rgba(255,255,255,.03);
-  --bs-table-hover-bg: rgba(255,255,255,.04);
-  --bs-table-color: var(--text);
-}
-
-.table{
-  background: transparent !important;
-}
-
-.rp-admin-table td,
-.rp-admin-table th{
-  color: var(--text) !important;
-}
-
-.rp-admin-table thead th{
-  color: var(--text-dim) !important;
+/* Admin nav active */
+.rp-admin-btn.active {
+  background: rgba(59,92,255,.25) !important;
+  border-color: rgba(59,92,255,.50) !important;
+  box-shadow: 0 0 0 2px rgba(59,92,255,.15);
 }
