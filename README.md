@@ -208,7 +208,7 @@ A tokenek `localStorage`-ban tárolódnak. Védett végpontokhoz az `Authorizati
 - 👤 **Felhasználói fiók** – szállítási cím, jelszócsere, kijelentkezés minden eszközről
 - 📦 **Admin panel** – készlet/ár szerkesztés, rendeléskezelés, kategóriakezelés
 - 🎫 **Support rendszer** – bejelentkezési segítség, admin ticketkezelés
-- 🌍 **Többnyelvűség** – Magyar / English / Deutsch (valós idejű váltás, újratöltés nélkül)
+- 🌍 **Többnyelvűség** – Magyar / English / Deutsch 
 - 🌙 **Témaváltás** – sötét / világos mód
 
 ---
