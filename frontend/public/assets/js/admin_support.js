@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const pill = document.getElementById("adminNamePill");
   if (pill) {
     const n = user?.full_name || user?.name || user?.email || "Admin";
-    pill.innerHTML = `<span class="rp-admin-pill"><i class="bi bi-person-fill me-1"></i>${esc(t('admin_logged_in_as'))} <strong>${esc(n)}</strong></span>`;
+    pill.innerHTML = `<span class="rp-admin-pill"><i class="bi bi-person-fill me-1"></i>Bejelentkezve: <strong>${esc(n)}</strong></span>`;
   }
 
   // Re-render on lang change

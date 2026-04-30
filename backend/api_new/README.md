@@ -52,7 +52,7 @@ sudo systemctl restart apache2
 Ellenőrizd a `config/Database.php` beállításokat:
 ```php
 private string $host = 'localhost';
-private string $db = 'webaruhaz1';  // <-- NÉV ELLENŐRZÉS!
+// DB_NAME=<adatbázis neve>  ← csak a .env-t szerkeszd!
 private int $port = 8889;
 ```
 

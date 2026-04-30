@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 // Error reporting
 error_reporting(E_ALL);
-ini_set('display_errors', 0); // Production: 0, Dev: 1
+ini_set('display_errors', 1); // Production: 0, Dev: 1
 
 // Timezone
 date_default_timezone_set('Europe/Budapest');
@@ -374,5 +374,6 @@ try {
     Response::error('Endpoint nem található', 404, 'NOT_FOUND');
     
 } catch (Throwable $e) {
-    Response::serverError('Váratlan hiba: ' . $e->getMessage());
+    $detail = $e->getMessage() . ' [' . basename($e->getFile()) . ':' . $e->getLine() . ']';
+    Response::serverError('Váratlan hiba: ' . $detail);
 }

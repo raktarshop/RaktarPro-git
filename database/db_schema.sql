@@ -1,52 +1,40 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Gép: localhost:8889
--- Létrehozás ideje: 2026. Jan 29. 09:42
--- Kiszolgáló verziója: 8.0.40
--- PHP verzió: 8.3.14
+-- ============================================================
+-- RaktarPro – Adatbázis séma
+-- ============================================================
+-- IMPORTÁLÁS: phpMyAdminban hozz létre egy ÜRES adatbázist
+-- (bármilyen névvel), válaszd ki, majd importáld ezt a fájlt.
+-- A séma automatikusan alkalmazkodik a kiválasztott DB névhez.
+-- ============================================================
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Adatbázis: `webaruhaz1`
---
-CREATE DATABASE IF NOT EXISTS `webaruhaz1` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `webaruhaz1`;
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
 DELIMITER $$
 --
 -- Eljárások
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `app_orders_delete` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `app_orders_delete` (IN `p_id` INT)   BEGIN
     DELETE FROM `app_orders` WHERE `id` = p_id;
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `app_orders_get` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `app_orders_get` (IN `p_id` INT)   BEGIN
     SELECT * FROM `app_orders` WHERE `id` = p_id LIMIT 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `app_orders_get_all` ()   BEGIN
+CREATE PROCEDURE `app_orders_get_all` ()   BEGIN
     SELECT * FROM `app_orders`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `app_orders_insert` (IN `p_user_id` INT, IN `p_status` ENUM('uj','fizetve','feldolgozas','kiszallitva','torolve'), IN `p_total_amount` DECIMAL(12,2))   BEGIN
+CREATE PROCEDURE `app_orders_insert` (IN `p_user_id` INT, IN `p_status` ENUM('uj','fizetve','feldolgozas','kiszallitva','torolve'), IN `p_total_amount` DECIMAL(12,2))   BEGIN
     INSERT INTO `app_orders` (`user_id`, `status`, `total_amount`, `created_at`)
     VALUES (p_user_id, p_status, p_total_amount, NOW());
     SELECT LAST_INSERT_ID() AS inserted_id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `app_orders_update` (IN `p_id` INT, IN `p_user_id` INT, IN `p_status` ENUM('uj','fizetve','feldolgozas','kiszallitva','torolve'), IN `p_total_amount` DECIMAL(12,2))   BEGIN
+CREATE PROCEDURE `app_orders_update` (IN `p_id` INT, IN `p_user_id` INT, IN `p_status` ENUM('uj','fizetve','feldolgozas','kiszallitva','torolve'), IN `p_total_amount` DECIMAL(12,2))   BEGIN
     UPDATE `app_orders`
     SET `user_id` = p_user_id,
         `status` = p_status,
@@ -55,26 +43,26 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `app_orders_update` (IN `p_id` INT, 
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `app_order_items_delete` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `app_order_items_delete` (IN `p_id` INT)   BEGIN
     DELETE FROM `app_order_items` WHERE `id` = p_id;
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `app_order_items_get` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `app_order_items_get` (IN `p_id` INT)   BEGIN
     SELECT * FROM `app_order_items` WHERE `id` = p_id LIMIT 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `app_order_items_get_all` ()   BEGIN
+CREATE PROCEDURE `app_order_items_get_all` ()   BEGIN
     SELECT * FROM `app_order_items`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `app_order_items_insert` (IN `p_order_id` INT, IN `p_product_id` INT, IN `p_quantity` INT, IN `p_unit_price` INT, IN `p_total_amount` INT)   BEGIN
+CREATE PROCEDURE `app_order_items_insert` (IN `p_order_id` INT, IN `p_product_id` INT, IN `p_quantity` INT, IN `p_unit_price` INT, IN `p_total_amount` INT)   BEGIN
     INSERT INTO `app_order_items` (`order_id`, `product_id`, `quantity`, `unit_price`, `total_amount`)
     VALUES (p_order_id, p_product_id, p_quantity, p_unit_price, p_total_amount);
     SELECT LAST_INSERT_ID() AS inserted_id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `app_order_items_update` (IN `p_id` INT, IN `p_order_id` INT, IN `p_product_id` INT, IN `p_quantity` INT, IN `p_unit_price` INT, IN `p_total_amount` INT)   BEGIN
+CREATE PROCEDURE `app_order_items_update` (IN `p_id` INT, IN `p_order_id` INT, IN `p_product_id` INT, IN `p_quantity` INT, IN `p_unit_price` INT, IN `p_total_amount` INT)   BEGIN
     UPDATE `app_order_items`
     SET `order_id` = p_order_id,
         `product_id` = p_product_id,
@@ -85,46 +73,46 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `app_order_items_update` (IN `p_id` 
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `categories_delete` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `categories_delete` (IN `p_id` INT)   BEGIN
     DELETE FROM `categories` WHERE `id` = p_id;
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `categories_get` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `categories_get` (IN `p_id` INT)   BEGIN
     SELECT * FROM `categories` WHERE `id` = p_id LIMIT 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `categories_get_all` ()   BEGIN
+CREATE PROCEDURE `categories_get_all` ()   BEGIN
     SELECT * FROM `categories`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `categories_insert` (IN `p_name` VARCHAR(255), IN `p_parent_id` INT)   BEGIN
+CREATE PROCEDURE `categories_insert` (IN `p_name` VARCHAR(255), IN `p_parent_id` INT)   BEGIN
     INSERT INTO `categories` (`name`, `parent_id`, `created_at`, `updated_at`)
     VALUES (p_name, p_parent_id, NOW(), NOW());
     SELECT LAST_INSERT_ID() AS inserted_id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `categories_update` (IN `p_id` INT, IN `p_name` VARCHAR(255), IN `p_parent_id` INT)   BEGIN
+CREATE PROCEDURE `categories_update` (IN `p_id` INT, IN `p_name` VARCHAR(255), IN `p_parent_id` INT)   BEGIN
     UPDATE `categories`
     SET `name` = p_name, `parent_id` = p_parent_id, `updated_at` = NOW()
     WHERE `id` = p_id;
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `coupons_delete` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `coupons_delete` (IN `p_id` INT)   BEGIN
     DELETE FROM `coupons` WHERE `id` = p_id;
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `coupons_get` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `coupons_get` (IN `p_id` INT)   BEGIN
     SELECT * FROM `coupons` WHERE `id` = p_id LIMIT 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `coupons_get_all` ()   BEGIN
+CREATE PROCEDURE `coupons_get_all` ()   BEGIN
     SELECT * FROM `coupons`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `coupons_insert` (IN `p_code` VARCHAR(255), IN `p_discount_type` VARCHAR(50), IN `p_discount_value` DECIMAL(10,2), IN `p_min_order_amount` DECIMAL(10,2), IN `p_max_uses` INT, IN `p_used_count` INT, IN `p_starts_at` DATETIME, IN `p_ends_at` DATETIME, IN `p_is_active` TINYINT)   BEGIN
+CREATE PROCEDURE `coupons_insert` (IN `p_code` VARCHAR(255), IN `p_discount_type` VARCHAR(50), IN `p_discount_value` DECIMAL(10,2), IN `p_min_order_amount` DECIMAL(10,2), IN `p_max_uses` INT, IN `p_used_count` INT, IN `p_starts_at` DATETIME, IN `p_ends_at` DATETIME, IN `p_is_active` TINYINT)   BEGIN
     INSERT INTO `coupons`
     (`code`, `discount_type`, `discount_value`, `min_order_amount`, `max_uses`, `used_count`,
      `starts_at`, `ends_at`, `is_active`, `created_at`, `updated_at`)
@@ -135,7 +123,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `coupons_insert` (IN `p_code` VARCHA
     SELECT LAST_INSERT_ID() AS inserted_id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `coupons_update` (IN `p_id` INT, IN `p_code` VARCHAR(255), IN `p_discount_type` VARCHAR(50), IN `p_discount_value` DECIMAL(10,2), IN `p_min_order_amount` DECIMAL(10,2), IN `p_max_uses` INT, IN `p_used_count` INT, IN `p_starts_at` DATETIME, IN `p_ends_at` DATETIME, IN `p_is_active` TINYINT)   BEGIN
+CREATE PROCEDURE `coupons_update` (IN `p_id` INT, IN `p_code` VARCHAR(255), IN `p_discount_type` VARCHAR(50), IN `p_discount_value` DECIMAL(10,2), IN `p_min_order_amount` DECIMAL(10,2), IN `p_max_uses` INT, IN `p_used_count` INT, IN `p_starts_at` DATETIME, IN `p_ends_at` DATETIME, IN `p_is_active` TINYINT)   BEGIN
     UPDATE `coupons`
     SET `code` = p_code,
         `discount_type` = p_discount_type,
@@ -152,53 +140,53 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `coupons_update` (IN `p_id` INT, IN 
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `favorites_delete` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `favorites_delete` (IN `p_id` INT)   BEGIN
     DELETE FROM `favorites` WHERE `id` = p_id;
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `favorites_get` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `favorites_get` (IN `p_id` INT)   BEGIN
     SELECT * FROM `favorites` WHERE `id` = p_id LIMIT 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `favorites_get_all` ()   BEGIN
+CREATE PROCEDURE `favorites_get_all` ()   BEGIN
     SELECT * FROM `favorites`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `favorites_insert` (IN `p_user_id` INT, IN `p_product_id` INT)   BEGIN
+CREATE PROCEDURE `favorites_insert` (IN `p_user_id` INT, IN `p_product_id` INT)   BEGIN
     INSERT INTO `favorites` (`user_id`, `product_id`, `created_at`)
     VALUES (p_user_id, p_product_id, NOW());
     SELECT LAST_INSERT_ID() AS inserted_id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `favorites_update` (IN `p_id` INT, IN `p_user_id` INT, IN `p_product_id` INT)   BEGIN
+CREATE PROCEDURE `favorites_update` (IN `p_id` INT, IN `p_user_id` INT, IN `p_product_id` INT)   BEGIN
     UPDATE `favorites`
     SET `user_id` = p_user_id, `product_id` = p_product_id
     WHERE `id` = p_id;
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `locations_delete` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `locations_delete` (IN `p_id` INT)   BEGIN
     DELETE FROM `locations` WHERE `id` = p_id;
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `locations_get` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `locations_get` (IN `p_id` INT)   BEGIN
     SELECT * FROM `locations` WHERE `id` = p_id LIMIT 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `locations_get_all` ()   BEGIN
+CREATE PROCEDURE `locations_get_all` ()   BEGIN
     SELECT * FROM `locations`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `locations_insert` (IN `p_warehouse_id` INT, IN `p_code` VARCHAR(100), IN `p_description` TEXT)   BEGIN
+CREATE PROCEDURE `locations_insert` (IN `p_warehouse_id` INT, IN `p_code` VARCHAR(100), IN `p_description` TEXT)   BEGIN
     INSERT INTO `locations`
     (`warehouse_id`, `code`, `description`, `created_at`, `updated_at`)
     VALUES (p_warehouse_id, p_code, p_description, NOW(), NOW());
     SELECT LAST_INSERT_ID() AS inserted_id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `locations_update` (IN `p_id` INT, IN `p_warehouse_id` INT, IN `p_code` VARCHAR(100), IN `p_description` TEXT)   BEGIN
+CREATE PROCEDURE `locations_update` (IN `p_id` INT, IN `p_warehouse_id` INT, IN `p_code` VARCHAR(100), IN `p_description` TEXT)   BEGIN
     UPDATE `locations`
     SET `warehouse_id` = p_warehouse_id,
         `code` = p_code,
@@ -208,26 +196,26 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `locations_update` (IN `p_id` INT, I
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `orders_delete` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `orders_delete` (IN `p_id` INT)   BEGIN
     DELETE FROM `orders` WHERE `id` = p_id;
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `orders_get` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `orders_get` (IN `p_id` INT)   BEGIN
     SELECT * FROM `orders` WHERE `id` = p_id LIMIT 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `orders_get_all` ()   BEGIN
+CREATE PROCEDURE `orders_get_all` ()   BEGIN
     SELECT * FROM `orders`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `orders_insert` (IN `p_user_id` INT, IN `p_name` VARCHAR(120), IN `p_email` VARCHAR(120), IN `p_address` VARCHAR(255), IN `p_payment_method` VARCHAR(50), IN `p_gross_total` INT, IN `p_status` VARCHAR(30))   BEGIN
+CREATE PROCEDURE `orders_insert` (IN `p_user_id` INT, IN `p_name` VARCHAR(120), IN `p_email` VARCHAR(120), IN `p_address` VARCHAR(255), IN `p_payment_method` VARCHAR(50), IN `p_gross_total` INT, IN `p_status` VARCHAR(30))   BEGIN
     INSERT INTO `orders` (`user_id`, `name`, `email`, `address`, `payment_method`, `gross_total`, `status`, `created_at`)
     VALUES (p_user_id, p_name, p_email, p_address, p_payment_method, p_gross_total, p_status, NOW());
     SELECT LAST_INSERT_ID() AS inserted_id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `orders_update` (IN `p_id` INT, IN `p_user_id` INT, IN `p_name` VARCHAR(120), IN `p_email` VARCHAR(120), IN `p_address` VARCHAR(255), IN `p_payment_method` VARCHAR(50), IN `p_gross_total` INT, IN `p_status` VARCHAR(30))   BEGIN
+CREATE PROCEDURE `orders_update` (IN `p_id` INT, IN `p_user_id` INT, IN `p_name` VARCHAR(120), IN `p_email` VARCHAR(120), IN `p_address` VARCHAR(255), IN `p_payment_method` VARCHAR(50), IN `p_gross_total` INT, IN `p_status` VARCHAR(30))   BEGIN
     UPDATE `orders`
     SET `user_id` = p_user_id,
         `name` = p_name,
@@ -240,20 +228,20 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `orders_update` (IN `p_id` INT, IN `
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `products_delete` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `products_delete` (IN `p_id` INT)   BEGIN
     DELETE FROM `products` WHERE `id` = p_id;
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `products_get` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `products_get` (IN `p_id` INT)   BEGIN
     SELECT * FROM `products` WHERE `id` = p_id LIMIT 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `products_get_all` ()   BEGIN
+CREATE PROCEDURE `products_get_all` ()   BEGIN
     SELECT * FROM `products`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `products_insert` (IN `p_sku` VARCHAR(100), IN `p_name` VARCHAR(255), IN `p_description` TEXT, IN `p_image_url` VARCHAR(500), IN `p_category_id` INT, IN `p_supplier_id` INT, IN `p_unit_price` DECIMAL(12,2), IN `p_weight` DECIMAL(10,3), IN `p_stock` INT)   BEGIN
+CREATE PROCEDURE `products_insert` (IN `p_sku` VARCHAR(100), IN `p_name` VARCHAR(255), IN `p_description` TEXT, IN `p_image_url` VARCHAR(500), IN `p_category_id` INT, IN `p_supplier_id` INT, IN `p_unit_price` DECIMAL(12,2), IN `p_weight` DECIMAL(10,3), IN `p_stock` INT)   BEGIN
     INSERT INTO `products`
     (`sku`, `name`, `description`, `image_url`, `category_id`, `supplier_id`, `unit_price`, `weight`, `stock`, `created_at`, `updated_at`)
     VALUES
@@ -262,7 +250,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `products_insert` (IN `p_sku` VARCHA
     SELECT LAST_INSERT_ID() AS inserted_id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `products_update` (IN `p_id` INT, IN `p_sku` VARCHAR(100), IN `p_name` VARCHAR(255), IN `p_description` TEXT, IN `p_image_url` VARCHAR(500), IN `p_category_id` INT, IN `p_supplier_id` INT, IN `p_unit_price` DECIMAL(12,2), IN `p_weight` DECIMAL(10,3), IN `p_stock` INT)   BEGIN
+CREATE PROCEDURE `products_update` (IN `p_id` INT, IN `p_sku` VARCHAR(100), IN `p_name` VARCHAR(255), IN `p_description` TEXT, IN `p_image_url` VARCHAR(500), IN `p_category_id` INT, IN `p_supplier_id` INT, IN `p_unit_price` DECIMAL(12,2), IN `p_weight` DECIMAL(10,3), IN `p_stock` INT)   BEGIN
     UPDATE `products`
     SET `sku` = p_sku,
         `name` = p_name,
@@ -279,26 +267,26 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `products_update` (IN `p_id` INT, IN
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `product_reviews_delete` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `product_reviews_delete` (IN `p_id` INT)   BEGIN
     DELETE FROM `product_reviews` WHERE `id` = p_id;
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `product_reviews_get` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `product_reviews_get` (IN `p_id` INT)   BEGIN
     SELECT * FROM `product_reviews` WHERE `id` = p_id LIMIT 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `product_reviews_get_all` ()   BEGIN
+CREATE PROCEDURE `product_reviews_get_all` ()   BEGIN
     SELECT * FROM `product_reviews`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `product_reviews_insert` (IN `p_product_id` INT, IN `p_user_id` INT, IN `p_rating` INT, IN `p_review` TEXT)   BEGIN
+CREATE PROCEDURE `product_reviews_insert` (IN `p_product_id` INT, IN `p_user_id` INT, IN `p_rating` INT, IN `p_review` TEXT)   BEGIN
     INSERT INTO `product_reviews` (`product_id`, `user_id`, `rating`, `review`, `created_at`)
     VALUES (p_product_id, p_user_id, p_rating, p_review, NOW());
     SELECT LAST_INSERT_ID() AS inserted_id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `product_reviews_update` (IN `p_id` INT, IN `p_product_id` INT, IN `p_user_id` INT, IN `p_rating` INT, IN `p_review` TEXT)   BEGIN
+CREATE PROCEDURE `product_reviews_update` (IN `p_id` INT, IN `p_product_id` INT, IN `p_user_id` INT, IN `p_rating` INT, IN `p_review` TEXT)   BEGIN
     UPDATE `product_reviews`
     SET `product_id` = p_product_id,
         `user_id` = p_user_id,
@@ -308,7 +296,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `product_reviews_update` (IN `p_id` 
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `recompute_product_stock` (IN `p_product_id` INT)   BEGIN
+CREATE PROCEDURE `recompute_product_stock` (IN `p_product_id` INT)   BEGIN
   UPDATE products p
   SET p.stock = (
     SELECT
@@ -319,20 +307,20 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `recompute_product_stock` (IN `p_pro
   WHERE p.id = p_product_id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `refresh_tokens_delete` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `refresh_tokens_delete` (IN `p_id` INT)   BEGIN
     DELETE FROM `refresh_tokens` WHERE `id` = p_id;
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `refresh_tokens_get` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `refresh_tokens_get` (IN `p_id` INT)   BEGIN
     SELECT * FROM `refresh_tokens` WHERE `id` = p_id LIMIT 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `refresh_tokens_get_all` ()   BEGIN
+CREATE PROCEDURE `refresh_tokens_get_all` ()   BEGIN
     SELECT * FROM `refresh_tokens`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `refresh_tokens_insert` (IN `p_user_id` INT, IN `p_token_hash` CHAR(64), IN `p_expires_at` DATETIME, IN `p_revoked` TINYINT(1), IN `p_user_agent` VARCHAR(255), IN `p_ip` VARCHAR(45))   BEGIN
+CREATE PROCEDURE `refresh_tokens_insert` (IN `p_user_id` INT, IN `p_token_hash` CHAR(64), IN `p_expires_at` DATETIME, IN `p_revoked` TINYINT(1), IN `p_user_agent` VARCHAR(255), IN `p_ip` VARCHAR(45))   BEGIN
     INSERT INTO `refresh_tokens`
     (`user_id`, `token_hash`, `expires_at`, `revoked`, `user_agent`, `ip`, `created_at`)
     VALUES
@@ -341,7 +329,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `refresh_tokens_insert` (IN `p_user_
     SELECT LAST_INSERT_ID() AS inserted_id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `refresh_tokens_update` (IN `p_id` INT, IN `p_user_id` INT, IN `p_token_hash` CHAR(64), IN `p_expires_at` DATETIME, IN `p_revoked` TINYINT(1), IN `p_user_agent` VARCHAR(255), IN `p_ip` VARCHAR(45))   BEGIN
+CREATE PROCEDURE `refresh_tokens_update` (IN `p_id` INT, IN `p_user_id` INT, IN `p_token_hash` CHAR(64), IN `p_expires_at` DATETIME, IN `p_revoked` TINYINT(1), IN `p_user_agent` VARCHAR(255), IN `p_ip` VARCHAR(45))   BEGIN
     UPDATE `refresh_tokens`
     SET `user_id` = p_user_id,
         `token_hash` = p_token_hash,
@@ -354,26 +342,26 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `refresh_tokens_update` (IN `p_id` I
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `roles_delete` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `roles_delete` (IN `p_id` INT)   BEGIN
     DELETE FROM `roles` WHERE `id` = p_id;
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `roles_get` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `roles_get` (IN `p_id` INT)   BEGIN
     SELECT * FROM `roles` WHERE `id` = p_id LIMIT 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `roles_get_all` ()   BEGIN
+CREATE PROCEDURE `roles_get_all` ()   BEGIN
     SELECT * FROM `roles`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `roles_insert` (IN `p_name` VARCHAR(100), IN `p_description` TEXT)   BEGIN
+CREATE PROCEDURE `roles_insert` (IN `p_name` VARCHAR(100), IN `p_description` TEXT)   BEGIN
     INSERT INTO `roles` (`name`, `description`, `created_at`, `updated_at`)
     VALUES (p_name, p_description, NOW(), NOW());
     SELECT LAST_INSERT_ID() AS inserted_id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `roles_update` (IN `p_id` INT, IN `p_name` VARCHAR(100), IN `p_description` TEXT)   BEGIN
+CREATE PROCEDURE `roles_update` (IN `p_id` INT, IN `p_name` VARCHAR(100), IN `p_description` TEXT)   BEGIN
     UPDATE `roles`
     SET `name` = p_name,
         `description` = p_description,
@@ -382,20 +370,20 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `roles_update` (IN `p_id` INT, IN `p
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `stock_delete` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `stock_delete` (IN `p_id` INT)   BEGIN
     DELETE FROM `stock` WHERE `id` = p_id;
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `stock_get` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `stock_get` (IN `p_id` INT)   BEGIN
     SELECT * FROM `stock` WHERE `id` = p_id LIMIT 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `stock_get_all` ()   BEGIN
+CREATE PROCEDURE `stock_get_all` ()   BEGIN
     SELECT * FROM `stock`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `stock_insert` (IN `p_product_id` INT, IN `p_location_id` INT, IN `p_quantity` INT, IN `p_reserved_quantity` INT, IN `p_reorder_level` INT)   BEGIN
+CREATE PROCEDURE `stock_insert` (IN `p_product_id` INT, IN `p_location_id` INT, IN `p_quantity` INT, IN `p_reserved_quantity` INT, IN `p_reorder_level` INT)   BEGIN
     INSERT INTO `stock`
     (`product_id`, `location_id`, `quantity`, `reserved_quantity`, `reorder_level`, `created_at`, `updated_at`)
     VALUES
@@ -403,7 +391,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `stock_insert` (IN `p_product_id` IN
     SELECT LAST_INSERT_ID() AS inserted_id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `stock_update` (IN `p_id` INT, IN `p_product_id` INT, IN `p_location_id` INT, IN `p_quantity` INT, IN `p_reserved_quantity` INT, IN `p_reorder_level` INT)   BEGIN
+CREATE PROCEDURE `stock_update` (IN `p_id` INT, IN `p_product_id` INT, IN `p_location_id` INT, IN `p_quantity` INT, IN `p_reserved_quantity` INT, IN `p_reorder_level` INT)   BEGIN
     UPDATE `stock`
     SET `product_id` = p_product_id,
         `location_id` = p_location_id,
@@ -415,20 +403,20 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `stock_update` (IN `p_id` INT, IN `p
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `suppliers_delete` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `suppliers_delete` (IN `p_id` INT)   BEGIN
     DELETE FROM `suppliers` WHERE `id` = p_id;
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `suppliers_get` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `suppliers_get` (IN `p_id` INT)   BEGIN
     SELECT * FROM `suppliers` WHERE `id` = p_id LIMIT 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `suppliers_get_all` ()   BEGIN
+CREATE PROCEDURE `suppliers_get_all` ()   BEGIN
     SELECT * FROM `suppliers`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `suppliers_insert` (IN `p_name` VARCHAR(255), IN `p_contact_name` VARCHAR(255), IN `p_contact_email` VARCHAR(255), IN `p_phone` VARCHAR(50), IN `p_address` TEXT)   BEGIN
+CREATE PROCEDURE `suppliers_insert` (IN `p_name` VARCHAR(255), IN `p_contact_name` VARCHAR(255), IN `p_contact_email` VARCHAR(255), IN `p_phone` VARCHAR(50), IN `p_address` TEXT)   BEGIN
     INSERT INTO `suppliers`
     (`name`, `contact_name`, `contact_email`, `phone`, `address`, `created_at`, `updated_at`)
     VALUES
@@ -436,7 +424,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `suppliers_insert` (IN `p_name` VARC
     SELECT LAST_INSERT_ID() AS inserted_id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `suppliers_update` (IN `p_id` INT, IN `p_name` VARCHAR(255), IN `p_contact_name` VARCHAR(255), IN `p_contact_email` VARCHAR(255), IN `p_phone` VARCHAR(50), IN `p_address` TEXT)   BEGIN
+CREATE PROCEDURE `suppliers_update` (IN `p_id` INT, IN `p_name` VARCHAR(255), IN `p_contact_name` VARCHAR(255), IN `p_contact_email` VARCHAR(255), IN `p_phone` VARCHAR(50), IN `p_address` TEXT)   BEGIN
     UPDATE `suppliers`
     SET `name` = p_name,
         `contact_name` = p_contact_name,
@@ -448,20 +436,20 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `suppliers_update` (IN `p_id` INT, I
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `users_delete` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `users_delete` (IN `p_id` INT)   BEGIN
     DELETE FROM `users` WHERE `id` = p_id;
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `users_get` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `users_get` (IN `p_id` INT)   BEGIN
     SELECT * FROM `users` WHERE `id` = p_id LIMIT 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `users_get_all` ()   BEGIN
+CREATE PROCEDURE `users_get_all` ()   BEGIN
     SELECT * FROM `users`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `users_insert` (IN `p_email` VARCHAR(255), IN `p_password_hash` VARCHAR(255), IN `p_full_name` VARCHAR(255), IN `p_company_name` VARCHAR(255), IN `p_role_id` INT)   BEGIN
+CREATE PROCEDURE `users_insert` (IN `p_email` VARCHAR(255), IN `p_password_hash` VARCHAR(255), IN `p_full_name` VARCHAR(255), IN `p_company_name` VARCHAR(255), IN `p_role_id` INT)   BEGIN
     INSERT INTO `users`
     (`email`, `password_hash`, `full_name`, `company_name`, `role_id`, `created_at`, `updated_at`)
     VALUES
@@ -469,7 +457,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `users_insert` (IN `p_email` VARCHAR
     SELECT LAST_INSERT_ID() AS inserted_id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `users_update` (IN `p_id` INT, IN `p_email` VARCHAR(255), IN `p_password_hash` VARCHAR(255), IN `p_full_name` VARCHAR(255), IN `p_company_name` VARCHAR(255), IN `p_role_id` INT)   BEGIN
+CREATE PROCEDURE `users_update` (IN `p_id` INT, IN `p_email` VARCHAR(255), IN `p_password_hash` VARCHAR(255), IN `p_full_name` VARCHAR(255), IN `p_company_name` VARCHAR(255), IN `p_role_id` INT)   BEGIN
     UPDATE `users`
     SET `email` = p_email,
         `password_hash` = p_password_hash,
@@ -481,26 +469,26 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `users_update` (IN `p_id` INT, IN `p
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `warehouses_delete` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `warehouses_delete` (IN `p_id` INT)   BEGIN
     DELETE FROM `warehouses` WHERE `id` = p_id;
     SELECT ROW_COUNT() AS affected_rows;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `warehouses_get` (IN `p_id` INT)   BEGIN
+CREATE PROCEDURE `warehouses_get` (IN `p_id` INT)   BEGIN
     SELECT * FROM `warehouses` WHERE `id` = p_id LIMIT 1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `warehouses_get_all` ()   BEGIN
+CREATE PROCEDURE `warehouses_get_all` ()   BEGIN
     SELECT * FROM `warehouses`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `warehouses_insert` (IN `p_name` VARCHAR(255), IN `p_address` TEXT, IN `p_manager_id` INT)   BEGIN
+CREATE PROCEDURE `warehouses_insert` (IN `p_name` VARCHAR(255), IN `p_address` TEXT, IN `p_manager_id` INT)   BEGIN
     INSERT INTO `warehouses` (`name`, `address`, `manager_id`, `created_at`, `updated_at`)
     VALUES (p_name, p_address, p_manager_id, NOW(), NOW());
     SELECT LAST_INSERT_ID() AS inserted_id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `warehouses_update` (IN `p_id` INT, IN `p_name` VARCHAR(255), IN `p_address` TEXT, IN `p_manager_id` INT)   BEGIN
+CREATE PROCEDURE `warehouses_update` (IN `p_id` INT, IN `p_name` VARCHAR(255), IN `p_address` TEXT, IN `p_manager_id` INT)   BEGIN
     UPDATE `warehouses`
     SET `name` = p_name,
         `address` = p_address,
@@ -518,6 +506,7 @@ DELIMITER ;
 -- Tábla szerkezet ehhez a táblához `app_orders`
 --
 
+DROP TABLE IF EXISTS `app_orders`;
 CREATE TABLE `app_orders` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
@@ -539,6 +528,7 @@ INSERT INTO `app_orders` (`id`, `user_id`, `status`, `total_amount`, `created_at
 -- Tábla szerkezet ehhez a táblához `app_order_items`
 --
 
+DROP TABLE IF EXISTS `app_order_items`;
 CREATE TABLE `app_order_items` (
   `id` int NOT NULL,
   `order_id` int NOT NULL,
@@ -554,6 +544,7 @@ CREATE TABLE `app_order_items` (
 -- Tábla szerkezet ehhez a táblához `categories`
 --
 
+DROP TABLE IF EXISTS `categories`;
 CREATE TABLE `categories` (
   `id` int NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -589,6 +580,7 @@ INSERT INTO `categories` (`id`, `name`, `parent_id`, `created_at`, `updated_at`)
 -- Tábla szerkezet ehhez a táblához `coupons`
 --
 
+DROP TABLE IF EXISTS `coupons`;
 CREATE TABLE `coupons` (
   `id` int NOT NULL,
   `code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -616,6 +608,7 @@ INSERT INTO `coupons` (`id`, `code`, `type`, `value`, `valid_from`, `valid_to`, 
 -- Tábla szerkezet ehhez a táblához `favorites`
 --
 
+DROP TABLE IF EXISTS `favorites`;
 CREATE TABLE `favorites` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
@@ -637,6 +630,7 @@ INSERT INTO `favorites` (`id`, `user_id`, `product_id`, `created_at`) VALUES
 -- Tábla szerkezet ehhez a táblához `locations`
 --
 
+DROP TABLE IF EXISTS `locations`;
 CREATE TABLE `locations` (
   `id` int NOT NULL,
   `warehouse_id` int NOT NULL,
@@ -673,6 +667,7 @@ INSERT INTO `locations` (`id`, `warehouse_id`, `code`, `description`, `created_a
 -- Tábla szerkezet ehhez a táblához `orders`
 --
 
+DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
   `id` int NOT NULL,
   `user_id` int DEFAULT NULL,
@@ -691,11 +686,17 @@ CREATE TABLE `orders` (
 -- Tábla szerkezet ehhez a táblához `products`
 --
 
+DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products` (
   `id` int NOT NULL,
   `sku` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` text COLLATE utf8mb4_unicode_ci,
+  `description_hu` text COLLATE utf8mb4_unicode_ci,
+  `description_en` text COLLATE utf8mb4_unicode_ci,
+  `description_de` text COLLATE utf8mb4_unicode_ci,
+  `avg_rating` decimal(3,2) DEFAULT NULL,
+  `review_count` int NOT NULL DEFAULT 0,
   `image_url` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `category_id` int DEFAULT NULL,
   `supplier_id` int DEFAULT NULL,
@@ -706,40 +707,7 @@ CREATE TABLE `products` (
   `stock` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- A tábla adatainak kiíratása `products`
---
-
-INSERT INTO `products` (`id`, `sku`, `name`, `description`, `image_url`, `category_id`, `supplier_id`, `unit_price`, `weight`, `created_at`, `updated_at`, `stock`) VALUES
-(1, 'T001', 'iPhone 14', 'Okostelefon Apple', 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=600&h=500&fit=crop&auto=format', 2, 1, 349999.00, 0.180, '2025-08-28 17:21:19', '2026-01-16 09:33:39', 45),
-(2, 'T002', 'Samsung Galaxy', 'Androidos mobil', 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=600&h=500&fit=crop&auto=format', 2, 1, 279999.00, 0.170, '2025-08-28 17:21:19', NULL, 36),
-(3, 'T003', 'Dell Inspiron', 'Laptop 15\"', 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=600&h=500&fit=crop&auto=format', 3, 1, 219999.00, 2.100, '2025-08-28 17:21:19', '2026-01-16 09:33:34', 27),
-(4, 'T004', 'HP Pavilion', 'Laptop 14\"', 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600&h=500&fit=crop&auto=format', 3, 1, 199999.00, 2.000, '2025-08-28 17:21:19', NULL, 23),
-(17, 'E001', 'iPhone 15', 'Apple okostelefon 128GB', 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=600&h=500&fit=crop&auto=format', 2, 1, 399999.00, 0.172, '2026-01-19 10:03:41', NULL, 40),
-(18, 'E002', 'Samsung Galaxy S24', 'Android okostelefon 256GB', 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=600&h=500&fit=crop&auto=format', 2, 1, 349999.00, 0.168, '2026-01-19 10:03:41', NULL, 35),
-(19, 'E003', 'Xiaomi Redmi Note 13', 'Android okostelefon', 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&h=500&fit=crop&auto=format', 2, 1, 99999.00, 0.190, '2026-01-19 10:03:41', NULL, 60),
-(20, 'E004', 'Google Pixel 8', 'Tiszta Android élmény', 'https://images.unsplash.com/photo-1551355738-1875b65b2cce?w=600&h=500&fit=crop&auto=format', 2, 1, 299999.00, 0.187, '2026-01-19 10:03:41', NULL, 25),
-(21, 'E005', 'MacBook Air M2', '13 colos laptop', 'https://images.unsplash.com/photo-1611186871525-5bd8c4012c3d?w=600&h=500&fit=crop&auto=format', 2, 1, 499999.00, 1.240, '2026-01-19 10:03:41', NULL, 15),
-(22, 'E006', 'Dell XPS 13', 'Ultrakönnyű laptop', 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=600&h=500&fit=crop&auto=format', 2, 1, 449999.00, 1.200, '2026-01-19 10:03:41', NULL, 12),
-(23, 'E007', 'Lenovo ThinkPad E14', 'Üzleti laptop', 'https://images.unsplash.com/photo-1588702547919-26089e690ecc?w=600&h=500&fit=crop&auto=format', 2, 1, 299999.00, 1.690, '2026-01-19 10:03:41', NULL, 18),
-(24, 'E008', 'HP Envy 15', 'Erős multimédiás laptop', 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600&h=500&fit=crop&auto=format', 2, 1, 419999.00, 2.100, '2026-01-19 10:03:41', NULL, 10),
-(25, 'E009', 'Samsung 55\" QLED TV', '4K UHD Smart TV', 'https://images.unsplash.com/photo-1593359677879-a4bb92f829e1?w=600&h=500&fit=crop&auto=format', 2, 1, 269999.00, 14.500, '2026-01-19 10:03:41', NULL, 20),
-(26, 'E010', 'LG 65\" OLED TV', 'Prémium OLED kijelző', 'https://images.unsplash.com/photo-1567690187548-f07b1d7bf5a9?w=600&h=500&fit=crop&auto=format', 2, 1, 649999.00, 18.000, '2026-01-19 10:03:41', NULL, 8),
-(27, 'E011', 'Sony WH-1000XM5', 'Zajszűrős fejhallgató', 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=500&fit=crop&auto=format', 2, 1, 129999.00, 0.250, '2026-01-19 10:03:41', NULL, 50),
-(28, 'E012', 'Apple AirPods Pro 2', 'Vezeték nélküli fülhallgató', 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&h=500&fit=crop&auto=format', 2, 1, 99999.00, 0.060, '2026-01-19 10:03:41', NULL, 70),
-(29, 'E013', 'JBL Charge 5', 'Bluetooth hangszóró', 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600&h=500&fit=crop&auto=format', 2, 1, 59999.00, 0.960, '2026-01-19 10:03:41', NULL, 45),
-(30, 'E014', 'Logitech MX Master 3S', 'Vezeték nélküli egér', 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=600&h=500&fit=crop&auto=format', 2, 1, 39999.00, 0.141, '2026-01-19 10:03:41', NULL, 80),
-(31, 'E015', 'Keychron K Pro', 'Mechanikus billentyűzet', 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&h=500&fit=crop&auto=format', 2, 1, 54999.00, 0.850, '2026-01-19 10:03:41', NULL, 55),
-(32, 'E016', 'ASUS TUF Gaming Monitor', '27\" 165Hz gamer monitor', 'https://images.unsplash.com/photo-1547119957-637f8679db1e?w=600&h=500&fit=crop&auto=format', 2, 1, 159999.00, 6.500, '2026-01-19 10:03:41', NULL, 22),
-(33, 'E017', 'Samsung Odyssey G5', 'Ívelt gamer monitor', 'https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=600&h=500&fit=crop&auto=format', 2, 1, 139999.00, 6.200, '2026-01-19 10:03:41', NULL, 19),
-(34, 'E018', 'Canon EOS R10', 'Tükör nélküli fényképezőgép', 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&h=500&fit=crop&auto=format', 2, 1, 329999.00, 0.580, '2026-01-19 10:03:41', NULL, 14),
-(35, 'E019', 'Sony Alpha A6400', 'MILC fényképezőgép', 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=600&h=500&fit=crop&auto=format', 2, 1, 299999.00, 0.620, '2026-01-19 10:03:41', NULL, 11),
-(36, 'E020', 'GoPro Hero 12', 'Akciókamera 5.3K', 'https://images.unsplash.com/photo-1564466809058-bf4114d55352?w=600&h=500&fit=crop&auto=format', 2, 1, 179999.00, 0.154, '2026-01-19 10:03:41', NULL, 30),
-(37, 'E021', 'Anker PowerCore 20000', 'Powerbank', 'https://images.unsplash.com/photo-1609592806596-b9e6c2e90e98?w=600&h=500&fit=crop&auto=format', 2, 1, 19999.00, 0.420, '2026-01-19 10:03:41', NULL, 100),
-(38, 'E022', 'Samsung 1TB SSD', 'NVMe SSD meghajtó', 'https://images.unsplash.com/photo-1531492746076-161ca9bcad58?w=600&h=500&fit=crop&auto=format', 2, 1, 44999.00, 0.050, '2026-01-19 10:03:41', NULL, 75),
-(39, 'E023', 'TP-Link Archer AX55', 'WiFi 6 router', 'https://images.unsplash.com/photo-1606904825846-647eb07f5be2?w=600&h=500&fit=crop&auto=format', 2, 1, 34999.00, 0.510, '2026-01-19 10:03:41', NULL, 40),
-(40, 'E024', 'Apple Watch Series 9', 'Okosóra', 'https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=600&h=500&fit=crop&auto=format', 2, 1, 169999.00, 0.045, '2026-01-19 10:03:41', NULL, 28),
-(41, 'E025', 'Amazon Echo Dot 5', 'Okos hangszóró', 'https://images.unsplash.com/photo-1543512214-318c7553f230?w=600&h=500&fit=crop&auto=format', 2, 1, 16999.00, 0.304, '2026-01-19 10:03:41', NULL, 65);
+-- (products adatok a products.sql fájlból töltődnek be)
 
 -- --------------------------------------------------------
 
@@ -747,6 +715,7 @@ INSERT INTO `products` (`id`, `sku`, `name`, `description`, `image_url`, `catego
 -- Tábla szerkezet ehhez a táblához `product_reviews`
 --
 
+DROP TABLE IF EXISTS `product_reviews`;
 CREATE TABLE `product_reviews` (
   `id` int NOT NULL,
   `product_id` int NOT NULL,
@@ -770,6 +739,7 @@ INSERT INTO `product_reviews` (`id`, `product_id`, `user_id`, `rating`, `review`
 -- Tábla szerkezet ehhez a táblához `refresh_tokens`
 --
 
+DROP TABLE IF EXISTS `refresh_tokens`;
 CREATE TABLE `refresh_tokens` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
@@ -959,6 +929,7 @@ INSERT INTO `refresh_tokens` (`id`, `user_id`, `token_hash`, `expires_at`, `revo
 -- Tábla szerkezet ehhez a táblához `roles`
 --
 
+DROP TABLE IF EXISTS `roles`;
 CREATE TABLE `roles` (
   `id` int NOT NULL,
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -994,6 +965,7 @@ INSERT INTO `roles` (`id`, `name`, `description`, `created_at`, `updated_at`) VA
 -- Tábla szerkezet ehhez a táblához `stock`
 --
 
+DROP TABLE IF EXISTS `stock`;
 CREATE TABLE `stock` (
   `id` int NOT NULL,
   `product_id` int NOT NULL,
@@ -1050,6 +1022,7 @@ INSERT INTO `stock` (`id`, `product_id`, `location_id`, `quantity`, `reserved_qu
 -- Tábla szerkezet ehhez a táblához `suppliers`
 --
 
+DROP TABLE IF EXISTS `suppliers`;
 CREATE TABLE `suppliers` (
   `id` int NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1088,6 +1061,7 @@ INSERT INTO `suppliers` (`id`, `name`, `contact_name`, `contact_email`, `phone`,
 -- Tábla szerkezet ehhez a táblához `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1130,6 +1104,7 @@ INSERT INTO `users` (`id`, `email`, `password_hash`, `full_name`, `company_name`
 -- Tábla szerkezet ehhez a táblához `warehouses`
 --
 
+DROP TABLE IF EXISTS `warehouses`;
 CREATE TABLE `warehouses` (
   `id` int NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1167,6 +1142,23 @@ INSERT INTO `warehouses` (`id`, `name`, `address`, `manager_id`, `created_at`, `
 --
 -- A tábla indexei `app_orders`
 --
+
+-- --------------------------------------------------------
+-- order_items – rendelési tételek (orders.id-re hivatkozik)
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `order_items`;
+CREATE TABLE `order_items` (
+  `id`           int          NOT NULL AUTO_INCREMENT,
+  `order_id`     int          NOT NULL,
+  `product_id`   int          NOT NULL,
+  `quantity`     int          NOT NULL DEFAULT 1,
+  `unit_price`   int          NOT NULL DEFAULT 0,
+  `total_amount` int          NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `idx_order_items_order` (`order_id`),
+  KEY `idx_order_items_product` (`product_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 ALTER TABLE `app_orders`
   ADD PRIMARY KEY (`id`);
 
@@ -1433,8 +1425,10 @@ ALTER TABLE `users`
 --
 ALTER TABLE `warehouses`
   ADD CONSTRAINT `raktarak_ibfk_1` FOREIGN KEY (`manager_id`) REFERENCES `users` (`id`);
+ALTER TABLE `order_items`
+  ADD CONSTRAINT `order_items_ibfk_order`   FOREIGN KEY (`order_id`)   REFERENCES `orders`   (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `order_items_ibfk_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+SET FOREIGN_KEY_CHECKS = 1;
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

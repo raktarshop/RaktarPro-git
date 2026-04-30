@@ -30,3 +30,17 @@
 .rp-nav .dropdown-toggle::after{
   margin-left: 6px !important;
 }
+
+/* Ensure badge is visible above pill button */
+.rp-nav .rp-pill-btn,
+.rp-nav .btn.rp-pill-btn {
+  overflow: visible !important;
+  position: relative !important;
+}
+.rp-nav .rp-badge {
+  position: absolute !important;
+  top: -7px !important;
+  right: -7px !important;
+  z-index: 20 !important;
+  pointer-events: none !important;
+}

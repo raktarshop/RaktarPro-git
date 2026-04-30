@@ -270,11 +270,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("searchInput")?.addEventListener("input", applyFilters);
   document.getElementById("sortSelect")?.addEventListener("change", applyFilters);
   window.addEventListener("storage", async (e) => {
-    if (e.key === "rp_lang") applyFilters();
+    if (!e.key || e.key === "rp_lang") applyFilters();
     if (e.key === "rp_products_updated") {
       try { await loadProducts(); } catch {}
     }
   });
+  window.addEventListener("rp:langchange", () => applyFilters());
   try {
     await loadProducts();
   } catch (e) {

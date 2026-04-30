@@ -72,6 +72,7 @@
 html, body { height: 100%; margin: 0; }
 
 body {
+  padding-top: 68px;
   color: var(--text);
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   background:
@@ -100,7 +101,7 @@ body::before {
 @media (prefers-reduced-motion: reduce) { body::before { display: none; } }
 
 .rp-nav {
-  position: sticky; top: 0; z-index: 100;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
   background: var(--nav-bg);
   border-bottom: 1px solid var(--glass-border);
   backdrop-filter: blur(20px) saturate(1.6);
@@ -141,10 +142,15 @@ body::before {
 }
 
 .rp-badge {
-  position: absolute; top: -6px; right: -6px;
-  font-size: 10px; border-radius: 999px; padding: 2px 6px;
+  position: absolute; top: -7px; right: -7px;
+  min-width: 18px; height: 18px;
+  font-size: 10px; line-height: 18px; text-align: center;
+  border-radius: 999px; padding: 0 4px;
   background: linear-gradient(135deg,#ff4b4b,#ff2222);
-  color: #fff; border: 2px solid var(--bg); font-weight: 800;
+  color: #fff; border: 2px solid var(--bg); font-weight: 900;
+  display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(255,50,50,.4);
+  z-index: 10;
 }
 
 .dropdown-menu {
@@ -181,7 +187,9 @@ body::before {
 }
 
 .rp-reveal { opacity: 0; transform: translateY(12px); transition: opacity 420ms ease, transform 420ms ease; }
-.rp-reveal.is-visible { opacity: 1; transform: translateY(0); }
+.rp-reveal.is-visible, .rp-reveal.visible { opacity: 1 !important; transform: translateY(0) !important; }
+/* Product cards in grid are always visible */
+.rp-products-grid .rp-reveal { opacity: 1 !important; transform: none !important; }
 
 .rp-lang-flags { display: flex; align-items: center; gap: 6px; }
 .rp-lang-btn {
@@ -265,3 +273,246 @@ a { color: inherit; }
 .rp-admin-btn-danger:hover { background: rgba(239,68,68,.20) !important; }
 
 @media (max-width: 768px) { body { background-attachment: scroll; } }
+
+/* ============================================================
+   DARK MODE COMPREHENSIVE FIXES
+   ============================================================ */
+
+/* Fix grey text in dark mode - ensure all text uses theme variables */
+:root {
+  color-scheme: dark;
+}
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+/* Bootstrap overrides for dark mode */
+:root .form-label,
+:root .form-control,
+:root .form-select,
+:root .btn,
+:root label,
+:root p,
+:root span,
+:root div,
+:root h1, :root h2, :root h3, :root h4, :root h5, :root h6 {
+  color: var(--text);
+}
+
+/* Fix Bootstrap's grey overriding dark mode */
+:root .text-muted { color: var(--muted-2) !important; }
+:root .text-secondary { color: var(--muted-2) !important; }
+
+/* Form controls in dark mode */
+:root .form-control,
+:root .form-select {
+  background-color: var(--input) !important;
+  border-color: var(--input-border) !important;
+  color: var(--text) !important;
+}
+:root .form-control::placeholder { color: var(--placeholder) !important; }
+:root .form-select option {
+  background: #0b1628;
+  color: #e8f1ff;
+}
+[data-theme="light"] .form-select option {
+  background: #fff;
+  color: #0b1628;
+}
+:root .form-control:disabled,
+:root .form-select:disabled,
+:root .form-control option:disabled,
+:root .form-select option:disabled {
+  color: var(--muted-2) !important;
+  opacity: 0.7;
+}
+
+/* Modal fixes */
+:root .modal-content {
+  background: var(--card) !important;
+  color: var(--text) !important;
+  border-color: var(--glass-border) !important;
+}
+:root .modal-header,
+:root .modal-footer {
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+:root .btn-close { filter: invert(1) opacity(0.8); }
+[data-theme="light"] .btn-close { filter: none; }
+
+/* Table fixes in dark mode */
+:root .table {
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+:root .table td,
+:root .table th {
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+  background: transparent !important;
+}
+:root .table-striped tbody tr:nth-of-type(odd) {
+  background: rgba(255,255,255,.03) !important;
+}
+[data-theme="light"] .table-striped tbody tr:nth-of-type(odd) {
+  background: rgba(11,26,47,.03) !important;
+}
+
+/* Mobile nav fixes */
+@media (max-width: 767px) {
+  .rp-nav .container {
+    flex-wrap: wrap;
+    gap: 8px !important;
+  }
+  .rp-nav {
+    background: var(--nav-bg) !important;
+    color: var(--text) !important;
+  }
+  /* Fix hamburger/mobile menu in dark mode */
+  .navbar-toggler {
+    border-color: var(--border) !important;
+  }
+  .navbar-toggler-icon {
+    filter: invert(1);
+  }
+  [data-theme="light"] .navbar-toggler-icon {
+    filter: none;
+  }
+}
+
+/* Alert / info boxes */
+:root .rp-alert {
+  background: rgba(239,68,68,.12) !important;
+  border: 1px solid rgba(239,68,68,.3) !important;
+  color: #fca5a5 !important;
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+[data-theme="light"] .rp-alert {
+  color: #7f1d1d !important;
+}
+
+/* Payment pill info box */
+:root .rp-pill-info {
+  background: var(--btn-ghost-bg);
+  border: 1px solid var(--btn-ghost-border);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 600;
+}
+
+/* Checkout total display */
+:root .rp-checkout-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--btn-ghost-bg);
+  border: 1px solid var(--btn-ghost-border);
+  border-radius: 14px;
+  margin-top: 12px;
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--text);
+}
+
+/* ============================================================
+   MOBILE DARK MODE FIXES
+   ============================================================ */
+@media (max-width: 767px) {
+  /* Ensure background shows on mobile */
+  body {
+    background-attachment: scroll !important;
+    background-color: var(--bg) !important;
+  }
+
+  /* Ensure nav stays dark on mobile */
+  .rp-nav,
+  .rp-nav .container,
+  .rp-nav .container > * {
+    color: var(--text) !important;
+  }
+
+  /* Fix any Bootstrap overrides */
+  .rp-pill-btn,
+  .rp-lang-btn {
+    color: var(--text) !important;
+    background: var(--glass) !important;
+    border-color: var(--glass-border) !important;
+  }
+
+  /* Dropdown in mobile */
+  .dropdown-menu {
+    background: var(--card) !important;
+    color: var(--text) !important;
+  }
+
+  /* Card text */
+  .rp-card,
+  .rp-card *,
+  .rp-panel,
+  .rp-panel * {
+    color: var(--text);
+  }
+
+  /* Fix grey text on mobile specifically */
+  .rp-name,
+  .rp-title,
+  .rp-page-title,
+  .rp-total,
+  .rp-price,
+  h1, h2, h3, h4, h5 {
+    color: var(--text) !important;
+  }
+
+  .rp-sub,
+  .rp-desc,
+  .rp-subtitle {
+    color: var(--text-dim) !important;
+  }
+}
+
+/* Ensure select options use correct colors in dark */
+select option {
+  background-color: #0b1628;
+  color: #e8f1ff;
+}
+[data-theme="light"] select option {
+  background-color: #ffffff;
+  color: #0b1628;
+}
+
+/* ── GLOBAL LIGHT MODE TEXT FIX ── */
+[data-theme="light"] body,
+[data-theme="light"] p,
+[data-theme="light"] span:not(.rp-badge):not(.rp-stock-dot):not(.rp-corner-badge),
+[data-theme="light"] div,
+[data-theme="light"] h1,[data-theme="light"] h2,[data-theme="light"] h3,
+[data-theme="light"] h4,[data-theme="light"] h5,[data-theme="light"] h6,
+[data-theme="light"] label,
+[data-theme="light"] td,[data-theme="light"] th {
+  color: var(--text);
+}
+
+/* Nav & card text must also be visible in light mode */
+[data-theme="light"] .rp-nav { color: #0b1628; }
+[data-theme="light"] .rp-subtitle { color: rgba(11,26,47,.6) !important; }
+[data-theme="light"] .fw-bold { color: #0b1628; }
+
+/* product detail inline styles that use color */
+[data-theme="light"] #pdDesc,
+[data-theme="light"] #pdDesc div,
+[data-theme="light"] #pdDesc span { color: #0b1628 !important; }
+
+/* Dropdown text */
+[data-theme="light"] .dropdown-menu,
+[data-theme="light"] .dropdown-item { color: #0b1628; }
+
+/* Alert */
+[data-theme="light"] .alert { color: #0b1628; }
+
+/* admin table */
+[data-theme="light"] .rp-admin-table td,
+[data-theme="light"] .rp-admin-table th { color: #0b1628 !important; }

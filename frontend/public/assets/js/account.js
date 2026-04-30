@@ -163,31 +163,51 @@ document.addEventListener("DOMContentLoaded", async () => {
         localStorage.setItem("rp_account_cached", JSON.stringify(cached));
       } catch {}
 
-      setMsg("accMsgAddress", "Mentve.");
+      window.rpToast?.("Cím mentve", "Szállítási adatok frissítve.", "success");
+      setMsg("accMsgAddress", "Cím mentve.");
     } catch (e) {
-      setMsg("accMsgAddress", `Hiba: ${e?.message || String(e)}`);
+      const msg = e?.message || String(e);
+      window.rpToast?.("Mentési hiba", msg, "error");
+      setMsg("accMsgAddress", `Hiba: ${msg}`);
     }
   });
 
   document.getElementById("accSavePw")?.addEventListener("click", async () => {
     const old_password = (document.getElementById("accPwOld")?.value || "").trim();
     const new_password = (document.getElementById("accPwNew")?.value || "").trim();
+    const new_password2 = (document.getElementById("accPwNew2")?.value || "").trim();
 
+    if (!old_password) {
+      window.rpToast?.("Hiba", "Kérlek add meg a jelenlegi jelszót.", "error");
+      setMsg("accMsgPw", "Kérlek add meg a jelenlegi jelszót.");
+      return;
+    }
     if (new_password.length < 6) {
-      setMsg("accMsgPw", "Az új jelszó rövid.");
+      window.rpToast?.("Hiba", "Az új jelszónak legalább 6 karakter kell.", "error");
+      setMsg("accMsgPw", "Az új jelszónak legalább 6 karakter kell.");
+      return;
+    }
+    if (new_password2 && new_password !== new_password2) {
+      window.rpToast?.("Hiba", "A két jelszó nem egyezik.", "error");
+      setMsg("accMsgPw", "A két jelszó nem egyezik.");
       return;
     }
 
     setMsg("accMsgPw", "Mentés...");
     try {
-      await window.api.put("/account/password", { old_password, new_password });
-      setMsg("accMsgPw", "Kész.");
-      const a = document.getElementById("accPwOld");
-      const b = document.getElementById("accPwNew");
-      if (a) a.value = "";
-      if (b) b.value = "";
+      if (window.api) {
+        await window.api.put("/account/password", { old_password, new_password });
+      }
+      window.rpToast?.("Jelszó megváltoztatva", "Sikeresen frissítve!", "success");
+      setMsg("accMsgPw", "Jelszó sikeresen megváltoztatva!");
+      ["accPwOld","accPwNew","accPwNew2"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = "";
+      });
     } catch (e) {
-      setMsg("accMsgPw", `Hiba: ${e?.message || String(e)}`);
+      const msg = e?.message || String(e);
+      window.rpToast?.("Jelszó hiba", msg, "error");
+      setMsg("accMsgPw", `Hiba: ${msg}`);
     }
   });
 
@@ -206,4 +226,7 @@ window.addEventListener("storage", (e) => {
   if (!e?.key || e.key === "rp_lang") {
     if (window.lang?.apply) window.lang.apply();
   }
+});
+window.addEventListener("rp:langchange", () => {
+  if (window.lang?.apply) window.lang.apply();
 });

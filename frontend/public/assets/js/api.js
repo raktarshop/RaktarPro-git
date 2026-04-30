@@ -1,9 +1,11 @@
 (function () {
   const { origin, pathname } = window.location;
 
-  // /RaktarPro_n/frontend/public/auth.html -> /RaktarPro_n
+  // Detect project root by finding 'frontend' in the path
+  // e.g. /RaktarPro_9/frontend/public/auth.html -> /RaktarPro_9
   const parts = pathname.split("/").filter(Boolean);
-  const projectRoot = parts.length >= 1 ? `/${parts[0]}` : "";
+  const frontendIdx = parts.indexOf("frontend");
+  const projectRoot = frontendIdx > 0 ? "/" + parts.slice(0, frontendIdx).join("/") : (parts.length >= 1 ? `/${parts[0]}` : "");
 
   const API_BASE = `${origin}${projectRoot}/backend/api_new`;
 
@@ -33,6 +35,16 @@
     }
 
     if (!res.ok) {
+      // Auto-logout on 401 Unauthorized (expired/invalid token)
+      if (res.status === 401) {
+        localStorage.removeItem('rp_token');
+        localStorage.removeItem('rp_user');
+        localStorage.removeItem('rp_guest');
+        // Only redirect if not already on auth page
+        if (!window.location.pathname.includes('auth.html')) {
+          window.location.href = './auth.html';
+        }
+      }
       // Backend: { success:false, error:{ message:"...", code:"..." } }
       // Prefer the inner message field first, so we don't print objects like {"message":"..."}
       let msg =

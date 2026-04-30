@@ -1,4 +1,4 @@
-// nav.js – navbar, theme, cart badge, admin badge, language
+// nav.js – navbar, theme, cart badge, admin badge
 
 function getCart() {
   try { return JSON.parse(localStorage.getItem('rp_cart') || '[]'); } catch { return []; }
@@ -18,8 +18,6 @@ function setTheme(theme) {
     btn.innerHTML = t === 'dark'
       ? '<i class="bi bi-moon-stars rp-icon"></i>'
       : '<i class="bi bi-sun rp-icon"></i>';
-    btn.setAttribute('data-i18n-title', t === 'dark' ? 'theme_title_dark' : 'theme_title_light');
-    window.lang?.apply?.();
   }
 }
 function initTheme() {
@@ -33,6 +31,16 @@ function updateCartBadge() {
   badge.style.display = n > 0 ? 'inline-block' : 'none';
   badge.textContent = String(n);
 }
+function updateFavBadge() {
+  const badge = document.getElementById('favBadge');
+  if (!badge) return;
+  try {
+    const ws = JSON.parse(localStorage.getItem('rp_wishlist') || '[]');
+    const n = Array.isArray(ws) ? ws.length : 0;
+    badge.style.display = n > 0 ? 'inline-block' : 'none';
+    badge.textContent = String(n);
+  } catch { badge.style.display = 'none'; }
+}
 function getUser() {
   try { return JSON.parse(localStorage.getItem('rp_user') || 'null'); } catch { return null; }
 }
@@ -45,7 +53,6 @@ function isAdminUser(user) {
   return false;
 }
 
-// Show/hide admin menu item
 function initAdminMenu() {
   const adminItem = document.getElementById('adminMenuItem');
   const adminDivider = document.getElementById('adminMenuDivider');
@@ -60,7 +67,6 @@ function initAdminMenu() {
   if (adminDivider) adminDivider.style.display = ok ? 'block' : 'none';
 }
 
-// Update avatar letter & show admin name
 function initUserDisplay() {
   const user = getUser();
   const avatarEls = document.querySelectorAll('.rp-avatar');
@@ -71,7 +77,6 @@ function initUserDisplay() {
     }
   });
 
-  // Admin name pills on admin pages
   const adminNamePill = document.getElementById('adminNamePill');
   if (adminNamePill && user) {
     const n = user.full_name || user.name || user.email || 'Admin';
@@ -87,13 +92,11 @@ function escapeNavHtml(s) {
   return String(s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 }
 
-// Fetch and show pending orders / open support counts in admin nav tabs
 async function updateAdminBadges() {
   const user = getUser();
   const ok = Boolean(getToken()) && isAdminUser(user) && window.api;
   if (!ok) return;
 
-  // Nav tab badges (in admin pages)
   const ordersBadgeEl = document.getElementById('adminOrdersBadge');
   const supportBadgeEl = document.getElementById('adminSupportBadge');
 
@@ -129,10 +132,6 @@ async function updateAdminBadges() {
         el.textContent = String(pending);
         el.style.display = pending > 0 ? 'inline-flex' : 'none';
       });
-      if (ordersBadgeEl) {
-        ordersBadgeEl.textContent = String(pending);
-        ordersBadgeEl.style.display = pending > 0 ? 'inline-flex' : 'none';
-      }
     }
   } catch { /* silent */ }
 }
@@ -140,6 +139,7 @@ async function updateAdminBadges() {
 function initNav() {
   initTheme();
   updateCartBadge();
+  updateFavBadge();
   initAdminMenu();
   initUserDisplay();
   updateAdminBadges();
@@ -161,7 +161,9 @@ function initNav() {
       localStorage.removeItem('rp_token');
       localStorage.removeItem('rp_user');
       localStorage.removeItem('rp_guest');
-      window.location.href = './auth.html';
+      localStorage.removeItem('rp_cart');
+      localStorage.setItem('rp_logged_out_at', Date.now().toString());
+      window.location.replace('./auth.html');
     });
   }
 }
@@ -169,6 +171,7 @@ function initNav() {
 document.addEventListener('DOMContentLoaded', initNav);
 window.addEventListener('storage', () => {
   updateCartBadge();
+  updateFavBadge();
   initAdminMenu();
   initUserDisplay();
   updateAdminBadges();

@@ -43,11 +43,15 @@ class ProductController {
     public function index(): void {
         try {
             $filters = [
-                'search' => $_GET['search'] ?? '',
+                'search'      => $_GET['search']      ?? '',
                 'category_id' => $_GET['category_id'] ?? null,
-                'sort' => $_GET['sort'] ?? 'newest',
-                'page' => $_GET['page'] ?? 1,
-                'limit' => $_GET['limit'] ?? 12
+                'sort'        => $_GET['sort']         ?? 'newest',
+                'page'        => $_GET['page']         ?? 1,
+                'limit'       => $_GET['limit']        ?? 100,
+                'price_min'   => $_GET['price_min']    ?? '',
+                'price_max'   => $_GET['price_max']    ?? '',
+                'min_rating'  => $_GET['min_rating']   ?? '',
+                'in_stock'    => $_GET['in_stock']     ?? '',
             ];
             
             $lang = $this->detectLang();

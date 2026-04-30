@@ -92,11 +92,15 @@ class ProductService {
         $pagination = Validator::getPaginationParams($filters);
         
         $products = $this->productModel->getProducts([
-            'search' => $filters['search'] ?? '',
-            'category_id' => $filters['category_id'] ?? null,
-            'sort' => $filters['sort'] ?? 'newest',
-            'limit' => $pagination['limit'],
-            'offset' => $pagination['offset']
+            'search'     => $filters['search']     ?? '',
+            'category_id'=> $filters['category_id']?? null,
+            'sort'       => $filters['sort']        ?? 'newest',
+            'limit'      => $pagination['limit'],
+            'offset'     => $pagination['offset'],
+            'price_min'  => $filters['price_min']  ?? '',
+            'price_max'  => $filters['price_max']  ?? '',
+            'min_rating' => $filters['min_rating'] ?? '',
+            'in_stock'   => $filters['in_stock']   ?? '',
         ]);
         
         

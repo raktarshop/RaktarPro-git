@@ -1,13 +1,39 @@
-// admin.js – termékek kezelése + real-time broadcast + i18n
+// admin.js – termékek + kategóriák kezelése
 
 let all = [];
 let categories = [];
 
-function t(key, fallback) {
-  try {
-    const v = window.lang?.t ? window.lang.t(key) : null;
-    return v || fallback || key;
-  } catch { return fallback || key; }
+// ── UTILS ──────────────────────────────────────────────────────────────────
+
+function esc(str) {
+  return String(str ?? '').replace(/[&<>"']/g, m =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])
+  );
+}
+
+function normalizePrice(v) {
+  const n = Number(String(v ?? '').replace(/[^\d.]/g, ''));
+  return Number.isFinite(n) ? n : 0;
+}
+
+function setMsg(txt) {
+  const el = document.getElementById('adminMsg');
+  if (el) el.textContent = txt || '';
+}
+
+function setCatMsg(txt, color) {
+  const el = document.getElementById('catMsg');
+  if (!el) return;
+  el.textContent = txt || '';
+  el.style.color = color || 'var(--text-dim)';
+}
+
+function getCategoryNameById(id) {
+  return categories.find(x => String(x.id) === String(id))?.name || '';
+}
+
+function broadcastProductChange() {
+  try { localStorage.setItem('rp_products_updated', String(Date.now())); } catch {}
 }
 
 function extractProductsList(res) {
@@ -15,12 +41,8 @@ function extractProductsList(res) {
   if (Array.isArray(res)) return res;
   if (Array.isArray(res?.data?.products)) return res.data.products;
   if (Array.isArray(res?.products)) return res.products;
-  const data = res.data ?? res.result ?? res.payload ?? res;
-  if (Array.isArray(data)) return data;
-  if (data && typeof data === "object") {
-    for (const c of [data.products, data.items, data.list, data.rows, data.data])
-      if (Array.isArray(c)) return c;
-  }
+  const d = res.data ?? res;
+  if (Array.isArray(d)) return d;
   return null;
 }
 
@@ -33,92 +55,125 @@ function extractCategories(res) {
   return [];
 }
 
-function normalizePrice(v) {
-  const n = Number(String(v ?? "").replace(/[^\d.]/g, ""));
-  return Number.isFinite(n) ? n : 0;
+function isAdminUser(user) {
+  if (!user) return false;
+  return user.is_admin === true || Number(user.is_admin) === 1 ||
+    Number(user.role_id) === 1 ||
+    (typeof user.role === 'string' && user.role.toLowerCase() === 'admin');
 }
 
-function escapeHtml(str) {
-  return String(str ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+// ── CATEGORY MANAGER ───────────────────────────────────────────────────────
+
+function renderCategoryChips() {
+  const list = document.getElementById('catList');
+  if (!list) return;
+  if (!categories.length) {
+    list.innerHTML = '<span style="color:var(--text-dim);font-size:13px;">Még nincs kategória.</span>';
+    return;
+  }
+  list.innerHTML = categories.map(c => `
+    <span class="cat-chip">
+      ${esc(c.name)}
+      <button class="cat-chip-del" data-cat-id="${c.id}" title="Törlés">×</button>
+    </span>
+  `).join('');
+
+  list.querySelectorAll('.cat-chip-del').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = btn.dataset.catId;
+      const cat = categories.find(x => String(x.id) === String(id));
+      if (!confirm(`Biztosan törlöd: "${cat?.name}"?\nAz ehhez rendelt termékek kategória nélkül maradnak.`)) return;
+      btn.disabled = true;
+      try {
+        await window.api.del(`/categories/${id}`);
+        categories = categories.filter(x => String(x.id) !== String(id));
+        renderCategoryChips();
+        setCatMsg('✓ Kategória törölve.', '#10b981');
+        apply(); // re-render product table with updated dropdowns
+        setTimeout(() => setCatMsg(''), 2500);
+      } catch(e) {
+        setCatMsg('Hiba: ' + (e.message || e), '#ef4444');
+        btn.disabled = false;
+      }
+    });
+  });
 }
 
-function setMsg(txt) {
-  const el = document.getElementById("adminMsg");
-  if (el) {
-    el.textContent = txt || "";
-    if (txt) {
-      el.style.animation = "none";
-      el.offsetHeight;
-      el.style.animation = "rp-fade-in 0.3s ease";
+async function initCategoryManager() {
+  const addBtn = document.getElementById('catAddBtn');
+  const input  = document.getElementById('catNewName');
+  if (!addBtn || !input) return;
+
+  addBtn.addEventListener('click', async () => {
+    const name = input.value.trim();
+    if (!name) { setCatMsg('Adj meg egy kategória nevet.', '#f59e0b'); return; }
+    addBtn.disabled = true;
+    setCatMsg('Mentés…');
+    try {
+      const res = await window.api.post('/categories', { name });
+      const newId = res?.data?.id || res?.id;
+      categories.push({ id: newId, name });
+      categories.sort((a,b) => a.name.localeCompare(b.name, 'hu'));
+      renderCategoryChips();
+      input.value = '';
+      setCatMsg('✓ Kategória hozzáadva.', '#10b981');
+      apply();
+      setTimeout(() => setCatMsg(''), 2500);
+    } catch(e) {
+      setCatMsg('Hiba: ' + (e.message || e), '#ef4444');
+    } finally {
+      addBtn.disabled = false;
     }
-  }
+  });
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') addBtn.click();
+  });
 }
 
-function getCategoryNameById(id) {
-  const c = categories.find(x => String(x.id) === String(id));
-  return c?.name || "";
-}
+// ── PRODUCT TABLE ──────────────────────────────────────────────────────────
 
-function broadcastProductChange() {
-  try {
-    localStorage.setItem('rp_products_updated', String(Date.now()));
-    window.dispatchEvent(new Event('storage'));
-  } catch {}
-}
-
-function flashSaveBtn(btn, success) {
-  const icon = btn.querySelector("i");
-  if (!icon) return;
-  if (success) {
-    icon.className = "bi bi-check-circle-fill text-success";
-    btn.style.transform = "scale(1.2)";
-    setTimeout(() => { icon.className = "bi bi-check2"; btn.style.transform = ""; }, 1200);
-  } else {
-    icon.className = "bi bi-x-circle-fill text-danger";
-    btn.style.transform = "scale(1.1)";
-    setTimeout(() => { icon.className = "bi bi-check2"; btn.style.transform = ""; }, 1200);
-  }
+function buildCatOptions(selectedId) {
+  return [
+    `<option value="">(nincs)</option>`,
+    ...categories.map(c =>
+      `<option value="${c.id}"${String(c.id) === String(selectedId) ? ' selected' : ''}>${esc(c.name)}</option>`
+    )
+  ].join('');
 }
 
 function render(list) {
-  const tbody = document.getElementById("adminTbody");
-  tbody.innerHTML = "";
+  const tbody = document.getElementById('adminTbody');
+  tbody.innerHTML = '';
 
   for (const p of list) {
     const price = normalizePrice(p.unit_price ?? p.price ?? 0);
-    const stock = (p.stock !== undefined && p.stock !== null) ? Number(p.stock) : 0;
-    const imageUrl = p.image_url ?? p.imageUrl ?? "";
-    const categoryId = p.category_id ?? p.categoryId ?? "";
+    const stock = Number(p.stock ?? 0);
+    const catId  = p.category_id ?? '';
 
-    const tr = document.createElement("tr");
-    tr.style.animation = "rp-fade-in 0.25s ease both";
-
-    const options = [
-      `<option value="">${escapeHtml(t('admin_categories_none','(nincs)'))}</option>`,
-      ...categories.map(c => `<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`)
-    ].join("");
-
+    const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td class="small opacity-75">${escapeHtml(p.id)}</td>
-      <td><strong>${escapeHtml(p.name || "")}</strong></td>
+      <td class="small opacity-75">${esc(p.id)}</td>
+      <td><strong>${esc(p.name || '')}</strong><br><span class="small opacity-60">${esc(p.sku||'')}</span></td>
       <td style="min-width:160px;">
-        <select class="form-select form-select-sm" data-field="category_id" data-id="${p.id}">${options}</select>
-      </td>
-      <td style="min-width:220px;">
-        <input class="form-control form-control-sm" type="text" placeholder="https://..." value="${escapeHtml(imageUrl)}" data-field="image_url" data-id="${p.id}">
+        <select class="form-select form-select-sm" data-field="category_id" data-id="${p.id}">
+          ${buildCatOptions(catId)}
+        </select>
       </td>
       <td style="min-width:110px;">
-        <input class="form-control form-control-sm" type="number" min="0" step="1" value="${price}" data-field="unit_price" data-id="${p.id}">
+        <input class="form-control form-control-sm" type="number" min="0" step="1"
+          value="${price}" data-field="unit_price" data-id="${p.id}">
       </td>
       <td style="min-width:100px;">
-        <input class="form-control form-control-sm" type="number" min="0" step="1" value="${stock}" data-field="stock" data-id="${p.id}">
+        <input class="form-control form-control-sm" type="number" min="0" step="1"
+          value="${stock}" data-field="stock" data-id="${p.id}">
       </td>
-      <td style="min-width:100px;">
+      <td style="min-width:90px;">
         <div class="d-flex gap-1">
-          <button class="btn btn-sm rp-admin-btn rp-icon-btn" data-act="save" data-id="${p.id}" title="${escapeHtml(t('admin_orders_save','Mentés'))}" style="transition: all 200ms ease;">
+          <button class="btn btn-sm rp-admin-btn rp-icon-btn" data-act="save" data-id="${p.id}" title="Mentés">
             <i class="bi bi-check2"></i>
           </button>
-          <button class="btn btn-sm rp-admin-btn-danger rp-icon-btn" data-act="del" data-id="${p.id}" title="Törlés" style="transition: all 200ms ease;">
+          <button class="btn btn-sm rp-admin-btn-danger rp-icon-btn" data-act="del" data-id="${p.id}" title="Törlés">
             <i class="bi bi-x-lg"></i>
           </button>
         </div>
@@ -126,204 +181,154 @@ function render(list) {
     `;
     tbody.appendChild(tr);
 
-    const sel = tr.querySelector(`select[data-field="category_id"][data-id="${p.id}"]`);
-    if (sel) sel.value = categoryId === null ? "" : String(categoryId);
-  }
-
-  // Save
-  tbody.querySelectorAll("button[data-act='save']").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const id = btn.getAttribute("data-id");
-      const priceEl = tbody.querySelector(`input[data-field="unit_price"][data-id="${id}"]`);
-      const stockEl = tbody.querySelector(`input[data-field="stock"][data-id="${id}"]`);
-      const catEl = tbody.querySelector(`select[data-field="category_id"][data-id="${id}"]`);
-      const imgEl = tbody.querySelector(`input[data-field="image_url"][data-id="${id}"]`);
-
-      const unit_price = normalizePrice(priceEl?.value);
-      const stock = Math.max(0, Number(stockEl?.value) || 0);
-      const category_id = (catEl?.value ?? "").trim();
-      const image_url = (imgEl?.value ?? "").trim();
-
-      const payload = {
-        unit_price, stock,
-        category_id: category_id === "" ? null : Number(category_id),
-        image_url: image_url === "" ? null : image_url
-      };
+    // Save button
+    tr.querySelector('[data-act="save"]').addEventListener('click', async btn => {
+      btn = tr.querySelector('[data-act="save"]');
+      const id = p.id;
+      const unit_price = normalizePrice(tr.querySelector(`[data-field="unit_price"]`).value);
+      const stock      = Math.max(0, Number(tr.querySelector(`[data-field="stock"]`).value) || 0);
+      const catEl      = tr.querySelector(`[data-field="category_id"]`);
+      const category_id = catEl?.value ? Number(catEl.value) : null;
 
       btn.disabled = true;
-      setMsg(t('admin_orders_save','Mentés') + "...");
+      setMsg('Mentés…');
       try {
-        await window.api.put(`/products/${id}`, payload);
+        await window.api.put(`/products/${id}`, { unit_price, stock, category_id });
         setMsg(`✓ Mentve: #${id}`);
-        flashSaveBtn(btn, true);
+        const icon = btn.querySelector('i');
+        if (icon) { icon.className = 'bi bi-check-circle-fill text-success'; setTimeout(() => icon.className = 'bi bi-check2', 1200); }
         const idx = all.findIndex(x => String(x.id) === String(id));
-        if (idx >= 0) {
-          all[idx].unit_price = unit_price;
-          all[idx].stock = stock;
-          all[idx].category_id = payload.category_id;
-          all[idx].category_name = getCategoryNameById(payload.category_id);
-          all[idx].image_url = payload.image_url;
-        }
+        if (idx >= 0) { all[idx].unit_price = unit_price; all[idx].stock = stock; all[idx].category_id = category_id; all[idx].category_name = getCategoryNameById(category_id); }
         broadcastProductChange();
-      } catch (e) {
-        setMsg(`Hiba: ${e.message || e}`);
-        flashSaveBtn(btn, false);
+      } catch(e) {
+        setMsg('Hiba: ' + (e.message || e));
       } finally {
         btn.disabled = false;
       }
     });
-  });
 
-  // Delete
-  tbody.querySelectorAll("button[data-act='del']").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const id = btn.getAttribute("data-id");
-      const p = all.find(x => String(x.id) === String(id));
-      const name = p?.name ? `"${p.name}"` : `#${id}`;
-      if (!confirm(`Biztosan törlöd: ${name}?`)) return;
-
-      btn.disabled = true;
-      setMsg("Törlés...");
+    // Delete button
+    tr.querySelector('[data-act="del"]').addEventListener('click', async () => {
+      if (!confirm(`Biztosan törlöd: "${p.name}"?`)) return;
       try {
-        await window.api.del(`/products/${id}`);
-        all = all.filter(x => String(x.id) !== String(id));
+        await window.api.del(`/products/${p.id}`);
+        all = all.filter(x => String(x.id) !== String(p.id));
         apply();
-        setMsg(`✓ Törölve: #${id}`);
+        setMsg(`✓ Törölve: #${p.id}`);
         broadcastProductChange();
-      } catch (e) {
-        btn.disabled = false;
-        setMsg(`Hiba: ${e.message || e}`);
+      } catch(e) {
+        setMsg('Hiba: ' + (e.message || e));
       }
     });
-  });
+  }
 }
 
+// ── LOAD / APPLY ───────────────────────────────────────────────────────────
+
 async function loadCategories() {
-  const res = await window.api.get("/categories");
+  const res = await window.api.get('/categories');
   categories = extractCategories(res);
 }
 
 async function loadProducts() {
-  setMsg("Betöltés...");
-  const res = await window.api.get("/products?limit=200");
+  setMsg('Betöltés…');
+  const res = await window.api.get('/products?limit=200');
   const list = extractProductsList(res);
-  if (!Array.isArray(list)) {
-    console.log("DEBUG /products response:", res);
-    throw new Error("A /products nem listát adott.");
-  }
+  if (!Array.isArray(list)) throw new Error('A /products nem listát adott.');
   all = list;
-  setMsg("");
+  setMsg('');
 }
 
 function apply() {
-  const q = (document.getElementById("adminSearch")?.value || "").trim().toLowerCase();
-  const list = q ? all.filter(p => String(p.name || "").toLowerCase().includes(q)) : all;
+  const q = (document.getElementById('adminSearch')?.value || '').trim().toLowerCase();
+  const list = (q ? all.filter(p => (p.name||'').toLowerCase().includes(q) || (p.sku||'').toLowerCase().includes(q)) : all)
+    .slice().sort((a,b) => Number(a.id) - Number(b.id));
   render(list);
 }
 
-function isAdminUser(user) {
-  if (!user) return false;
-  if (user.is_admin === true) return true;
-  if (Number(user.is_admin) === 1) return true;
-  if (Number(user.role_id) === 1) return true;
-  if (typeof user.role === 'string' && user.role.toLowerCase() === 'admin') return true;
-  return false;
-}
+// ── NEW PRODUCT MODAL ──────────────────────────────────────────────────────
 
-document.addEventListener("DOMContentLoaded", async () => {
-  document.getElementById("adminSearch")?.addEventListener("input", apply);
-  document.getElementById("adminReload")?.addEventListener("click", async () => {
-    try { await loadCategories(); await loadProducts(); apply(); }
-    catch (e) { setMsg(`Hiba: ${e.message || e}`); }
-  });
-
-  // Re-render table on language change
-  window.addEventListener("storage", (e) => {
-    if (!e?.key || e.key === "rp_lang") {
-      apply();
-    }
-  });
-
-  // New product modal
-  const modalEl = document.getElementById("newProductModal");
-  const newPMsg = document.getElementById("newPMsg");
-  const newPSave = document.getElementById("newPSave");
-  const newPCategory = document.getElementById("newPCategory");
+function initNewProductModal() {
+  const modalEl  = document.getElementById('newProductModal');
+  const newPSave = document.getElementById('newPSave');
+  const newPCat  = document.getElementById('newPCategory');
+  const newPMsg  = document.getElementById('newPMsg');
   let bsModal = null;
   if (modalEl && window.bootstrap?.Modal) bsModal = new window.bootstrap.Modal(modalEl);
 
-  function setNewMsg(txt) { if (newPMsg) newPMsg.textContent = txt || ""; }
+  function setNewMsg(txt) { if (newPMsg) newPMsg.textContent = txt || ''; }
 
-  function fillNewCategorySelect() {
-    if (!newPCategory) return;
-    newPCategory.innerHTML = categories.map(c => `<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join("") || "";
+  function fillCatSelect() {
+    if (!newPCat) return;
+    newPCat.innerHTML = categories.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('') || '<option value="">–</option>';
   }
 
-  function resetNewForm() {
-    ["newPName","newPSku","newPPrice","newPStock","newPImageUrl"].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.value = "";
-    });
-    fillNewCategorySelect();
-    setNewMsg("");
-  }
-
-  document.getElementById("adminAddProduct")?.addEventListener("click", async () => {
-    try {
-      if (!categories.length) await loadCategories();
-      fillNewCategorySelect();
-      resetNewForm();
-      if (bsModal) bsModal.show();
-    } catch (e) { alert(e?.message || String(e)); }
+  document.getElementById('adminAddProduct')?.addEventListener('click', () => {
+    document.getElementById('newPId').value = '';
+    document.getElementById('modalTitle').textContent = 'Új termék';
+    ['newPName','newPSku','newPPrice','newPStock'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+    fillCatSelect();
+    setNewMsg('');
+    bsModal?.show();
   });
 
-  newPSave?.addEventListener("click", async () => {
-    const name = (document.getElementById("newPName")?.value || "").trim();
-    const sku = (document.getElementById("newPSku")?.value || "").trim();
-    const unit_price = normalizePrice(document.getElementById("newPPrice")?.value);
-    const stock = Math.max(0, Number(document.getElementById("newPStock")?.value) || 0);
-    const category_id = (newPCategory?.value || "").trim();
-    const image_url = (document.getElementById("newPImageUrl")?.value || "").trim();
+  newPSave?.addEventListener('click', async () => {
+    const name      = (document.getElementById('newPName')?.value || '').trim();
+    const sku       = (document.getElementById('newPSku')?.value  || '').trim();
+    const unit_price = normalizePrice(document.getElementById('newPPrice')?.value);
+    const stock      = Math.max(0, Number(document.getElementById('newPStock')?.value) || 0);
+    const category_id = Number(newPCat?.value || 0) || null;
 
-    if (!name || !sku || unit_price <= 0 || !category_id) {
-      setNewMsg("Kérlek töltsd ki: Név, SKU, Ár (>0), Kategória.");
+    if (!name || !sku || unit_price <= 0) {
+      setNewMsg('Kérlek töltsd ki: Név, SKU, Ár (>0).');
       return;
     }
 
     newPSave.disabled = true;
-    setNewMsg("Mentés...");
+    setNewMsg('Mentés…');
     try {
-      await window.api.post("/products", {
-        name, sku, unit_price, stock,
-        category_id: Number(category_id),
-        image_url: image_url || null
-      });
+      await window.api.post('/products', { name, sku, unit_price, stock, category_id });
       await loadProducts();
       apply();
       broadcastProductChange();
-      setNewMsg("✓ Sikeres létrehozás!");
-      setTimeout(() => { if (bsModal) bsModal.hide(); }, 800);
-    } catch (e) {
-      setNewMsg(`Hiba: ${e?.message || String(e)}`);
+      setNewMsg('✓ Sikeres létrehozás!');
+      setTimeout(() => bsModal?.hide(), 800);
+    } catch(e) {
+      setNewMsg('Hiba: ' + (e?.message || String(e)));
     } finally {
       newPSave.disabled = false;
     }
   });
+}
 
+// ── INIT ───────────────────────────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', async () => {
   // Auth check
   let user = null;
-  try { user = JSON.parse(localStorage.getItem("rp_user") || "null"); } catch {}
+  try { user = JSON.parse(localStorage.getItem('rp_user') || 'null'); } catch {}
   if (!isAdminUser(user)) {
-    alert("Ehhez admin jogosultság kell.");
-    window.location.href = "./products.html";
+    alert('Ehhez admin jogosultság kell.');
+    window.location.href = './products.html';
     return;
   }
+
+  document.getElementById('adminSearch')?.addEventListener('input', apply);
+  document.getElementById('adminReload')?.addEventListener('click', async () => {
+    try { await loadCategories(); await loadProducts(); renderCategoryChips(); apply(); }
+    catch(e) { setMsg('Hiba: ' + (e.message || e)); }
+  });
+
+  initCategoryManager();
+  initNewProductModal();
 
   try {
     await loadCategories();
     await loadProducts();
+    renderCategoryChips();
     apply();
-  } catch (e) {
-    setMsg(`Hiba: ${e.message || e}`);
+  } catch(e) {
+    setMsg('⚠️ API nem elérhető – ellenőrizd a backend kapcsolatot.');
+    console.error(e);
   }
 });

@@ -9,18 +9,12 @@ function saveCart(cart) {
 }
 
 function t(key, fallback) {
-  try {
-    const v = window.lang?.t ? window.lang.t(key) : null;
-    return v || fallback || key;
-  } catch { return fallback || key; }
+  return fallback || key;
 }
 
 function formatFt(n) {
   const x = Math.round(Number(n) || 0);
-  const suffix = window.lang?.t ? window.lang.t("currency_suffix") : "Ft";
-  const lang = window.lang?.getLang ? window.lang.getLang() : "hu";
-  const locale = lang === "de" ? "de-DE" : lang === "en" ? "en-GB" : "hu-HU";
-  return x.toLocaleString(locale) + " " + suffix;
+  return x.toLocaleString('hu-HU') + " Ft";
 }
 
 function calcTotal(cart) {
@@ -61,30 +55,41 @@ async function hydrateCartFromBackend() {
   let cart = getCart();
   if (!cart.length) return;
 
-  cart = cart.map(it => ({
+  // Preserve all existing fields (name, price, etc.) and add id+qty
+  const normalized = cart.map(it => ({
+    ...it,
     id: Number(it.id),
     qty: Math.max(1, Number(it.qty) || 1),
   })).filter(it => Number.isFinite(it.id) && it.id > 0);
 
-  const ids = cart.map(it => it.id);
-  const res = await window.api.post('/products/by-ids', { ids });
-  const list = extractProductsList(res) || (res?.data?.products ?? res?.products) || [];
-  const map = new Map(list.map(p => [String(p.id), p]));
-  let changed = false;
-
-  for (const it of cart) {
-    const p = map.get(String(it.id));
-    if (p) {
-      it.name = p.name || it.name;
-      it.category = p.category_name || p.category || it.category;
-      it.price = normalizePrice(pickPrice(p));
-      it.image = (p.image_url || (Array.isArray(p.images) ? p.images[0] : '') || '').trim();
-      it.stock = p.stock;
-      changed = true;
-    }
+  if (!window.api) {
+    // No API - use cart as-is (demo products already have name/price)
+    saveCart(normalized);
+    return;
   }
 
-  if (changed) saveCart(cart);
+  try {
+    const ids = normalized.map(it => it.id);
+    const res = await window.api.post('/products/by-ids', { ids });
+    const list = extractProductsList(res) || (res?.data?.products ?? res?.products) || [];
+    const map = new Map(list.map(p => [String(p.id), p]));
+
+    for (const it of normalized) {
+      const p = map.get(String(it.id));
+      if (p) {
+        it.name = p.name || it.name;
+        it.category = p.category_name || p.category || it.category || '';
+        it.price = normalizePrice(pickPrice(p));
+        it.image = (p.image_url || (Array.isArray(p.images) ? p.images[0] : '') || '').trim();
+        it.stock = p.stock;
+      }
+    }
+    saveCart(normalized);
+  } catch (e) {
+    // API unavailable - keep existing cart data (may already have name/price from products page)
+    saveCart(normalized);
+    console.log('Cart hydrate skipped (API unavailable):', e.message);
+  }
 }
 
 function render() {
@@ -137,7 +142,7 @@ function render() {
 
 // Re-render on language change
 window.addEventListener("storage", (e) => {
-  if (!e?.key || e.key === "rp_lang") render();
+  if (!e?.key || e.key === "rp_cart" || e.key === "rp_lang") render();
 });
 
 function getToken() {
@@ -156,7 +161,7 @@ function mapCartToOrderItems(cart) {
   })).filter(x => Number.isFinite(x.product_id) && x.product_id > 0);
 }
 
-function openCheckoutModal() {
+async function openCheckoutModal() {
   const cart = getCart();
   if (!cart.length) {
     alert(t("cart_empty", "A kosár üres."));
@@ -177,7 +182,13 @@ function openCheckoutModal() {
   }
 
   try {
-    const acc = JSON.parse(localStorage.getItem("rp_account_cached") || "null");
+    // Try rp_user first, then rp_account_cached
+    let addrParts = null;
+    try { addrParts = JSON.parse(localStorage.getItem("rp_user")||'null')?.address_parts; } catch {}
+    if (!addrParts) {
+      try { addrParts = JSON.parse(localStorage.getItem("rp_account_cached")||'null')?.address_parts; } catch {}
+    }
+    const acc = { address_parts: addrParts };
     if (acc?.address_parts) {
       document.getElementById("checkoutZip").value = acc.address_parts.zip || "";
       document.getElementById("checkoutCity").value = acc.address_parts.city || "";
@@ -193,7 +204,7 @@ function openCheckoutModal() {
 
   const modalEl = document.getElementById('checkoutModal');
   if (!modalEl || !window.bootstrap?.Modal) {
-    const ok = confirm(`${t("checkout_total_label","Fizetendő:")} ${formatFt(total)}\n${t("checkout_payment_label","Fizetés:")} ${t("checkout_payment_cod","Utánvét")}\n\n${t("checkout_place_order","Leadod a rendelést?")}`);
+    const ok = await window.rpConfirm?.("Rendelés megerősítése", `${t("checkout_total_label","Fizetendő:")} ${formatFt(total)}\n${t("checkout_payment_label","Fizetés:")} ${t("checkout_payment_cod","Utánvét")}\n\n${t("checkout_place_order","Leadod a rendelést?")}`);
     if (ok) placeOrder();
     return;
   }
@@ -264,8 +275,10 @@ async function placeOrder() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  try { await hydrateCartFromBackend(); } catch (e) { console.log("Cart hydrate error:", e); }
+  // Render immediately with localStorage data so user sees cart right away
   render();
+  // Then hydrate from backend (may update prices/names)
+  try { await hydrateCartFromBackend(); render(); } catch (e) { console.log("Cart hydrate error:", e); }
   document.getElementById('checkoutBtn')?.addEventListener('click', openCheckoutModal);
   document.getElementById('placeOrderBtn')?.addEventListener('click', placeOrder);
 });

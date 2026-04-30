@@ -299,7 +299,7 @@ if (isset($db)) {
         echo "<div class='success'>✅ Minden fontos stored procedure megvan!</div>";
     } else {
         echo "<div class='error'>❌ Hiányzó stored procedures: " . implode(', ', $sp_missing) . "<br>";
-        echo "Futtatnod kell a webaruhaz1.sql fájlt!</div>";
+        echo "Futtatnod kell a db_schema.sql fájlt!</div>";
     }
 } else {
     echo "<div class='error'>❌ Nem lehet ellenőrizni - nincs DB kapcsolat!</div>";
@@ -323,7 +323,7 @@ if (isset($db)) {
         echo "<div class='info'>📊 Termékek száma: <strong>$count db</strong></div>";
         
         if ($count == 0) {
-            echo "<div class='warning'>⚠️ Nincs termék az adatbázisban! Futtasd a webaruhaz1.sql-t!</div>";
+            echo "<div class='warning'>⚠️ Nincs termék az adatbázisban! Futtasd a db_schema.sql-t!</div>";
         }
         
     } catch (Exception $e) {
@@ -432,8 +432,8 @@ if (empty($issues)) {
     }
     
     if (isset($sp_missing) && !empty($sp_missing)) {
-        echo "<li>Futtasd a <strong>webaruhaz1.sql</strong> fájlt phpMyAdmin-ban</li>";
-        echo "<li>Ellenőrizd hogy a webaruhaz1 adatbázis ki van-e választva</li>";
+        echo "<li>Futtasd a <strong>db_schema.sql</strong> fájlt phpMyAdmin-ban</li>";
+        echo "<li>Ellenőrizd hogy a az adatbázis ki van-e választva</li>";
     }
     
     echo "</ol>";

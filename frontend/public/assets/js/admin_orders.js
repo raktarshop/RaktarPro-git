@@ -221,7 +221,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const namePill = document.getElementById("adminNamePill");
   if (namePill && user) {
     const n = user.full_name || user.name || user.email || "Admin";
-    namePill.innerHTML = `<span class="rp-admin-pill"><i class="bi bi-person-fill me-1"></i>${escapeHtml(t('admin_logged_in_as','Bejelentkezve:'))} <strong>${escapeHtml(n)}</strong></span>`;
+    namePill.innerHTML = `<span class="rp-admin-pill"><i class="bi bi-person-fill me-1"></i>Bejelentkezve: <strong>${escapeHtml(n)}</strong></span>`;
   }
 
   document.getElementById("ordersSearch")?.addEventListener("input", applyFilter);
@@ -232,10 +232,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Re-render on language change
   window.addEventListener("storage", (e) => {
-    if (!e?.key || e.key === "rp_lang") {
-      applyFilter();
-    }
+    if (!e?.key || e.key === "rp_lang") applyFilter();
   });
+  window.addEventListener("rp:langchange", () => applyFilter());
 
   try {
     await loadOrders();

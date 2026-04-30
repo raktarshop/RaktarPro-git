@@ -194,6 +194,7 @@ async function loadOrders() {
 window.addEventListener("storage", (e) => {
   if (!e?.key || e.key === "rp_lang") applyFilter();
 });
+window.addEventListener("rp:langchange", () => applyFilter());
 
 document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("ordersSearch")?.addEventListener("input", applyFilter);

@@ -190,3 +190,86 @@ body {
   border-color: rgba(59,92,255,.50) !important;
   box-shadow: 0 0 0 2px rgba(59,92,255,.15);
 }
+
+/* ═══════════════════════════════════════════════
+   ADMIN MODAL – modernizált termék szerkesztő modal
+   ═══════════════════════════════════════════════ */
+
+.modal-content {
+  background: var(--bg2) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 26px !important;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0,0,0,.55), 0 8px 32px rgba(0,0,0,.28) !important;
+  backdrop-filter: blur(32px) saturate(1.5);
+  -webkit-backdrop-filter: blur(32px) saturate(1.5);
+}
+[data-theme="light"] .modal-content {
+  background: rgba(248,250,255,.97) !important;
+  box-shadow: 0 24px 60px rgba(11,26,47,.14), 0 4px 20px rgba(11,26,47,.08) !important;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border) !important;
+  padding: 20px 24px 18px !important;
+  background: linear-gradient(135deg, rgba(59,92,255,.06), transparent 70%);
+}
+.modal-title {
+  font-weight: 900 !important;
+  font-size: 18px !important;
+  letter-spacing: -.02em;
+  color: var(--text) !important;
+}
+.modal-body {
+  padding: 22px 24px !important;
+}
+.modal-footer {
+  border-top: 1px solid var(--border) !important;
+  padding: 16px 24px 20px !important;
+  background: linear-gradient(0deg, rgba(59,92,255,.04), transparent);
+}
+
+/* Admin modal form labels */
+.modal-body .form-label {
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: .45px !important;
+  color: var(--text-dim) !important;
+  margin-bottom: 5px !important;
+}
+
+/* Admin nav tabs – enhanced */
+.rp-admin-btn.active {
+  background: linear-gradient(135deg, rgba(59,92,255,.25), rgba(11,197,255,.12)) !important;
+  border-color: rgba(59,92,255,.45) !important;
+  box-shadow: 0 0 0 1px rgba(59,92,255,.15), 0 4px 14px rgba(59,92,255,.18);
+}
+
+/* Category chips modernizálás */
+.cat-manager {
+  border-radius: 20px !important;
+}
+.cat-chip {
+  transition: all 140ms ease !important;
+}
+.cat-chip:hover {
+  border-color: rgba(59,92,255,.40) !important;
+  background: rgba(59,92,255,.10) !important;
+  transform: translateY(-1px);
+}
+
+/* KPI / stat card ha van */
+.rp-admin-stat {
+  border-radius: 20px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  padding: 20px;
+  transition: all 180ms ease;
+}
+.rp-admin-stat:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+  border-color: rgba(59,92,255,.18);
+}

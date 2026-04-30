@@ -242,7 +242,7 @@ JWT_REFRESH_EXPIRY=1209600    # 14 nap
 # ADATBÁZIS
 DB_HOST=localhost
 DB_PORT=8889
-DB_NAME=webaruhaz1
+DB_NAME=<adatbázis_neve>
 DB_USER=root
 DB_PASS=root
 ```

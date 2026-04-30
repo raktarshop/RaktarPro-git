@@ -1,0 +1,960 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Raktár Pro – Pénzügyek</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/common.css?v=26">
+  <link rel="stylesheet" href="./assets/css/nav-unify.css?v=26">
+  <link rel="stylesheet" href="./assets/css/admin.css?v=26">
+  <link rel="stylesheet" href="./assets/css/rp-luxury.css?v=26">
+  <script>!function(){var t=localStorage.getItem("rp_theme")||"dark";document.documentElement.setAttribute("data-theme",t)}();</script>
+  <style>
+    :root { --font-display:'Syne',sans-serif; --font-body:'DM Sans',sans-serif; }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: var(--font-body); color: var(--text); }
+
+    /* ── PERIOD PILLS ── */
+    .fin-period-pills {
+      display: flex; gap: 6px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 4px;
+      width: fit-content;
+    }
+    .fin-pill {
+      padding: 7px 20px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all 160ms ease;
+      font-family: var(--font-body);
+    }
+    .fin-pill.active {
+      background: linear-gradient(135deg, #3b5cff, #0bc5ff);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(59,92,255,.35);
+    }
+    .fin-pill:not(.active):hover { background: var(--glass); color: var(--text); }
+
+    /* ── KPI CARDS ── */
+    .fin-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .fin-kpi {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      transition: all 200ms ease;
+    }
+    .fin-kpi::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--kpi-accent, linear-gradient(90deg, #3b5cff, #0bc5ff));
+    }
+    .fin-kpi:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,.18); }
+    .fin-kpi-label { font-size: 12px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
+    .fin-kpi-val {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    .fin-kpi-change {
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .fin-kpi-change.up { color: #10b981; }
+    .fin-kpi-change.down { color: #ef4444; }
+    .fin-kpi-change.neutral { color: var(--text-dim); }
+    .fin-kpi-icon {
+      position: absolute;
+      top: 18px; right: 18px;
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: grid; place-items: center;
+      font-size: 18px;
+      opacity: .25;
+    }
+
+    /* ── CHART SECTION ── */
+    .fin-chart-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .fin-chart-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .fin-chart-title {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .fin-chart-sub { font-size: 12px; color: var(--text-dim); font-weight: 600; }
+
+    /* Legend chips */
+    .fin-legend {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .fin-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-dim);
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--glass-border);
+      background: var(--glass);
+      cursor: pointer;
+      transition: all 140ms;
+    }
+    .fin-legend-item:hover { color: var(--text); }
+    .fin-legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* Bar chart */
+    .fin-bar-chart {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+      align-items: end;
+      height: 200px;
+      padding-bottom: 28px;
+      position: relative;
+    }
+    .fin-bar-chart::after {
+      content: '';
+      position: absolute;
+      bottom: 28px; left: 0; right: 0;
+      height: 1px;
+      background: var(--glass-border);
+    }
+
+    /* H-gridlines */
+    .fin-bar-chart-bg {
+      position: absolute;
+      inset: 0;
+      bottom: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      pointer-events: none;
+      padding-bottom: 0;
+    }
+    .fin-grid-line {
+      width: 100%;
+      height: 1px;
+      background: var(--glass-border);
+      opacity: .4;
+    }
+
+    .fin-bar-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      height: 100%;
+      position: relative;
+    }
+    .fin-bar-wrap {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      justify-content: center;
+    }
+    .fin-bar {
+      flex: 1;
+      border-radius: 6px 6px 0 0;
+      position: relative;
+      cursor: pointer;
+      transition: filter 150ms, transform 150ms;
+      max-width: 18px;
+    }
+    .fin-bar:hover { filter: brightness(1.25); transform: scaleY(1.02); transform-origin: bottom; }
+    .fin-bar-revenue { background: linear-gradient(180deg, #3b5cff, rgba(59,92,255,.5)); }
+    .fin-bar-cost { background: linear-gradient(180deg, rgba(239,68,68,.7), rgba(239,68,68,.3)); }
+    .fin-bar-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-dim);
+      position: absolute;
+      bottom: 0;
+      transform: translateY(100%);
+      padding-top: 6px;
+      white-space: nowrap;
+    }
+
+    /* ── TOOLTIP ── */
+    .fin-tooltip {
+      position: fixed;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(16px);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 12px;
+      pointer-events: none;
+      z-index: 1000;
+      display: none;
+      min-width: 140px;
+    }
+    .fin-tooltip.show { display: block; }
+    .fin-tooltip-title { font-weight: 800; margin-bottom: 6px; font-size: 13px; }
+    .fin-tooltip-row { display: flex; justify-content: space-between; gap: 16px; color: var(--text-dim); margin-bottom: 2px; }
+    .fin-tooltip-val { font-weight: 700; color: var(--text); }
+
+    /* ── BOTTOM GRID ── */
+    .fin-bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 768px) { .fin-bottom-grid { grid-template-columns: 1fr; } }
+
+    /* ── TOP PRODUCTS TABLE ── */
+    .fin-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .fin-table th {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--glass-border);
+      text-align: left;
+    }
+    .fin-table td {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      font-size: 13px;
+    }
+    .fin-table tr:last-child td { border-bottom: none; }
+    .fin-table tr:hover td { background: var(--glass); }
+    .fin-table-rank {
+      width: 24px; height: 24px;
+      border-radius: 8px;
+      background: var(--glass);
+      display: grid; place-items: center;
+      font-size: 11px; font-weight: 800;
+      color: var(--text-dim);
+    }
+    .fin-table-rank.gold { background: rgba(245,158,11,.15); color: #f59e0b; }
+    .fin-table-rank.silver { background: rgba(148,163,184,.12); color: #94a3b8; }
+    .fin-table-rank.bronze { background: rgba(180,120,80,.12); color: #b46050; }
+
+    .fin-bar-mini {
+      height: 4px;
+      background: var(--glass-border);
+      border-radius: 999px;
+      overflow: hidden;
+      width: 100%;
+      margin-top: 4px;
+    }
+    .fin-bar-mini-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #3b5cff, #0bc5ff);
+      transition: width 800ms cubic-bezier(.22,.68,0,1.1);
+    }
+
+    /* ── DONUT CHART ── */
+    .fin-donut-wrap {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .fin-donut-svg { flex-shrink: 0; }
+    .fin-donut-legend { flex: 1; min-width: 160px; }
+    .fin-donut-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      cursor: pointer;
+      transition: opacity 140ms;
+    }
+    .fin-donut-item:last-child { border-bottom: none; }
+    .fin-donut-item:hover { opacity: .8; }
+    .fin-donut-color {
+      width: 10px; height: 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .fin-donut-name { font-size: 13px; font-weight: 600; flex: 1; }
+    .fin-donut-pct { font-size: 13px; font-weight: 800; }
+    .fin-donut-amt { font-size: 11px; color: var(--text-dim); }
+
+    /* ── RECENT TRANSACTIONS ── */
+    .fin-tx-list { display: flex; flex-direction: column; gap: 8px; }
+    .fin-tx {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      transition: all 140ms;
+      cursor: pointer;
+    }
+    .fin-tx:hover { border-color: rgba(59,92,255,.25); transform: translateX(3px); }
+    .fin-tx-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: grid; place-items: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .fin-tx-icon.income { background: rgba(16,185,129,.12); }
+    .fin-tx-icon.expense { background: rgba(239,68,68,.12); }
+    .fin-tx-icon.refund { background: rgba(245,158,11,.12); }
+    .fin-tx-info { flex: 1; min-width: 0; }
+    .fin-tx-name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .fin-tx-date { font-size: 11px; color: var(--text-dim); }
+    .fin-tx-amount { font-size: 14px; font-weight: 800; white-space: nowrap; }
+    .fin-tx-amount.income { color: #10b981; }
+    .fin-tx-amount.expense { color: #ef4444; }
+    .fin-tx-amount.refund { color: #f59e0b; }
+
+    /* ── EXPORT BTN ── */
+    .fin-export-btn {
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--glass-border);
+      background: var(--glass);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 140ms;
+    }
+    .fin-export-btn:hover { background: rgba(59,92,255,.12); border-color: rgba(59,92,255,.3); }
+
+    /* ── EMPTY / LOADING ── */
+    .fin-loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+    .fin-spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--glass-border);
+      border-top-color: #3b5cff;
+      border-radius: 50%;
+      animation: spin 700ms linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── SKELETON ── */
+    .fin-skel {
+      background: var(--glass);
+      border-radius: 10px;
+      animation: skelPulse 1.4s ease infinite;
+    }
+    @keyframes skelPulse {
+      0%, 100% { opacity: .5; }
+      50% { opacity: 1; }
+    }
+
+    /* Reveal animation */
+    .fin-reveal { opacity: 0; transform: translateY(16px); transition: opacity 450ms ease, transform 450ms ease; }
+    .fin-reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<nav class="rp-nav py-3">
+  <div class="container d-flex align-items-center justify-content-between gap-3">
+    <a class="rp-brand" href="./home.html">
+      <div class="rp-logo"><img src="./assets/img/logo.png" alt="Raktár Pro logo" class="rp-logo-img"></div>
+      <div>
+        <div class="fw-bold">Raktár Pro</div>
+        <div class="rp-subtitle">Admin Panel</div>
+      </div>
+    </a>
+    <div class="d-flex align-items-center gap-2">
+      <button id="themeToggle" class="btn rp-pill-btn" type="button">
+        <i class="bi bi-moon-stars rp-icon"></i>
+      </button>
+      <div class="dropdown">
+        <button class="btn rp-pill-btn d-flex align-items-center gap-2 dropdown-toggle" data-bs-toggle="dropdown">
+          <span class="rp-avatar" id="navAvatar">A</span>
+          <span class="d-none d-md-inline">Fiók</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="./account.html"><i class="bi bi-gear me-2"></i>Fiókbeállítások</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item text-danger" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Kijelentkezés</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main class="container py-4">
+
+  <!-- Header -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-2 mb-3">
+    <div>
+      <h1 class="rp-admin-title">Pénzügyek</h1>
+      <div class="rp-subtitle">Bevételek, tranzakciók és teljesítmény áttekintése</div>
+    </div>
+  </div>
+
+  <!-- Admin nav tabs -->
+  <div class="d-flex flex-wrap gap-2 mb-4">
+    <a class="btn rp-admin-btn" href="./admin.html"><i class="bi bi-grid-1x2-fill me-2"></i>Dashboard</a>
+    <a class="btn rp-admin-btn d-flex align-items-center gap-2" href="./admin_orders.html">
+      <i class="bi bi-box-seam"></i>Rendelések
+      <span class="rp-notif-bubble" data-admin-badge="orders" style="display:none;">0</span>
+    </a>
+    <a class="btn rp-admin-btn d-flex align-items-center gap-2" href="./admin_support.html">
+      <i class="bi bi-life-preserver"></i>Support
+      <span class="rp-notif-bubble" data-admin-badge="support" style="display:none;">0</span>
+    </a>
+    <a class="btn rp-admin-btn active" href="./admin_finance.html"><i class="bi bi-graph-up-arrow me-2"></i>Pénzügyek</a>
+    <a class="btn rp-admin-btn" href="./products.html"><i class="bi bi-arrow-left-circle me-2"></i>Vissza a bolthoz</a>
+  </div>
+
+  <!-- Period selector -->
+  <div class="d-flex align-items-center gap-3 flex-wrap mb-4 fin-reveal">
+    <div class="fin-period-pills" id="periodPills">
+      <button class="fin-pill" data-period="week">Heti</button>
+      <button class="fin-pill active" data-period="month">Havi</button>
+      <button class="fin-pill" data-period="year">Éves</button>
+    </div>
+    <div id="periodLabel" style="font-size:13px;color:var(--text-dim);font-weight:600;"></div>
+  </div>
+
+  <!-- KPI Grid -->
+  <div class="fin-kpi-grid fin-reveal">
+    <div class="fin-kpi" style="--kpi-accent:linear-gradient(90deg,#3b5cff,#0bc5ff)">
+      <div class="fin-kpi-icon" style="background:rgba(59,92,255,.1);">💰</div>
+      <div class="fin-kpi-label">Összbevétel</div>
+      <div class="fin-kpi-val" id="kpiRevenue">—</div>
+      <div class="fin-kpi-change" id="kpiRevenueChg">
+        <span>↔</span><span>Betöltés…</span>
+      </div>
+    </div>
+    <div class="fin-kpi" style="--kpi-accent:linear-gradient(90deg,#10b981,#34d399)">
+      <div class="fin-kpi-icon" style="background:rgba(16,185,129,.1);">🛒</div>
+      <div class="fin-kpi-label">Átlagos kosárérték</div>
+      <div class="fin-kpi-val" id="kpiAvgCart">—</div>
+      <div class="fin-kpi-change" id="kpiAvgCartChg">
+        <span>↔</span><span>Betöltés…</span>
+      </div>
+    </div>
+    <div class="fin-kpi" style="--kpi-accent:linear-gradient(90deg,#f59e0b,#fbbf24)">
+      <div class="fin-kpi-icon" style="background:rgba(245,158,11,.1);">📦</div>
+      <div class="fin-kpi-label">Leadott rendelések</div>
+      <div class="fin-kpi-val" id="kpiOrders">—</div>
+      <div class="fin-kpi-change" id="kpiOrdersChg">
+        <span>↔</span><span>Betöltés…</span>
+      </div>
+    </div>
+    <div class="fin-kpi" style="--kpi-accent:linear-gradient(90deg,#8b5cf6,#a78bfa)">
+      <div class="fin-kpi-icon" style="background:rgba(139,92,246,.1);">↩️</div>
+      <div class="fin-kpi-label">Visszatérő arány</div>
+      <div class="fin-kpi-val" id="kpiReturn">—</div>
+      <div class="fin-kpi-change" id="kpiReturnChg">
+        <span>↔</span><span>Betöltés…</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revenue chart -->
+  <div class="fin-chart-card fin-reveal">
+    <div class="fin-chart-header">
+      <div>
+        <div class="fin-chart-title">Bevételi alakulás</div>
+        <div class="fin-chart-sub" id="chartSub">Utolsó 12 hónap</div>
+      </div>
+      <div class="fin-legend">
+        <div class="fin-legend-item">
+          <div class="fin-legend-dot" style="background:#3b5cff;"></div> Bevétel
+        </div>
+        <div class="fin-legend-item">
+          <div class="fin-legend-dot" style="background:#ef4444;"></div> Visszatérítés
+        </div>
+      </div>
+    </div>
+
+    <div style="position:relative;">
+      <div class="fin-bar-chart-bg" id="chartGridlines"></div>
+      <div class="fin-bar-chart" id="revenueChart"></div>
+    </div>
+  </div>
+
+  <!-- Bottom grid -->
+  <div class="fin-bottom-grid fin-reveal">
+
+    <!-- Top products -->
+    <div class="fin-chart-card">
+      <div class="fin-chart-header">
+        <div>
+          <div class="fin-chart-title">Legjobb termékek</div>
+          <div class="fin-chart-sub">Bevétel szerint rangsorolva</div>
+        </div>
+      </div>
+      <table class="fin-table">
+        <thead>
+          <tr>
+            <th width="36">#</th>
+            <th>Termék</th>
+            <th style="text-align:right;">Bevétel</th>
+          </tr>
+        </thead>
+        <tbody id="topProductsTable">
+          <tr><td colspan="3" class="fin-loading">
+            <div class="fin-spinner"></div>Betöltés…
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Category donut + recent transactions -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+
+      <!-- Category split -->
+      <div class="fin-chart-card" style="flex:1;">
+        <div class="fin-chart-title" style="margin-bottom:16px;">Bevétel kategóriánként</div>
+        <div class="fin-donut-wrap">
+          <svg class="fin-donut-svg" width="110" height="110" viewBox="0 0 110 110" id="donutSvg">
+            <circle cx="55" cy="55" r="40" fill="none" stroke="var(--glass-border)" stroke-width="14"/>
+            <!-- Segments added by JS -->
+          </svg>
+          <div class="fin-donut-legend" id="donutLegend">
+            <div class="fin-loading" style="padding:0;">Betöltés…</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent transactions -->
+      <div class="fin-chart-card" style="flex:1;">
+        <div class="fin-chart-title" style="margin-bottom:14px;">Legutóbbi rendelések</div>
+        <div class="fin-tx-list" id="recentTxList">
+          <div class="fin-loading" style="padding:0;">Betöltés…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Tooltip -->
+<div class="fin-tooltip" id="finTooltip"></div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script defer src="./assets/js/api.js?v=26"></script>
+<script defer src="./assets/js/nav.js?v=26"></script>
+<script>
+// ── UTILS ──
+function fmt(n) { return Math.round(Number(n)||0).toLocaleString('hu-HU') + ' Ft'; }
+function fmtK(n) { n = Math.round(Number(n)||0); return n>=1000000 ? (n/1000000).toFixed(1)+' M Ft' : n>=1000 ? (n/1000).toFixed(0)+' e Ft' : n+' Ft'; }
+function esc(s) { return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
+
+const MONTHS_HU = ['jan.','feb.','már.','ápr.','máj.','jún.','júl.','aug.','szept.','okt.','nov.','dec.'];
+const CAT_COLORS = ['#3b5cff','#0bc5ff','#10b981','#f59e0b','#8b5cf6','#ef4444','#06b6d4','#84cc16'];
+
+let activePeriod = 'month';
+let allOrders = [];
+
+// ── REVEAL ANIMATION ──
+const revObs = new IntersectionObserver(es => {
+  es.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');revObs.unobserve(e.target);} });
+}, { threshold: 0.05 });
+document.querySelectorAll('.fin-reveal').forEach(el => revObs.observe(el));
+
+// ── PERIOD ──
+document.querySelectorAll('.fin-pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.fin-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activePeriod = btn.dataset.period;
+    renderAll(allOrders);
+  });
+});
+
+// ── FILTER ORDERS BY PERIOD ──
+function filterByPeriod(orders) {
+  const now = new Date();
+  return orders.filter(o => {
+    const d = new Date(o.created_at);
+    if (activePeriod === 'week') {
+      const weekAgo = new Date(now); weekAgo.setDate(now.getDate() - 7);
+      return d >= weekAgo;
+    }
+    if (activePeriod === 'month') {
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    }
+    // year
+    return d.getFullYear() === now.getFullYear();
+  });
+}
+
+// ── RENDER KPIs ──
+function renderKPIs(orders) {
+  const filtered = filterByPeriod(orders);
+  const total = filtered.reduce((s,o) => s + (Number(o.gross_total)||Number(o.total_amount)||0), 0);
+  const count = filtered.length;
+  const avg = count ? Math.round(total / count) : 0;
+
+  const periodLabel = { week:'Ez a hét', month:'Ez a hónap', year:'Ez az év' }[activePeriod];
+  document.getElementById('periodLabel').textContent = periodLabel;
+
+  // KPI values
+  setKPI('kpiRevenue', fmtK(total), total > 0 ? 'up' : 'neutral', 'Rendelésekből');
+  setKPI('kpiAvgCart', fmtK(avg), avg > 50000 ? 'up' : 'neutral', 'Átlagos kosár');
+  setKPI('kpiOrders', count, count > 0 ? 'up' : 'neutral', count + ' rendelés');
+  setKPI('kpiReturn', '—', 'neutral', 'Adat betöltés…');
+}
+
+function setKPI(id, val, dir, sub) {
+  const el = document.getElementById(id);
+  const chgEl = document.getElementById(id + 'Chg');
+  if (el) el.textContent = val;
+  if (chgEl) {
+    const arrow = dir === 'up' ? '↑' : dir === 'down' ? '↓' : '↔';
+    chgEl.className = 'fin-kpi-change ' + dir;
+    chgEl.innerHTML = `<span>${arrow}</span><span>${esc(String(sub))}</span>`;
+  }
+}
+
+// ── REVENUE CHART ──
+function renderChart(orders) {
+  const chart = document.getElementById('revenueChart');
+  const gridEl = document.getElementById('chartGridlines');
+  const subEl = document.getElementById('chartSub');
+  if (!chart) return;
+
+  let labels, data, refunds;
+
+  if (activePeriod === 'year') {
+    subEl.textContent = 'Utolsó 12 hónap';
+    // Monthly buckets
+    const now = new Date();
+    const buckets = Array.from({length:12}, (_,i) => {
+      const d = new Date(now.getFullYear(), now.getMonth() - 11 + i, 1);
+      return { label: MONTHS_HU[d.getMonth()], month: d.getMonth(), year: d.getFullYear(), rev: 0, ref: 0 };
+    });
+    orders.forEach(o => {
+      const d = new Date(o.created_at);
+      const b = buckets.find(b => b.month === d.getMonth() && b.year === d.getFullYear());
+      if (b) {
+        const amt = Number(o.gross_total)||Number(o.total_amount)||0;
+        if ((o.status||'').includes('torolve')) b.ref += amt * 0.3;
+        else b.rev += amt;
+      }
+    });
+    labels = buckets.map(b=>b.label);
+    data = buckets.map(b=>b.rev);
+    refunds = buckets.map(b=>b.ref);
+  } else if (activePeriod === 'month') {
+    subEl.textContent = 'Napi bontás (utolsó 4 hét)';
+    const now = new Date(); const weeks = 4;
+    const buckets = Array.from({length:weeks*7}, (_,i) => {
+      const d = new Date(now); d.setDate(now.getDate() - (weeks*7 - 1 - i));
+      return { label: d.getDate()+'.', day: d.toDateString(), rev: 0, ref: 0 };
+    });
+    orders.forEach(o => {
+      const d = new Date(o.created_at);
+      const b = buckets.find(b => b.day === d.toDateString());
+      if (b) {
+        const amt = Number(o.gross_total)||Number(o.total_amount)||0;
+        if ((o.status||'').includes('torolve')) b.ref += amt * 0.3;
+        else b.rev += amt;
+      }
+    });
+    labels = buckets.map((b,i) => i%7===0 ? b.label : '');
+    data = buckets.map(b=>b.rev);
+    refunds = buckets.map(b=>b.ref);
+  } else {
+    subEl.textContent = 'Heti bontás (utolsó 7 nap)';
+    const days = ['H','K','Sz','Cs','P','Sz','V'];
+    const now = new Date();
+    const buckets = Array.from({length:7}, (_,i) => {
+      const d = new Date(now); d.setDate(now.getDate() - (6 - i));
+      return { label: days[d.getDay()===0?6:d.getDay()-1], day: d.toDateString(), rev: 0, ref: 0 };
+    });
+    orders.forEach(o => {
+      const d = new Date(o.created_at);
+      const b = buckets.find(b => b.day === d.toDateString());
+      if (b) {
+        const amt = Number(o.gross_total)||Number(o.total_amount)||0;
+        if ((o.status||'').includes('torolve')) b.ref += amt * 0.3;
+        else b.rev += amt;
+      }
+    });
+    labels = buckets.map(b=>b.label);
+    data = buckets.map(b=>b.rev);
+    refunds = buckets.map(b=>b.ref);
+  }
+
+  const maxVal = Math.max(...data, ...refunds, 1);
+
+  // Grid lines
+  const gridCount = 4;
+  gridEl.innerHTML = Array.from({length:gridCount+1}, (_,i) => {
+    const val = Math.round(maxVal * (gridCount - i) / gridCount);
+    return `<div class="fin-grid-line" style="position:relative;"><span style="position:absolute;right:calc(100% + 8px);top:-6px;font-size:10px;font-weight:700;color:var(--text-dim);white-space:nowrap;">${i===0?fmtK(val):''}</span></div>`;
+  }).join('');
+
+  // Bars
+  const cols = Math.min(data.length, 12);
+  const step = Math.floor(data.length / cols);
+  const displayData = data.filter((_,i)=>i%step===0).slice(0,cols);
+  const displayRef = refunds.filter((_,i)=>i%step===0).slice(0,cols);
+  const displayLabels = labels.filter((_,i)=>i%step===0).slice(0,cols);
+
+  chart.style.gridTemplateColumns = `repeat(${displayData.length},1fr)`;
+
+  chart.innerHTML = displayData.map((rev,i) => {
+    const ref = displayRef[i]||0;
+    const revH = Math.max(4, (rev/maxVal)*100);
+    const refH = Math.max(ref>0?4:0, (ref/maxVal)*100);
+    return `<div class="fin-bar-col" data-idx="${i}">
+      <div class="fin-bar-wrap">
+        ${refH>0?`<div class="fin-bar fin-bar-cost" style="height:${refH}%" data-rev="${rev}" data-ref="${ref}" data-label="${esc(displayLabels[i])}"></div>`:''}
+        <div class="fin-bar fin-bar-revenue" style="height:${revH}%" data-rev="${rev}" data-ref="${ref}" data-label="${esc(displayLabels[i])}"></div>
+      </div>
+      <span class="fin-bar-label">${esc(displayLabels[i]||'')}</span>
+    </div>`;
+  }).join('');
+
+  // Tooltip
+  const tooltip = document.getElementById('finTooltip');
+  chart.querySelectorAll('.fin-bar').forEach(bar => {
+    bar.addEventListener('mouseenter', e => {
+      const r = bar.dataset.rev, f = bar.dataset.ref, l = bar.dataset.label;
+      tooltip.innerHTML = `<div class="fin-tooltip-title">${esc(l)}</div>
+        <div class="fin-tooltip-row"><span>Bevétel</span><span class="fin-tooltip-val">${fmt(r)}</span></div>
+        ${Number(f)>0?`<div class="fin-tooltip-row"><span>Visszatérítés</span><span class="fin-tooltip-val" style="color:#ef4444;">-${fmt(f)}</span></div>`:''}`;
+      tooltip.classList.add('show');
+    });
+    bar.addEventListener('mousemove', e => {
+      tooltip.style.left = (e.clientX + 14) + 'px';
+      tooltip.style.top = (e.clientY - 40) + 'px';
+    });
+    bar.addEventListener('mouseleave', () => tooltip.classList.remove('show'));
+  });
+}
+
+// ── TOP PRODUCTS TABLE ──
+function renderTopProducts(orders) {
+  const tbody = document.getElementById('topProductsTable');
+  if (!tbody) return;
+
+  const filtered = filterByPeriod(orders);
+
+  // Aggregate revenue per product from order items
+  const productMap = {};
+  filtered.forEach(o => {
+    const items = o.items || o.order_items || [];
+    items.forEach(item => {
+      const name = item.product_name || item.name || ('Termék #' + (item.product_id||'?'));
+      const rev = (Number(item.price)||0) * (Number(item.quantity)||1);
+      if (!productMap[name]) productMap[name] = 0;
+      productMap[name] += rev;
+    });
+    // Fallback: if no items, count order total under order name
+    if (!items.length) {
+      const name = o.name ? 'Rendelés #' + o.id : ('Rendelés #' + o.id);
+      const rev = Number(o.gross_total)||Number(o.total_amount)||0;
+      if (!productMap[name]) productMap[name] = 0;
+      productMap[name] += rev;
+    }
+  });
+
+  const sorted = Object.entries(productMap)
+    .sort((a,b) => b[1]-a[1])
+    .slice(0,5);
+
+  if (!sorted.length) {
+    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;padding:20px;color:var(--text-dim);opacity:.6;">Még nincs eladási adat</td></tr>`;
+    return;
+  }
+
+  const maxRev = sorted[0][1];
+  tbody.innerHTML = sorted.map(([name, rev], i) => {
+    const pct = maxRev > 0 ? Math.round((rev/maxRev)*100) : 0;
+    const rankClass = i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    return `<tr>
+      <td><div class="fin-table-rank ${rankClass}">${i+1}</div></td>
+      <td>
+        <div style="font-size:13px;font-weight:700;">${esc(name)}</div>
+        <div class="fin-bar-mini"><div class="fin-bar-mini-fill" style="width:${pct}%"></div></div>
+      </td>
+      <td style="text-align:right;font-weight:800;font-size:13px;">${fmtK(rev)}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── DONUT CHART ──
+function renderDonut(orders) {
+  const svg = document.getElementById('donutSvg');
+  const legend = document.getElementById('donutLegend');
+  if (!svg || !legend) return;
+
+  const filtered = filterByPeriod(orders);
+
+  // Aggregate revenue per category from order items
+  const catMap = {};
+  filtered.forEach(o => {
+    const items = o.items || o.order_items || [];
+    items.forEach(item => {
+      const cat = item.category_name || item.category || 'Egyéb';
+      const rev = (Number(item.price)||0) * (Number(item.quantity)||1);
+      if (!catMap[cat]) catMap[cat] = 0;
+      catMap[cat] += rev;
+    });
+  });
+
+  let catData = Object.entries(catMap)
+    .sort((a,b) => b[1]-a[1])
+    .slice(0,5)
+    .map(([name, val], i) => ({name, val, color: CAT_COLORS[i]}));
+
+  if (!catData.length) {
+    svg.innerHTML = `<text x="55" y="60" text-anchor="middle" font-size="10" fill="var(--text-dim)">Nincs adat</text>`;
+    legend.innerHTML = `<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:12px;">Még nincs kategória adat</div>`;
+    return;
+  }
+
+  const total = catData.reduce((s,d)=>s+d.val,0);
+  const cx=55,cy=55,r=40,stroke=14;
+  const circ = 2*Math.PI*r;
+
+  let offset = 0;
+  const segments = catData.map(d => {
+    const pct = d.val/total;
+    const len = pct*circ;
+    const el = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none"
+      stroke="${d.color}" stroke-width="${stroke}"
+      stroke-dasharray="${len.toFixed(2)} ${(circ-len).toFixed(2)}"
+      stroke-dashoffset="${(-offset).toFixed(2)}"
+      transform="rotate(-90 ${cx} ${cy})"
+      style="transition:opacity 200ms;cursor:pointer;"
+      onmouseenter="this.style.opacity='.75'" onmouseleave="this.style.opacity='1'"/>`;
+    offset += len;
+    return el;
+  }).join('');
+
+  svg.innerHTML = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--glass-border)" stroke-width="${stroke}"/>` + segments;
+
+  legend.innerHTML = catData.map(d => `
+    <div class="fin-donut-item">
+      <div class="fin-donut-color" style="background:${d.color};"></div>
+      <div class="fin-donut-name">${esc(d.name)}</div>
+      <div>
+        <div class="fin-donut-pct">${total>0?Math.round(d.val/total*100):0}%</div>
+        <div class="fin-donut-amt">${fmtK(d.val)}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ── RECENT TRANSACTIONS ──
+function renderRecentTx(orders) {
+  const list = document.getElementById('recentTxList');
+  if (!list) return;
+
+  const recent = [...filterByPeriod(orders)]
+    .sort((a,b) => new Date(b.created_at)-new Date(a.created_at))
+    .slice(0,5);
+
+  if (!recent.length) {
+    list.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-dim);opacity:.6;font-size:13px;">Még nincs tranzakció ebben az időszakban</div>`;
+    return;
+  }
+
+  list.innerHTML = recent.map(o => {
+    const amt = Number(o.gross_total)||Number(o.total_amount)||0;
+    const date = new Date(o.created_at);
+    const dateStr = date.toLocaleDateString('hu-HU',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    const type = (o.status||'').includes('torolve') ? 'refund' : 'income';
+    const icon = type==='refund' ? '↩️' : '🛒';
+    return `<div class="fin-tx">
+      <div class="fin-tx-icon ${type}">${icon}</div>
+      <div class="fin-tx-info">
+        <div class="fin-tx-name">Rendelés #${o.id} – ${esc(o.name||o.customer_name||'Vásárló')}</div>
+        <div class="fin-tx-date">${dateStr}</div>
+      </div>
+      <div class="fin-tx-amount ${type}">${type==='refund'?'-':'+'}${fmt(amt)}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── RENDER ALL ──
+function renderAll(orders) {
+  renderKPIs(orders);
+  renderChart(orders);
+  renderTopProducts(orders);
+  renderDonut(orders);
+  renderRecentTx(orders);
+}
+
+// ── LOAD DATA ──
+async function loadFinanceData() {
+  try {
+    if (window.api) {
+      const res = await window.api.get('/admin/orders?limit=500');
+      const list = res?.data?.orders ?? res?.orders ?? res?.data ?? (Array.isArray(res) ? res : []);
+      allOrders = Array.isArray(list) ? list : [];
+    }
+  } catch(e) {
+    console.log('Finance API error (using demo data):', e.message);
+  }
+  renderAll(allOrders);
+}
+
+document.addEventListener('DOMContentLoaded', loadFinanceData);
+</script>
+</body>
+</html>

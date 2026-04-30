@@ -1,4 +1,4 @@
-/* products.css – glassmorphism termék kártyák */
+/* products.css v30 – glassmorphism termék kártyák + termék részletek modernizálás */
 
 .rp-page-title { font-weight: 900; letter-spacing: .2px; }
 
@@ -66,8 +66,7 @@
 .rp-price { font-size: 20px; font-weight: 900; }
 .rp-desc { color: var(--muted-2); }
 
-/* === TOP PILLS (CATEGORY + STOCK) ===
-   Keep them on one line on mobile so they don't stack. */
+/* === TOP PILLS === */
 .rp-top-pills {
   display: flex;
   align-items: center;
@@ -76,18 +75,13 @@
   flex-wrap: nowrap;
 }
 .rp-top-pills > * { min-width: 0; }
-
-/* Allow truncation instead of wrapping */
-.rp-top-pills .rp-tag {
-  max-width: 120px;
-}
+.rp-top-pills .rp-tag { max-width: 120px; }
 .rp-top-pills .rp-stock-pill {
   max-width: 175px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 @media (max-width: 380px) {
   .rp-top-pills .rp-tag { max-width: 105px; }
   .rp-top-pills .rp-stock-pill { max-width: 155px; }
@@ -136,3 +130,195 @@
 .rp-modal .modal-header { border-bottom: 1px solid var(--border); }
 .rp-modal .btn-close { filter: invert(1); opacity: .7; }
 [data-theme="light"] .rp-modal .btn-close { filter: none; }
+
+/* ═══════════════════════════════════════════════
+   PRODUCT DETAIL PAGE – modernizált termék részletek
+   ═══════════════════════════════════════════════ */
+
+/* ── IMAGE LAYOUT ── */
+.rp-detail-img-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: sticky;
+  top: 80px;
+}
+
+.rp-detail-img-main {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+.rp-detail-img-main:hover {
+  border-color: rgba(59,92,255,.22);
+  box-shadow: var(--shadow);
+}
+.rp-detail-img-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 20px;
+  transition: opacity .18s ease, transform .22s ease;
+}
+.rp-detail-img-main img:hover { transform: scale(1.03); }
+[data-theme="light"] .rp-detail-img-main { background: rgba(11,26,47,.04); }
+
+/* ── THUMBNAILS ── */
+.rp-thumbs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.rp-thumb-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid var(--glass-border);
+  background: var(--glass);
+  padding: 0;
+  cursor: pointer;
+  transition: border-color 130ms ease, transform 120ms ease, box-shadow 120ms ease;
+  flex-shrink: 0;
+}
+.rp-thumb-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 4px;
+}
+.rp-thumb-btn.active,
+.rp-thumb-btn:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59,92,255,.25);
+}
+
+/* ── PRODUCT TITLE (detail page) ── */
+#pdTitle {
+  font-weight: 900 !important;
+  font-size: clamp(20px, 3.5vw, 28px) !important;
+  letter-spacing: -.03em !important;
+  line-height: 1.15 !important;
+  color: var(--text) !important;
+}
+
+/* ── PRICE (detail page) ── */
+#pdPrice {
+  font-size: clamp(22px, 3vw, 30px) !important;
+  font-weight: 900 !important;
+  background: linear-gradient(135deg, var(--text) 40%, rgba(59,92,255,.8));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -.02em;
+}
+[data-theme="light"] #pdPrice {
+  background: linear-gradient(135deg, #0b1628 40%, #2847e8);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* ── ADMIN META ── */
+.rp-product-meta {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 12px 16px;
+  color: var(--text-dim);
+  font-size: 12px;
+}
+.rp-product-meta strong { color: var(--text) !important; font-weight: 700; }
+
+/* ── TAB GROUP ── */
+.rp-tab-group {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--btn-ghost-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  width: fit-content;
+}
+
+/* ── DESCRIPTION TEXT ── */
+.rp-tab-panel-content .rp-desc {
+  color: var(--text-dim) !important;
+  line-height: 1.75;
+  font-size: 14px;
+}
+[data-theme="light"] .rp-tab-panel-content .rp-desc { color: rgba(11,26,47,.7) !important; }
+
+/* ── SPECS TABLE ── */
+.rp-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ── DIVIDER ── */
+.rp-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 18px 0;
+  position: relative;
+}
+.rp-divider::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 60px; height: 1px;
+  background: linear-gradient(90deg, rgba(59,92,255,.5), transparent);
+}
+
+/* ── ACTION BUTTONS (detail page) ── */
+#pdAddBtn {
+  background: linear-gradient(135deg, #3b5cff, #0bc5ff) !important;
+  border: 0 !important;
+  color: #fff !important;
+  font-weight: 800 !important;
+  box-shadow: 0 4px 18px rgba(59,92,255,.30);
+  transition: all 150ms ease;
+}
+#pdAddBtn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(59,92,255,.42);
+}
+#pdAddBtn:disabled { opacity: .45; box-shadow: none; transform: none; }
+
+/* ── RATING ── */
+#pdRating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+#pdRating .rp-stars { color: #f59e0b; font-size: 15px; letter-spacing: 1px; }
+#pdRating .rp-rating-count { font-weight: 600; }
+
+/* ── BACK BUTTON ── */
+.rp-anim-up .rp-pill-btn.rp-action-btn {
+  background: var(--glass) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text) !important;
+  font-weight: 700 !important;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes rp-fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.rp-anim-up { animation: rp-fade-up .45s cubic-bezier(0.23,1,0.32,1) both; }
+.rp-d1 { animation-delay: .04s; }
+.rp-d2 { animation-delay: .10s; }

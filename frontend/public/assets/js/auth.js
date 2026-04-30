@@ -1,3 +1,9 @@
+// =====================================================================
+//  auth.js – JAVÍTOTT VERZIÓ
+//  Bug fix: a regisztráció "company" mezőt küldött, de a backend
+//  "company_name"-t vár → most már helyesen küldi a company_name-t
+// =====================================================================
+
 function byId(id) { return document.getElementById(id); }
 
 function showBox(el, msg) {
@@ -57,7 +63,6 @@ function initThemeOnAuth() {
 }
 
 function setupGuestLink() {
-  // ✅ csak a konkrét vendég link állítson vendég módot
   const link = document.getElementById("guestBtn");
   if (!link) return;
 
@@ -68,9 +73,7 @@ function setupGuestLink() {
   });
 }
 
-
 function setupSupportLinkGuard() {
-  // ✅ HARD FIX: a support link kattintás mindig support.html-re menjen és ne állítson vendég módot
   document.addEventListener(
     "click",
     function (e) {
@@ -109,13 +112,13 @@ document.addEventListener("DOMContentLoaded", () => {
   setupPasswordToggle("regPassword", "toggleRegPw");
   setupPasswordToggle("regPassword2", "toggleRegPw2");
 
-  // Set initial label on eye buttons based on current language
   const showTxt = window.lang?.t ? window.lang.t("show_btn") : "Mutat";
   ["toggleLoginPw", "toggleRegPw", "toggleRegPw2"].forEach((id) => {
     const b = byId(id);
     if (b) b.textContent = showTxt;
   });
 
+  // ── LOGIN ──
   const loginForm = byId("loginForm");
   const loginError = byId("loginError");
 
@@ -146,9 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        // belépés => vendég mód off
         localStorage.removeItem("rp_guest");
-
         localStorage.setItem("rp_token", token);
 
         const user = res?.data?.user || res?.user || null;
@@ -162,6 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // ── REGISTER ──
   const registerForm = byId("registerForm");
   const regError = byId("regError");
   const regSuccess = byId("regSuccess");
@@ -174,7 +176,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const full_name = (byId("regName")?.value || "").trim();
       const email = (byId("regEmail")?.value || "").trim();
-      const company = (byId("regCompany")?.value || "").trim();
+      // 🔧 FIX: a backend "company_name" mezőt vár, nem "company"-t
+      const company_name = (byId("regCompany")?.value || "").trim();
       const password = (byId("regPassword")?.value || "").trim();
       const password2 = (byId("regPassword2")?.value || "").trim();
 
@@ -192,8 +195,15 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
-        await window.api.post("/auth/register", { full_name, email, company, password });
+        // 🔧 FIX: "company_name" kulcsot küldünk (nem "company"-t)
+        await window.api.post("/auth/register", {
+          full_name,
+          email,
+          company_name,  // ← JAVÍTVA: company → company_name
+          password
+        });
         showBox(regSuccess, "Sikeres regisztráció! Most már be tudsz lépni.");
+        registerForm.reset();
       } catch (err) {
         showBox(regError, getErrorMessage(err));
       }

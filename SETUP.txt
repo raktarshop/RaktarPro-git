@@ -1,49 +1,36 @@
-RaktarPro setup (MAMP)
+============================================================
+ RaktarPro – Telepítési útmutató
+============================================================
 
-1) Copy project
-- Put the whole folder into:
-  C:\MAMP\htdocs\RaktarPro_n\
+1. MAMP elindítása (Apache + MySQL)
 
-2) Start MAMP
-- Apache port: 8888
-- MySQL port: 8899
+2. A RaktarPro mappa bemásolása ide:
+     /Applications/MAMP/htdocs/RaktarPro
 
-3) Import DB
-- Open:
-  http://localhost:8888/phpMyAdmin/
-- Use database name:
-  webaruhaz1
-- Import file:
-  database/webaruhaz1.sql
+3. phpMyAdminban (http://localhost:8888/phpMyAdmin):
+   a) Hozz létre egy ÚJ, ÜRES adatbázist — bármilyen névvel
+      (pl. raktar, webaruhaz, sajat_db — mindegy)
+   b) Válaszd ki a bal oldali listából
+   c) Importálás → database/db_schema.sql
+   d) Importálás → database/products.sql
 
-4) Configure backend DB
-- File:
-  backend/api_new/config/Database.php
-- Defaults inside are:
-  host 127.0.0.1
-  port 8899
-  user root
-  pass root
-  db webaruhaz1
-- If your MySQL password is empty, set password to "".
+4. Nyisd meg a Setup oldalt a böngészőben:
+     http://localhost:8888/RaktarPro/backend/api_new/setup.php
+   
+   Add meg:
+   - Az adatbázis nevét (amit a 3. lépésben adtál meg)
+   - Host: localhost, Port: 8889
+   - User: root, Pass: root
+   
+   → Kattints "Beállítás mentése"
 
-5) Test backend
-- Open:
-  http://localhost:8888/RaktarPro_n/backend/api_new/ping
-- Expected:
-  {"ok":true}
+5. Kész! A webáruház elérhető:
+     http://localhost:8888/RaktarPro/frontend/public/home.html
 
-6) Open login page
-- Open:
-  http://localhost:8888/RaktarPro_n/frontend/public/auth.html
-- Register, then login.
+============================================================
+ Rendelési tételek táblája (egyszer kell futtatni)
+============================================================
+phpMyAdminban futtasd még:
+  database/patch_order_items.sql
 
-If you get DB_CONNECTION
-- Check MAMP MySQL port, and put the same number into Database.php
-- Check MySQL password root or empty
-
-If you get 404 HTML page in Network
-- Check that backend/api_new/.htaccess has no RewriteBase line
-
-If inputs clear after you click outside
-- The form should not reload. This version blocks reload with form action javascript:void(0).
+============================================================
