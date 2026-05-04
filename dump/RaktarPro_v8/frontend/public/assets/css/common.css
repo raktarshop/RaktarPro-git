@@ -1,0 +1,164 @@
+/* common.css – közös alapok + light/dark theme + navbar */
+
+:root{
+  /* DARK (default) */
+  --bg: #071426;
+  --bg2: #0b1a2f;
+  --card: rgba(10, 24, 45, .60);
+  --border: rgba(255,255,255,.12);
+  --text: #eaf1ff;
+  --text-dim: rgba(234,241,255,.70);
+  --input: rgba(255,255,255,.06);
+  --input-border: rgba(255,255,255,.14);
+
+  --primary: rgba(255,255,255,.90);
+  --primary-text: #0b1a2f;
+
+  --shadow: 0 20px 60px rgba(0,0,0,.35);
+
+  /* Kontraszt javítás (dark) */
+  --muted: rgba(234,241,255,.82);
+  --muted-2: rgba(234,241,255,.65);
+  --placeholder: rgba(234,241,255,.55);
+  --btn-ghost-bg: rgba(255,255,255,.08);
+  --btn-ghost-border: rgba(255,255,255,.18);
+}
+
+[data-theme="light"]{
+  --bg: #f5f7fb;
+  --bg2: #ffffff;
+  --card: rgba(255,255,255,.92);
+  --border: rgba(10, 24, 45, .10);
+  --text: #0b1a2f;
+  --text-dim: rgba(11,26,47,.70);
+  --input: rgba(11,26,47,.04);
+  --input-border: rgba(11,26,47,.12);
+
+  --primary: #0b1a2f;
+  --primary-text: #ffffff;
+
+  --shadow: 0 18px 50px rgba(11,26,47,.12);
+
+  /* Kontraszt javítás (light) */
+  --muted: rgba(11,26,47,.80);
+  --muted-2: rgba(11,26,47,.62);
+  --placeholder: rgba(11,26,47,.45);
+  --btn-ghost-bg: rgba(11,26,47,.04);
+  --btn-ghost-border: rgba(11,26,47,.12);
+}
+
+*{ box-sizing: border-box; }
+html, body{ height: 100%; }
+
+body{
+  margin: 0;
+  color: var(--text);
+  background: var(--bg);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/* Modern, finom animációk + theme váltás */
+html, body,
+.rp-nav,
+.rp-logo,
+.rp-pill-btn{
+  transition:
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    transform 120ms ease,
+    filter 120ms ease;
+}
+
+/* gomb hover/press */
+.rp-pill-btn:hover{ filter: brightness(1.08); transform: translateY(-1px); }
+.rp-pill-btn:active{ transform: translateY(0px) scale(.98); }
+
+/* Navbar */
+.rp-nav{
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255,255,255,.04);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(14px);
+}
+
+.rp-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  color: var(--text);
+}
+
+.rp-logo{
+  width: 38px; height: 38px;
+  border-radius: 14px;
+  display:grid; place-items:center;
+  background: rgba(255,255,255,.08);
+  border: 1px solid var(--border);
+  font-weight: 900;
+}
+
+.rp-subtitle{ color: var(--text-dim); font-size: 12px; margin-top: -2px; }
+
+.rp-pill-btn{
+  border-radius: 14px !important;
+  border: 1px solid var(--border) !important;
+  background: rgba(255,255,255,.06) !important;
+  color: var(--text) !important;
+}
+
+.rp-avatar{
+  width: 36px; height: 36px;
+  border-radius: 999px;
+  display:grid; place-items:center;
+  background: rgba(49,86,255,.18);
+  border: 1px solid var(--border);
+  font-weight: 800;
+}
+
+.rp-badge{
+  position:absolute;
+  top: -6px; right: -6px;
+  font-size: 11px;
+  border-radius: 999px;
+  padding: 2px 7px;
+  background: #ff3b3b;
+  color: #fff;
+  border: 2px solid var(--bg);
+}
+
+a{ color: inherit; }
+
+/* Language flags */
+.rp-lang-flags{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.rp-lang-btn{
+  width:34px;
+  height:34px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  user-select:none;
+}
+
+.rp-lang-btn.active{
+  box-shadow: 0 0 0 2px rgba(255,255,255,.18);
+  background: rgba(255,255,255,.10);
+}
+
+.rp-lang-btn:focus{
+  outline:none;
+  box-shadow: 0 0 0 3px rgba(49,86,255,.30);
+}

@@ -55,27 +55,65 @@ require_once __DIR__ . '/utils/Response.php';
 
 // Get request info
 $method = $_SERVER['REQUEST_METHOD'];
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$rawUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// Remove base path if exists
-$scriptName = dirname($_SERVER['SCRIPT_NAME']);
-if ($scriptName !== '/' && strpos($path, $scriptName) === 0) {
-    $path = substr($path, strlen($scriptName));
+// ── BULLETPROOF PATH PARSER ──
+// Works in MAMP, XAMPP, with or without mod_rewrite, PHP 7.0+
+// Strategy: try multiple approaches and pick the one that gives valid segments
+
+function extractSegments(string $rawUri, string $scriptName): array {
+    // Approach 1: strip script directory
+    $scriptDir = rtrim(dirname($scriptName), '/\\');
+    if ($scriptDir !== '' && $scriptDir !== '/' && strpos($rawUri, $scriptDir) === 0) {
+        $path = substr($rawUri, strlen($scriptDir));
+    } else {
+        $path = $rawUri;
+    }
+    $path = '/' . ltrim($path, '/');
+    $segs = array_values(array_filter(explode('/', $path), function($s){ return $s !== ''; }));
+    
+    // Validate: first segment should be a known route
+    $knownRoutes = ['auth','products','categories','orders','admin','suppliers',
+                    'warehouses','locations','stock','favorites','coupons',
+                    'reviews','roles','order-items','support','debug'];
+    if (!empty($segs) && in_array($segs[0], $knownRoutes)) {
+        return $segs;
+    }
+    
+    // Approach 2: take last N segments from rawUri  
+    $allSegs = array_values(array_filter(explode('/', $rawUri), function($s){ return $s !== ''; }));
+    foreach ($allSegs as $i => $seg) {
+        if (in_array($seg, $knownRoutes)) {
+            return array_values(array_slice($allSegs, $i));
+        }
+    }
+    
+    return $segs; // fallback
 }
 
-$path = rtrim($path, '/');
-if (empty($path)) {
-    $path = '/';
-}
-
-// Parse path segments
-$segments = explode('/', trim($path, '/'));
+$segments = extractSegments($rawUri, $_SERVER['SCRIPT_NAME']);
 
 // Route Handler
 try {
     
+    // ===== DEBUG ENDPOINT =====
+    if (isset($segments[0]) && $segments[0] === 'debug') {
+        Response::success([
+            'method'       => $method,
+            'raw_uri'      => $_SERVER['REQUEST_URI'],
+            'request_uri'  => $_SERVER['REQUEST_URI'] ?? 'N/A',
+            'script_name'  => $_SERVER['SCRIPT_NAME'] ?? 'N/A',
+            'script_dir'   => dirname($_SERVER['SCRIPT_NAME'] ?? ''),
+            'segments'     => $segments,
+            'php_version'  => PHP_VERSION,
+            'server_sw'    => $_SERVER['SERVER_SOFTWARE'] ?? 'N/A',
+            'htaccess_ok'  => file_exists(__DIR__ . '/.htaccess'),
+            'mod_rewrite'  => in_array('mod_rewrite', apache_get_modules() ?? []),
+        ], 'Debug info');
+    }
+
     // ===== HEALTH CHECK =====
-    if ($path === '/' || $path === '') {
+    if (empty($segments)) {
         Response::success([
             'api' => 'Raktár Pro REST API',
             'version' => '2.0',
@@ -100,7 +138,7 @@ try {
     }
     
     // ===== AUTH ROUTES =====
-    if ($segments[0] === 'auth') {
+    if (isset($segments[0]) && $segments[0] === 'auth') {
         $authController = new AuthController();
         
         switch ($segments[1] ?? '') {
@@ -123,7 +161,7 @@ try {
     }
     
     // ===== PRODUCT ROUTES =====
-    if ($segments[0] === 'products') {
+    if (isset($segments[0]) && $segments[0] === 'products') {
         $controller = new ProductController();
 
         // /products/by-ids (POST) - kosár termékek backendből
@@ -147,7 +185,7 @@ try {
     }
     
     // ===== CATEGORY ROUTES =====
-    if ($segments[0] === 'categories') {
+    if (isset($segments[0]) && $segments[0] === 'categories') {
         $controller = new CategoryController();
         
         if (!isset($segments[1])) {
@@ -162,7 +200,7 @@ try {
     }
     
     // ===== ORDER ROUTES =====
-    if ($segments[0] === 'orders') {
+    if (isset($segments[0]) && $segments[0] === 'orders') {
         $controller = new OrderController();
         
         if (!isset($segments[1])) {

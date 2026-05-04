@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Raktár Pro – Fiókbeállítások</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/common.css">
+</head>
+
+<body>
+  <!-- NAV -->
+  <nav class="rp-nav py-3">
+    <div class="container d-flex align-items-center justify-content-between gap-3">
+
+      <a class="rp-brand" href="./products.html">
+        <div class="rp-logo">RP</div>
+        <div>
+          <div class="fw-bold">Raktár Pro</div>
+          <div class="rp-subtitle" data-i18n="nav_subtitle">Professzionális raktári megoldások</div>
+        </div>
+      </a>
+
+      <div class="d-flex align-items-center gap-2">
+        <button id="themeToggle" class="btn rp-pill-btn" type="button" data-i18n-title="theme_title_dark" title="Sötét mód">🌙</button>
+
+        <a class="btn rp-pill-btn position-relative" href="./cart.html" title="Kosár">
+          🛒
+          <span id="cartBadge" class="rp-badge" style="display:none;">0</span>
+        </a>
+
+        <div class="dropdown">
+          <button class="btn rp-pill-btn d-flex align-items-center gap-2 dropdown-toggle" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <span class="rp-avatar">M</span>
+            <span class="d-none d-md-inline" data-i18n="nav_account">Fiók</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li id="adminMenuItem" style="display:none;">
+              <a class="dropdown-item" href="./admin.html" data-i18n="nav_admin">Admin</a>
+            </li>
+            <li><a class="dropdown-item" href="./account.html" data-i18n="nav_account_settings">Fiókbeállítások</a></li>
+            <li><a class="dropdown-item" href="./cart.html" data-i18n="nav_cart">Kosár</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="#" id="logoutBtn" data-i18n="nav_logout">Kijelentkezés</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <h1 class="fw-bold" data-i18n="account_title">Fiókbeállítások</h1>
+    <p style="opacity:.75" data-i18n="account_soon">Hamarosan: profil, jelszó csere, cégadatok.</p>
+    <a href="./products.html" class="btn rp-pill-btn" data-i18n="back_to_products">Vissza a termékekhez</a>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script defer src="./assets/js/lang.js"></script>
+  <script defer src="./assets/js/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Raktár Pro – Rendeléseim</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="./assets/css/common.css?v=25">
+  <script>!function(){var t=localStorage.getItem("rp_theme")||"dark";document.documentElement.setAttribute("data-theme",t)}();</script>
+
+  <link rel="stylesheet" href="./assets/css/nav-unify.css?v=25">
+  <link rel="stylesheet" href="./assets/css/rp-luxury.css?v=25">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <style>:root{--font-display:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;}body{font-family:var(--font-body,'DM Sans',sans-serif);}</style>
+</head>
+
+<body>
+<div class="rp-progress-bar" id="progressBar"></div>
+  <nav class="rp-nav py-3">
+  <div class="container d-flex align-items-center justify-content-between gap-3">
+    <a class="rp-brand" href="./home.html">
+      <div class="rp-logo"><img src="./assets/img/logo.png" alt="Raktár Pro logo" class="rp-logo-img"></div>
+      <div>
+        <div class="fw-bold">Raktár Pro</div>
+        <div class="rp-subtitle">Professzionális raktári megoldások</div>
+      </div>
+    </a>
+    <div class="d-flex align-items-center gap-2">
+      <button id="themeToggle" class="btn rp-pill-btn" type="button">
+        <i class="bi bi-moon-stars rp-icon"></i>
+      </button>
+      <a class="btn rp-pill-btn position-relative" href="./favorites.html" title="Kedvencek">
+        <i class="bi bi-heart rp-icon"></i>
+        <span id="favBadge" class="rp-badge" style="display:none;">0</span>
+      </a>
+      <a class="btn rp-pill-btn position-relative" href="./cart.html">
+        <i class="bi bi-cart3 rp-icon"></i>
+        <span id="cartBadge" class="rp-badge" style="display:none;">0</span>
+      </a>
+      <div class="dropdown">
+        <button class="btn rp-pill-btn d-flex align-items-center gap-2 dropdown-toggle" data-bs-toggle="dropdown">
+          <span class="rp-avatar" id="navAvatar">A</span>
+          <span class="d-none d-md-inline">Fiók</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li id="adminMenuItem" style="display:none;"><a class="dropdown-item" href="./admin.html"><i class="bi bi-speedometer2 me-2"></i>Admin</a></li>
+          <li id="adminMenuDivider" style="display:none;"><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="./account.html"><i class="bi bi-gear me-2"></i>Fiókbeállítások</a></li>
+          <li><a class="dropdown-item" href="./favorites.html"><i class="bi bi-heart me-2"></i>Kedvencek</a></li>
+          <li><a class="dropdown-item" href="./orders.html"><i class="bi bi-receipt me-2"></i>Rendeléseim</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item text-danger" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Kijelentkezés</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main class="container py-4">
+    <div class="d-flex flex-wrap align-items-end justify-content-between gap-2 mb-3">
+      <div>
+        <h1 class="fw-bold m-0" data-i18n="orders_title">Rendeléseim</h1>
+        <div class="small opacity-75" data-i18n="orders_subtitle">A korábbi vásárlásaid listája</div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <button id="ordersReload" class="btn rp-admin-btn" type="button">
+          <i class="bi bi-arrow-clockwise me-2"></i><span data-i18n="orders_reload">Újratöltés</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="rp-admin-card p-3 mb-3">
+      <div class="d-flex flex-column flex-md-row gap-2 align-items-md-center justify-content-between">
+        <input id="ordersSearch" class="form-control rp-admin-input" data-i18n-ph="orders_search_ph" placeholder="Keresés (státusz, dátum, fizetés)..." />
+        <div id="ordersMsg" class="small opacity-75"></div>
+      </div>
+    </div>
+
+    <div class="rp-admin-card p-3">
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0 rp-admin-table">
+          <thead>
+            <tr>
+              <th data-i18n="orders_table_date">Dátum</th>
+              <th data-i18n="orders_table_status">Státusz</th>
+              <th data-i18n="orders_table_total">Összeg</th>
+              <th data-i18n="orders_table_payment">Fizetés</th>
+              <th data-i18n="orders_table_action" style="width:140px;">Művelet</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTbody"></tbody>
+        </table>
+      </div>
+      <div id="ordersEmpty" class="rp-empty mt-3" style="display:none;" data-i18n="orders_empty">Nincs rendelés.</div>
+    </div>
+  </main>
+
+  <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content" style="background:var(--card); color:var(--text); border:1px solid var(--border);">
+        <div class="modal-header" style="border-bottom-color:var(--border);">
+          <div>
+            <div class="fw-bold" style="font-size:18px;" data-i18n="order_details_title">Rendelés részletei</div>
+            <div id="odMeta" class="small opacity-75"></div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-12 col-lg-6">
+              <div class="rp-admin-card p-3 h-100">
+                <div class="fw-bold mb-2" data-i18n="order_summary">Összegzés</div>
+                <div class="d-flex justify-content-between small py-1"><span class="opacity-75" data-i18n="order_details_status">Státusz</span><span id="odStatus" class="fw-semibold"></span></div>
+                <div class="d-flex justify-content-between small py-1"><span class="opacity-75" data-i18n="order_details_payment">Fizetés</span><span id="odPayment" class="fw-semibold"></span></div>
+                <div class="d-flex justify-content-between small py-1"><span class="opacity-75" data-i18n="order_details_total">Összeg</span><span id="odTotal" class="fw-semibold"></span></div>
+                <div class="mt-2 pt-2" style="border-top:1px solid var(--border);">
+                  <div class="fw-bold mb-2" data-i18n="order_shipping">Szállítás</div>
+                  <div class="small opacity-75 mb-1" data-i18n="checkout_address_label">Szállítási cím</div>
+                  <div id="odAddress" class="small" style="white-space:pre-wrap;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+              <div class="rp-admin-card p-3 h-100">
+                <div class="fw-bold mb-2" data-i18n="orders_items">Tételek</div>
+                <div class="table-responsive">
+                  <table class="table table-sm align-middle mb-0 rp-admin-table">
+                    <thead>
+                      <tr>
+                        <th data-i18n="order_details_name">Név</th>
+                        <th data-i18n="order_details_qty" style="width:110px;">Mennyiség</th>
+                        <th data-i18n="order_details_price" style="width:140px;">Ár</th>
+                      </tr>
+                    </thead>
+                    <tbody id="odItems"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="odErr" class="alert alert-danger mt-3 mb-0" style="display:none;"></div>
+        </div>
+
+        <div class="modal-footer" style="border-top-color:var(--border);">
+          <button class="btn rp-admin-btn" data-bs-dismiss="modal" type="button" data-i18n="modal_close">Bezárás</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./assets/js/api.js?v=25"></script>
+  <script src="./assets/js/lang.js?v=25"></script>
+  <script src="./assets/js/nav.js?v=25"></script>
+  <script src="./assets/js/orders.js?v=25"></script>
+<script>window.addEventListener("scroll",function(){var p=document.getElementById("progressBar");if(p){var pct=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100;p.style.width=Math.min(pct,100)+"%";}},{passive:true});</script>
+</body>
+</html>

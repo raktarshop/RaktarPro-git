@@ -1,0 +1,22 @@
+### RaktarPro API smoke (példák)
+### Használat: VSCode REST Client extension / Postman / curl
+
+# @baseUrl = http://localhost:8888/RaktarPro_v4/backend/public
+
+### Health / base
+GET {{baseUrl}}/
+
+### Login (példa)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@test.hu",
+  "password": "admin123"
+}
+
+### Products list
+GET {{baseUrl}}/products
+
+### Product details
+GET {{baseUrl}}/products/17

@@ -1,0 +1,391 @@
+/* ================================================================
+   mobile.css – RaktarPro Reszponzív Stílusok
+   Minden oldalon betöltődik. Breakpoints: 768px, 480px, 360px
+   ================================================================ */
+
+/* ── iOS ZOOM MEGELŐZÉS ─────────────────────────────────────── */
+input, select, textarea {
+  font-size: max(16px, 1em); /* iOS nem zoomol be 16px alatt */
+}
+
+/* ── GLOBÁLIS TOUCH ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Minimum érintési terület */
+  button, a.btn, .btn, [role="button"] { min-height: 44px; }
+
+  /* Container szélső padding */
+  .container { padding-left: 14px !important; padding-right: 14px !important; }
+
+  /* Kártyák kisebb radius mobilon */
+  .rp-panel, .rp-admin-card { border-radius: 16px !important; }
+}
+
+/* ── HOME.HTML NAV ──────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .hp-nav {
+    height: 54px;
+    padding: 0 10px;
+    gap: 6px;
+  }
+  /* Brand szöveg elrejtése */
+  .hp-nav-brand { font-size: 0; gap: 0; }
+  .hp-nav-brand img { width: 34px; height: 34px; }
+
+  /* Kategória scroll sor kisebb */
+  .hp-nav-cats { gap: 2px; }
+  .hp-nav-cat { font-size: 11px; padding: 5px 9px; }
+
+  /* Jobb oldali gombok */
+  .hp-nav-right { gap: 5px; }
+  .hp-nav-btn { width: 36px; height: 36px; border-radius: 10px; font-size: 15px; }
+
+  /* Auth gomb: mobilon csak ikon + rövid szöveg */
+  .hp-auth-btn { padding: 7px 11px; font-size: 12px; gap: 5px; }
+}
+
+@media (max-width: 400px) {
+  /* Extra kis képernyőn cat-sor rejtve, de scrollozható */
+  .hp-nav-cats { -webkit-overflow-scrolling: touch; }
+  .hp-auth-btn span { display: none; } /* csak ikon */
+}
+
+/* ── HOME HERO ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hp-hero {
+    grid-template-columns: 1fr !important;
+    padding: 24px 16px !important;
+    min-height: auto !important;
+    gap: 24px;
+  }
+  .hp-hero-title { font-size: clamp(26px, 7vw, 40px); }
+  .hp-hero-visual { display: none; }
+  .hp-hero-badges { flex-wrap: wrap; gap: 6px; }
+  .hp-hero-btns { flex-direction: column; gap: 10px; }
+  .hp-hero-btns a { text-align: center; }
+}
+
+/* ── HOME TERMÉKEK RÁCS ─────────────────────────────────────── */
+@media (max-width: 640px) {
+  .hp-section { padding: 0 12px 28px !important; }
+  .hp-products-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+  .hp-section-head { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .hp-section-title { font-size: 20px; }
+  /* Kártya kompaktabb */
+  .hp-product-info { padding: 10px; }
+  .hp-product-name { font-size: 13px; }
+  .hp-product-price { font-size: 15px; }
+  .hp-product-cat { font-size: 10px; }
+}
+@media (max-width: 380px) {
+  .hp-products-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ── HOME STAT KÁRTYÁK ──────────────────────────────────────── */
+@media (max-width: 480px) {
+  .hp-stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+    padding: 0 12px 24px !important;
+  }
+  .hp-stat-val { font-size: 24px; }
+}
+
+/* ── HOME FOOTER ────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .hp-footer-inner {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+  .hp-banner { padding: 20px 16px !important; border-radius: 18px; }
+  .hp-banner-title { font-size: 22px; }
+  .hp-banner-btns { flex-direction: column; }
+}
+
+/* ── PRODUCTS PAGE NAV (rp-nav) ─────────────────────────────── */
+@media (max-width: 768px) {
+  .rp-nav { padding-top: 10px !important; padding-bottom: 10px !important; }
+  .rp-brand .fw-bold { font-size: 15px; }
+  .rp-subtitle { display: none !important; }
+  .rp-nav .dropdown-toggle span.d-md-inline { display: none !important; }
+
+  /* Kosár + fav badge */
+  .rp-nav .rp-pill-btn {
+    padding: 6px 8px !important;
+    gap: 4px !important;
+    min-height: 38px;
+  }
+  .rp-nav .rp-avatar {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 11px !important;
+  }
+  .rp-badge {
+    top: -6px !important;
+    right: -6px !important;
+    min-width: 17px !important;
+    height: 17px !important;
+    font-size: 9px !important;
+  }
+}
+
+/* ── PRODUCTS PAGE KERESÉS / RENDEZÉS ──────────────────────── */
+@media (max-width: 768px) {
+  /* Keresés + sort sor */
+  .rp-bar-wrap {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  .rp-sort-row {
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: space-between;
+  }
+  .rp-search-input { font-size: 16px; }
+
+  /* Szűrő gomb látható */
+  .rp-mobile-filter { display: flex !important; }
+}
+
+/* ── PRODUCTS TERMÉK KÁRTYÁK ────────────────────────────────── */
+@media (max-width: 600px) {
+  .rp-products-grid:not(.list-view) {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+  .rp-lux-card { border-radius: 14px; }
+  .rp-lux-body { padding: 10px !important; }
+  .rp-lux-cat { font-size: 10px; }
+  .rp-lux-name { font-size: 13px; -webkit-line-clamp: 2; }
+  .rp-lux-desc { display: none !important; }
+  .rp-lux-price { font-size: 15px !important; }
+  .rp-qadd-btn { padding: 7px 10px !important; font-size: 12px !important; }
+}
+@media (max-width: 360px) {
+  .rp-products-grid:not(.list-view) { grid-template-columns: 1fr !important; }
+}
+
+/* ── FILTER SIDEBAR MOBILON ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .rp-filter-sidebar {
+    position: static !important;
+    top: auto !important;
+  }
+  .rp-filter-sidebar.open {
+    display: block !important;
+    position: fixed !important;
+    inset: 0;
+    z-index: 1050;
+    overflow-y: auto;
+    border-radius: 0 !important;
+    padding: 20px 16px 30px !important;
+    background: var(--bg) !important;
+    border: none !important;
+  }
+  /* Chip sor */
+  .rp-chip { font-size: 11px; padding: 4px 8px; }
+}
+
+/* ── PRODUCT DETAILS ────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Kép és szöveg egymás alatt */
+  .rp-pd-img-col, .rp-pd-info-col { width: 100% !important; }
+
+  /* Ár kisebb */
+  .rp-price { font-size: 26px !important; }
+  #pdRating { margin-bottom: 10px; }
+
+  /* Kosárba gomb */
+  .rp-pd-actions {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  .rp-pd-actions .btn { width: 100%; }
+
+  /* Spec sorok */
+  .rp-specs-row {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .rp-specs-key { min-width: 120px; font-size: 12px; }
+  .rp-specs-val { font-size: 13px; }
+
+  /* Tab gombok */
+  .rp-tab-btn { font-size: 13px; padding: 8px 12px; }
+}
+
+/* ── CART PAGE ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Kosár elem sor */
+  .rp-row { gap: 10px !important; }
+  .rp-row .col-5 { width: 55% !important; flex: 0 0 55% !important; }
+  .rp-row .col-7 { width: 45% !important; flex: 0 0 45% !important; }
+
+  .rp-cart-item-name { font-size: 13px; }
+  .rp-cart-item-cat { font-size: 11px; }
+
+  /* Összesítő panel */
+  .rp-panel.p-4 { padding: 16px !important; }
+
+  /* Checkout modal */
+  .modal-dialog { margin: 8px !important; }
+  .modal-content { border-radius: 18px !important; }
+  .modal-body { padding: 16px !important; }
+
+  /* Checkout form row */
+  .checkout-row { flex-direction: column !important; gap: 10px !important; }
+}
+
+/* ── ORDERS PAGE ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .rp-card { border-radius: 16px; padding: 14px !important; }
+
+  /* Rendelés fejléc */
+  .d-flex.justify-content-between.align-items-start {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* State badge */
+  .rp-status { font-size: 11px; padding: 3px 8px; }
+
+  /* Tételek táblázat scroll */
+  .table-responsive { border-radius: 10px; }
+  .table th, .table td { font-size: 12px; padding: 8px 6px !important; }
+}
+
+/* ── ACCOUNT PAGE ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Form mezők teljes szélesség */
+  .col-md-6 { width: 100% !important; }
+
+  /* Avatar kisebb */
+  .rp-account-avatar { width: 64px !important; height: 64px !important; font-size: 24px !important; }
+}
+
+/* ── ADMIN PAGE ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Admin nav tabsok */
+  .d-flex.flex-wrap.gap-2.mb-4 { gap: 6px !important; }
+  .rp-admin-btn {
+    font-size: 12px !important;
+    padding: 6px 10px !important;
+    min-height: 36px;
+  }
+
+  /* Admin táblázat scroll */
+  .rp-admin-table { font-size: 12px; }
+  .rp-admin-table th, .rp-admin-table td { padding: 6px 5px !important; white-space: nowrap; }
+
+  /* Category chips */
+  .cat-list { gap: 6px !important; }
+  .cat-add-row { flex-direction: column !important; gap: 8px !important; }
+  .cat-add-btn { width: 100% !important; }
+
+  /* Form */
+  .rp-admin-input, .form-control, .form-select { font-size: 16px !important; }
+}
+
+/* ── FAVORITES PAGE ─────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .fav-page { padding: 24px 14px !important; }
+  .fav-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+  .fav-card-name { font-size: 13px; }
+  .fav-card-price { font-size: 16px; }
+  .fav-header h1 { font-size: 24px; }
+}
+@media (max-width: 380px) {
+  .fav-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ── AUTH PAGE ──────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  html, body { overflow: auto; }
+  .auth-layout {
+    grid-template-columns: 1fr !important;
+    height: auto !important;
+    min-height: 100vh;
+  }
+  .auth-panel-right { display: none !important; }
+  .auth-panel-left { height: auto !important; }
+}
+@media (max-width: 480px) {
+  .auth-panel-inner { padding: 24px 18px !important; }
+  .auth-heading h1 { font-size: 24px !important; }
+}
+
+/* ── SUPPORT PAGE ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .rp-support-form { padding: 16px !important; border-radius: 16px !important; }
+}
+
+/* ── ADMIN FINANCE ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .fin-kpi-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+  .fin-kpi { padding: 16px; }
+  .fin-kpi-val { font-size: 22px; }
+  .fin-bottom-grid { grid-template-columns: 1fr !important; }
+  .fin-chart-card { padding: 16px; }
+  .fin-bar-chart { height: 140px; }
+  .fin-period-pills { flex-wrap: wrap; }
+}
+@media (max-width: 480px) {
+  .fin-kpi-grid { grid-template-columns: 1fr 1fr !important; }
+  .fin-stats { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* ── ADMIN ORDERS ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .rp-admin-table td:nth-child(3),
+  .rp-admin-table th:nth-child(3) { display: none; } /* email elrejtése */
+}
+
+/* ── MODAL GLOBÁLIS ─────────────────────────────────────────── */
+@media (max-width: 576px) {
+  .modal-dialog {
+    margin: 10px !important;
+    max-width: calc(100vw - 20px) !important;
+  }
+  .modal-content { border-radius: 18px !important; }
+  .modal-header { padding: 14px 16px !important; }
+  .modal-body { padding: 14px 16px !important; }
+  .modal-footer { padding: 12px 16px !important; }
+}
+
+/* ── DROPDOWN MOBILON ───────────────────────────────────────── */
+@media (max-width: 480px) {
+  .dropdown-menu { min-width: 180px !important; }
+  .dropdown-item { font-size: 13px; padding: 8px 14px; }
+}
+
+/* ── HOVER LETILTÁSA ÉRINTÉSEN ──────────────────────────────── */
+@media (hover: none) {
+  .rp-lux-card:hover { transform: none !important; box-shadow: none !important; }
+  .hp-product-card:hover { transform: none !important; }
+  .fin-kpi:hover { transform: none !important; }
+  .hp-stat:hover { transform: none !important; }
+  .auth-stat:hover { transform: none !important; }
+}
+
+/* ── SMOOTH SCROLL ──────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+/* ── OLDALVÁLTÁS ANIMÁCIÓ ── */
+body { animation: rp-page-in 200ms ease both; }
+@keyframes rp-page-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+a[href]:not([href^='#']):not([href^='mailto']):not([href^='tel']):not([data-no-transition]) {
+  /* handled by JS */
+}
+.rp-page-out {
+  animation: rp-page-out 120ms ease forwards !important;
+}
+@keyframes rp-page-out {
+  to { opacity: 0; transform: translateY(-8px); }
+}

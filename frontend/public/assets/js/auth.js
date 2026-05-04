@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (user) localStorage.setItem("rp_user", JSON.stringify(user));
         else localStorage.removeItem("rp_user");
 
-        window.location.href = "./products.html";
+        window.location.href = "./home.html";
       } catch (err) {
         showBox(loginError, getErrorMessage(err));
       }

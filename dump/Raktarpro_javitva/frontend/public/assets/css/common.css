@@ -1,0 +1,518 @@
+/* common.css – glassmorphism + dark/light + shared components */
+
+:root {
+  --bg: #060d1a;
+  --bg2: #0b1628;
+  --card: rgba(12, 28, 55, 0.55);
+  --glass: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.10);
+  --border: rgba(255,255,255,0.11);
+  --text: #e8f1ff;
+  --text-dim: rgba(232,241,255,0.68);
+  --input: rgba(255,255,255,0.05);
+  --input-border: rgba(255,255,255,0.13);
+  --primary: rgba(255,255,255,0.92);
+  --primary-text: #0b1628;
+  --shadow: 0 24px 70px rgba(0,0,0,0.45), 0 4px 20px rgba(0,0,0,0.3);
+  --shadow-sm: 0 4px 20px rgba(0,0,0,0.25);
+  --muted: rgba(232,241,255,0.82);
+  --muted-2: rgba(232,241,255,0.70);
+  --placeholder: rgba(232,241,255,0.38);
+  --btn-ghost-bg: rgba(255,255,255,0.07);
+  --btn-ghost-border: rgba(255,255,255,0.14);
+  --accent: #3b5cff;
+  --accent-glow: rgba(59,92,255,0.30);
+  --nav-bg: rgba(6,13,26,0.70);
+  --stock-ok-text: #a7f3c2;
+  --stock-ok-bg: rgba(34,197,94,0.15);
+  --stock-ok-border: rgba(34,197,94,0.32);
+  --stock-warn-text: #fde68a;
+  --stock-warn-bg: rgba(245,158,11,0.15);
+  --stock-warn-border: rgba(245,158,11,0.32);
+  --stock-out-text: #fca5a5;
+  --stock-out-bg: rgba(239,68,68,0.15);
+  --stock-out-border: rgba(239,68,68,0.30);
+}
+
+[data-theme="light"] {
+  --bg: #eef2f9;
+  --bg2: #f8faff;
+  --card: rgba(255,255,255,0.72);
+  --glass: rgba(255,255,255,0.55);
+  --glass-border: rgba(11,26,47,0.08);
+  --border: rgba(11,26,47,0.10);
+  --text: #0b1628;
+  --text-dim: rgba(11,26,47,0.68);
+  --input: rgba(255,255,255,0.80);
+  --input-border: rgba(11,26,47,0.13);
+  --primary: #0b1628;
+  --primary-text: #ffffff;
+  --shadow: 0 20px 55px rgba(11,26,47,0.12), 0 4px 16px rgba(11,26,47,0.08);
+  --shadow-sm: 0 4px 16px rgba(11,26,47,0.10);
+  --muted: rgba(11,26,47,0.78);
+  --muted-2: rgba(11,26,47,0.60);
+  --placeholder: rgba(11,26,47,0.38);
+  --btn-ghost-bg: rgba(11,26,47,0.05);
+  --btn-ghost-border: rgba(11,26,47,0.12);
+  --accent: #2847e8;
+  --accent-glow: rgba(40,71,232,0.18);
+  --nav-bg: rgba(238,242,249,0.80);
+  --stock-ok-text: #14532d;
+  --stock-ok-bg: rgba(34,197,94,0.15);
+  --stock-ok-border: rgba(34,197,94,0.30);
+  --stock-warn-text: #78350f;
+  --stock-warn-bg: rgba(245,158,11,0.15);
+  --stock-warn-border: rgba(245,158,11,0.32);
+  --stock-out-text: #7f1d1d;
+  --stock-out-bg: rgba(239,68,68,0.15);
+  --stock-out-border: rgba(239,68,68,0.28);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+
+body {
+  padding-top: 68px;
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(ellipse 1100px 700px at 15% 0%, rgba(59,92,255,0.14), transparent 60%),
+    radial-gradient(ellipse 900px 600px at 88% 20%, rgba(11,197,255,0.09), transparent 55%),
+    radial-gradient(ellipse 600px 500px at 50% 90%, rgba(120,40,255,0.07), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0px, rgba(255,255,255,.018) 1px, transparent 1px, transparent 8px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.015) 0px, rgba(0,0,0,.015) 1px, transparent 1px, transparent 10px);
+  opacity: .45; mix-blend-mode: overlay;
+}
+[data-theme="light"] body::before { opacity: .12; mix-blend-mode: multiply; }
+@media (prefers-reduced-motion: reduce) { body::before { display: none; } }
+
+.rp-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  transition: background 200ms ease, border-color 200ms ease;
+}
+
+.rp-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+
+.rp-logo {
+  width: 38px; height: 38px; border-radius: 14px;
+  display: grid; place-items: center;
+  background: rgba(59,92,255,0.18);
+  border: 1px solid rgba(59,92,255,0.30);
+  backdrop-filter: blur(10px);
+}
+.rp-logo-img { width: 38px; height: 38px; object-fit: contain; display: block; border-radius: 14px; }
+
+.rp-subtitle { color: var(--text-dim); font-size: 12px; margin-top: -2px; }
+
+.rp-pill-btn {
+  border-radius: 14px !important;
+  border: 1px solid var(--glass-border) !important;
+  background: var(--glass) !important;
+  color: var(--text) !important;
+  backdrop-filter: blur(10px);
+  transition: all 150ms ease;
+}
+.rp-pill-btn:hover { filter: brightness(1.12); transform: translateY(-1px); }
+.rp-pill-btn:active { transform: translateY(0) scale(.97); }
+
+.rp-avatar {
+  width: 34px; height: 34px; border-radius: 999px;
+  display: grid; place-items: center;
+  background: rgba(59,92,255,0.20);
+  border: 1px solid rgba(59,92,255,0.35);
+  font-weight: 800; font-size: 14px; color: var(--text);
+}
+
+.rp-badge {
+  position: absolute; top: -7px; right: -7px;
+  min-width: 18px; height: 18px;
+  font-size: 10px; line-height: 18px; text-align: center;
+  border-radius: 999px; padding: 0 4px;
+  background: linear-gradient(135deg,#ff4b4b,#ff2222);
+  color: #fff; border: 2px solid var(--bg); font-weight: 900;
+  display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(255,50,50,.4);
+  z-index: 10;
+}
+
+.dropdown-menu {
+  background: var(--card) !important;
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: var(--shadow) !important;
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border-radius: 18px; padding: 8px; min-width: 220px;
+}
+.dropdown-item {
+  color: var(--text) !important;
+  border-radius: 10px; padding: 9px 12px;
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 600; transition: background 120ms ease;
+}
+.dropdown-item:hover { background: rgba(255,255,255,.07) !important; }
+[data-theme="light"] .dropdown-item:hover { background: rgba(11,26,47,.06) !important; }
+.dropdown-divider { border-color: var(--border); margin: 6px 0; }
+
+.rp-card, .rp-admin-card {
+  border-radius: 22px;
+  background: var(--card);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(18px) saturate(1.3);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  transition: transform 160ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+.rp-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: rgba(59,92,255,.22); }
+.rp-admin-card:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+@media (prefers-reduced-motion: reduce) {
+  .rp-card:hover, .rp-admin-card:hover { transform: none; }
+}
+
+.rp-reveal { opacity: 0; transform: translateY(12px); transition: opacity 420ms ease, transform 420ms ease; }
+.rp-reveal.is-visible, .rp-reveal.visible { opacity: 1 !important; transform: translateY(0) !important; }
+/* Product cards in grid are always visible */
+.rp-products-grid .rp-reveal { opacity: 1 !important; transform: none !important; }
+
+.rp-lang-flags { display: flex; align-items: center; gap: 6px; }
+.rp-lang-btn {
+  width: 34px; height: 34px; border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  color: var(--text);
+  display: grid; place-items: center;
+  cursor: pointer; user-select: none; font-size: 18px;
+  transition: all 120ms ease; backdrop-filter: blur(8px);
+}
+.rp-lang-btn.active {
+  box-shadow: 0 0 0 2px var(--accent);
+  background: rgba(59,92,255,.12);
+  border-color: rgba(59,92,255,.35);
+}
+.rp-lang-btn:hover { transform: translateY(-1px); background: rgba(255,255,255,.10); }
+.rp-lang-btn:focus { outline: none; box-shadow: 0 0 0 3px var(--accent-glow); }
+
+.rp-icon { display: inline-block; line-height: 0; font-size: 1.05em; }
+a { color: inherit; }
+
+/* STOCK PILLS */
+.rp-stock-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 13px; border-radius: 999px;
+  font-weight: 800; font-size: 12px; letter-spacing: .2px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.06); color: var(--text);
+}
+.rp-stock-pill.rp-stock--ok {
+  color: var(--stock-ok-text);
+  background: var(--stock-ok-bg);
+  border-color: var(--stock-ok-border);
+}
+.rp-stock-pill.rp-stock--warn {
+  color: var(--stock-warn-text);
+  background: var(--stock-warn-bg);
+  border-color: var(--stock-warn-border);
+}
+.rp-stock-pill.rp-stock--out {
+  color: var(--stock-out-text);
+  background: var(--stock-out-bg);
+  border-color: var(--stock-out-border);
+}
+
+/* ACTION BUTTONS */
+.rp-action-btn {
+  padding: 9px 14px !important; border-radius: 999px !important;
+  display: inline-flex !important; align-items: center !important;
+  gap: 8px !important; line-height: 1 !important; font-weight: 700;
+}
+.rp-action-primary {
+  background: rgba(59,92,255,.18) !important;
+  border-color: rgba(59,92,255,.35) !important;
+}
+.rp-action-primary:hover { background: rgba(59,92,255,.28) !important; }
+
+/* NOTIFICATION BUBBLE */
+.rp-notif-bubble {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px; border-radius: 999px; padding: 0 5px;
+  font-size: 10px; font-weight: 800;
+  background: linear-gradient(135deg,#ff4b4b,#ff2222);
+  color: #fff; border: 2px solid var(--bg);
+  animation: rp-pulse 2s ease infinite;
+}
+@keyframes rp-pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,59,59,.4); }
+  50% { box-shadow: 0 0 0 5px rgba(255,59,59,0); }
+}
+
+/* ADMIN DANGER BTN */
+.rp-admin-btn-danger {
+  border-radius: 14px !important;
+  border: 1px solid rgba(239,68,68,.35) !important;
+  background: rgba(239,68,68,.10) !important;
+  color: var(--stock-out-text) !important;
+  font-weight: 900 !important;
+}
+.rp-admin-btn-danger:hover { background: rgba(239,68,68,.20) !important; }
+
+@media (max-width: 768px) { body { background-attachment: scroll; } }
+
+/* ============================================================
+   DARK MODE COMPREHENSIVE FIXES
+   ============================================================ */
+
+/* Fix grey text in dark mode - ensure all text uses theme variables */
+:root {
+  color-scheme: dark;
+}
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+/* Bootstrap overrides for dark mode */
+:root .form-label,
+:root .form-control,
+:root .form-select,
+:root .btn,
+:root label,
+:root p,
+:root span,
+:root div,
+:root h1, :root h2, :root h3, :root h4, :root h5, :root h6 {
+  color: var(--text);
+}
+
+/* Fix Bootstrap's grey overriding dark mode */
+:root .text-muted { color: var(--muted-2) !important; }
+:root .text-secondary { color: var(--muted-2) !important; }
+
+/* Form controls in dark mode */
+:root .form-control,
+:root .form-select {
+  background-color: var(--input) !important;
+  border-color: var(--input-border) !important;
+  color: var(--text) !important;
+}
+:root .form-control::placeholder { color: var(--placeholder) !important; }
+:root .form-select option {
+  background: #0b1628;
+  color: #e8f1ff;
+}
+[data-theme="light"] .form-select option {
+  background: #fff;
+  color: #0b1628;
+}
+:root .form-control:disabled,
+:root .form-select:disabled,
+:root .form-control option:disabled,
+:root .form-select option:disabled {
+  color: var(--muted-2) !important;
+  opacity: 0.7;
+}
+
+/* Modal fixes */
+:root .modal-content {
+  background: var(--card) !important;
+  color: var(--text) !important;
+  border-color: var(--glass-border) !important;
+}
+:root .modal-header,
+:root .modal-footer {
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+:root .btn-close { filter: invert(1) opacity(0.8); }
+[data-theme="light"] .btn-close { filter: none; }
+
+/* Table fixes in dark mode */
+:root .table {
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+:root .table td,
+:root .table th {
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+  background: transparent !important;
+}
+:root .table-striped tbody tr:nth-of-type(odd) {
+  background: rgba(255,255,255,.03) !important;
+}
+[data-theme="light"] .table-striped tbody tr:nth-of-type(odd) {
+  background: rgba(11,26,47,.03) !important;
+}
+
+/* Mobile nav fixes */
+@media (max-width: 767px) {
+  .rp-nav .container {
+    flex-wrap: wrap;
+    gap: 8px !important;
+  }
+  .rp-nav {
+    background: var(--nav-bg) !important;
+    color: var(--text) !important;
+  }
+  /* Fix hamburger/mobile menu in dark mode */
+  .navbar-toggler {
+    border-color: var(--border) !important;
+  }
+  .navbar-toggler-icon {
+    filter: invert(1);
+  }
+  [data-theme="light"] .navbar-toggler-icon {
+    filter: none;
+  }
+}
+
+/* Alert / info boxes */
+:root .rp-alert {
+  background: rgba(239,68,68,.12) !important;
+  border: 1px solid rgba(239,68,68,.3) !important;
+  color: #fca5a5 !important;
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+[data-theme="light"] .rp-alert {
+  color: #7f1d1d !important;
+}
+
+/* Payment pill info box */
+:root .rp-pill-info {
+  background: var(--btn-ghost-bg);
+  border: 1px solid var(--btn-ghost-border);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 600;
+}
+
+/* Checkout total display */
+:root .rp-checkout-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--btn-ghost-bg);
+  border: 1px solid var(--btn-ghost-border);
+  border-radius: 14px;
+  margin-top: 12px;
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--text);
+}
+
+/* ============================================================
+   MOBILE DARK MODE FIXES
+   ============================================================ */
+@media (max-width: 767px) {
+  /* Ensure background shows on mobile */
+  body {
+    background-attachment: scroll !important;
+    background-color: var(--bg) !important;
+  }
+
+  /* Ensure nav stays dark on mobile */
+  .rp-nav,
+  .rp-nav .container,
+  .rp-nav .container > * {
+    color: var(--text) !important;
+  }
+
+  /* Fix any Bootstrap overrides */
+  .rp-pill-btn,
+  .rp-lang-btn {
+    color: var(--text) !important;
+    background: var(--glass) !important;
+    border-color: var(--glass-border) !important;
+  }
+
+  /* Dropdown in mobile */
+  .dropdown-menu {
+    background: var(--card) !important;
+    color: var(--text) !important;
+  }
+
+  /* Card text */
+  .rp-card,
+  .rp-card *,
+  .rp-panel,
+  .rp-panel * {
+    color: var(--text);
+  }
+
+  /* Fix grey text on mobile specifically */
+  .rp-name,
+  .rp-title,
+  .rp-page-title,
+  .rp-total,
+  .rp-price,
+  h1, h2, h3, h4, h5 {
+    color: var(--text) !important;
+  }
+
+  .rp-sub,
+  .rp-desc,
+  .rp-subtitle {
+    color: var(--text-dim) !important;
+  }
+}
+
+/* Ensure select options use correct colors in dark */
+select option {
+  background-color: #0b1628;
+  color: #e8f1ff;
+}
+[data-theme="light"] select option {
+  background-color: #ffffff;
+  color: #0b1628;
+}
+
+/* ── GLOBAL LIGHT MODE TEXT FIX ── */
+[data-theme="light"] body,
+[data-theme="light"] p,
+[data-theme="light"] span:not(.rp-badge):not(.rp-stock-dot):not(.rp-corner-badge),
+[data-theme="light"] div,
+[data-theme="light"] h1,[data-theme="light"] h2,[data-theme="light"] h3,
+[data-theme="light"] h4,[data-theme="light"] h5,[data-theme="light"] h6,
+[data-theme="light"] label,
+[data-theme="light"] td,[data-theme="light"] th {
+  color: var(--text);
+}
+
+/* Nav & card text must also be visible in light mode */
+[data-theme="light"] .rp-nav { color: #0b1628; }
+[data-theme="light"] .rp-subtitle { color: rgba(11,26,47,.6) !important; }
+[data-theme="light"] .fw-bold { color: #0b1628; }
+
+/* product detail inline styles that use color */
+[data-theme="light"] #pdDesc,
+[data-theme="light"] #pdDesc div,
+[data-theme="light"] #pdDesc span { color: #0b1628 !important; }
+
+/* Dropdown text */
+[data-theme="light"] .dropdown-menu,
+[data-theme="light"] .dropdown-item { color: #0b1628; }
+
+/* Alert */
+[data-theme="light"] .alert { color: #0b1628; }
+
+/* admin table */
+[data-theme="light"] .rp-admin-table td,
+[data-theme="light"] .rp-admin-table th { color: #0b1628 !important; }

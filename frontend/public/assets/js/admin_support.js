@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   try { user = JSON.parse(localStorage.getItem("rp_user") || "null"); } catch {}
   const isAdmin = user && (Number(user.role_id) === 1 || user.is_admin === true || user.role === "admin" || user.role === "ADMIN");
   if (!isAdmin) {
-    alert("Ehhez admin jogosultság kell.");
+    window.rpToast('Ehhez admin jogosultság kell.', '', 'info');
     window.location.href = "./products.html";
     return;
   }

@@ -164,14 +164,10 @@ function mapCartToOrderItems(cart) {
 async function openCheckoutModal() {
   const cart = getCart();
   if (!cart.length) {
-    alert(t("cart_empty", "A kosár üres."));
+    window.rpToast(t("cart_empty", "A kosár üres.", '', 'info'));
     return;
   }
-  if (!getToken()) {
-    alert(t("checkout_login_required", "A rendelés leadásához kérlek jelentkezz be."));
-    window.location.href = './auth.html';
-    return;
-  }
+  // Vendég rendelés is engedélyezett — nincs auth check
 
   const user = getUser();
   const nameEl = document.getElementById('checkoutName');
@@ -232,7 +228,7 @@ async function placeOrder() {
   const extra = (document.getElementById('checkoutAddressExtra')?.value || '').trim();
 
   if (!name || !email || !zip || !city || !street || !house) {
-    alert(t("checkout_fill_required", "Kérlek töltsd ki a nevet, e-mailt és a címet."));
+    window.rpToast(t("checkout_fill_required", "Kérlek töltsd ki a nevet, e-mailt és a címet.", '', 'info'));
     return;
   }
 
@@ -264,11 +260,11 @@ async function placeOrder() {
     if (modal) modal.hide();
 
     const orderId = res?.data?.order_id || res?.order_id || res?.data?.data?.order_id;
-    alert(orderId
-      ? `${t("order_thanks","Köszönjük!")} ${t("order_id_prefix","Rendelés azonosító:")} ${orderId}`
+    window.rpToast(orderId
+      ? `${t("order_thanks","Köszönjük!", '', 'info')} ${t("order_id_prefix","Rendelés azonosító:")} ${orderId}`
       : t("order_thanks","Köszönjük! A rendelésed rögzítettük."));
   } catch (e) {
-    alert(e?.message || String(e));
+    window.rpToast(e?.message || String(e, '', 'info'));
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = oldText; }
   }

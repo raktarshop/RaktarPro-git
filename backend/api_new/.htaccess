@@ -1,6 +1,9 @@
 # Enable rewrite engine
 RewriteEngine On
 
+# IMPORTANT for MAMP/XAMPP subdirectory installs:
+RewriteBase /RaktarPro/backend/api_new/
+
 # If the request is for a real file or directory, don't rewrite
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
@@ -8,9 +11,13 @@ RewriteCond %{REQUEST_FILENAME} !-d
 # Rewrite all other requests to index.php
 RewriteRule ^(.*)$ index.php [QSA,L]
 
-# Handle OPTIONS requests (CORS preflight)
+# CORS preflight
 <IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin "*"
-    Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
-    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization"
 </IfModule>
+
+# Handle OPTIONS directly
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ index.php [QSA,L]

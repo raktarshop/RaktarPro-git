@@ -12,6 +12,12 @@ class AuthService {
     }
     
     public function register(array $data): array {
+        // Support both full_name OR first_name+last_name
+        if (empty($data['full_name']) && (!empty($data['first_name']) || !empty($data['last_name']))) {
+            $first = trim($data['first_name'] ?? '');
+            $last  = trim($data['last_name']  ?? '');
+            $data['full_name'] = trim("$last $first");
+        }
         $errors = Validator::required($data, ['email', 'password', 'full_name']);
         
         if (!empty($errors)) {
@@ -35,7 +41,9 @@ class AuthService {
         $userId = $this->userModel->create([
             'email' => Validator::sanitizeEmail($data['email']),
             'password_hash' => $passwordHash,
-            'full_name' => Validator::sanitizeString($data['full_name']),
+            'full_name'  => Validator::sanitizeString($data['full_name']),
+            'first_name' => Validator::sanitizeString($data['first_name'] ?? ''),
+            'last_name'  => Validator::sanitizeString($data['last_name']  ?? ''),
             'company_name' => $data['company_name'] ?? null,
             'role_id' => 3,
             'created_at' => date('Y-m-d H:i:s')
@@ -72,7 +80,9 @@ class AuthService {
             'user' => [
                 'id' => $user['id'],
                 'email' => $user['email'],
-                'full_name' => $user['full_name'],
+                'full_name'  => $user['full_name'],
+                'first_name' => $user['first_name'] ?? '',
+                'last_name'  => $user['last_name']  ?? '',
                 'company_name' => $user['company_name'],
                 'role_id' => $user['role_id'],
                 'is_admin' => (int)($user['is_admin'] ?? 0)
@@ -102,7 +112,9 @@ class AuthService {
             'user' => [
                 'id' => $user['id'],
                 'email' => $user['email'],
-                'full_name' => $user['full_name'],
+                'full_name'  => $user['full_name'],
+                'first_name' => $user['first_name'] ?? '',
+                'last_name'  => $user['last_name']  ?? '',
                 'role_id' => $user['role_id'],
                 'is_admin' => (int)($user['is_admin'] ?? 0)
             ]

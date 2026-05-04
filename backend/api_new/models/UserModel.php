@@ -48,11 +48,13 @@ class UserModel extends BaseModel {
     /**
      * Create user with password hashing
      */
-    public function createUser(string $email, string $password, string $fullName, ?string $companyName = null): int {
+    public function createUser(string $email, string $password, string $fullName, ?string $companyName = null, string $firstName = '', string $lastName = ''): int {
         $data = [
             'email' => $email,
             'password_hash' => password_hash($password, PASSWORD_DEFAULT),
             'full_name' => $fullName,
+            'first_name' => $firstName,
+            'last_name'  => $lastName,
             'company_name' => $companyName,
             'role_id' => 3, // default user role
             'created_at' => date('Y-m-d H:i:s'),

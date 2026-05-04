@@ -601,20 +601,11 @@ let currentProduct=null,imgs=[];
 
 function renderGallery(p){
   imgs=getExtraPhotos(p);
-  const main=qs('#mainImg');const thumbs=qs('#thumbsRow');
-  if(!main||!thumbs)return;
+  const main=qs('#mainImg');
+  if(!main)return;
   main.src=imgs[0];main.alt=p.name;
   main.onerror=()=>{main.src=FALLBACK[0];};
-  thumbs.innerHTML=imgs.map((src,i)=>`<button class="rp-thumb-btn${i===0?' active':''}" data-idx="${i}"><img src="${esc(src)}" alt="${esc(p.name)} ${i+1}" loading="lazy" onerror="this.src='${FALLBACK[0]}'"></button>`).join('');
-  thumbs.querySelectorAll('.rp-thumb-btn').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const idx=Number(btn.dataset.idx);
-      main.style.opacity='0';main.style.transform='scale(0.97)';
-      setTimeout(()=>{main.src=imgs[idx];main.style.opacity='1';main.style.transform='scale(1)';},160);
-      thumbs.querySelectorAll('.rp-thumb-btn').forEach(b=>b.classList.toggle('active',b.dataset.idx==idx));
-    });
-  });
-  main.style.transition='opacity .18s ease,transform .18s ease';
+  // Single image only – no thumbnails
 }
 
 function renderSpecs(p){
@@ -676,82 +667,77 @@ function getDemoProducts(){return[
   {id:1,sku:'P001',name:'iPhone 15 Pro',
    description:'Ha komoly telefont keresel, az iPhone 15 Pro nehezen megkerülhető. Titánium kerete könnyű és tartós egyszerre, a 48 MP-es kamera pedig szinte bármilyen fényviszonyban szép képet csinál. Az USB-C port végre egységes töltést jelent, az Action gombbal meg gyorsan előhívhatsz bármit. Egy feltöltéssel egész nap kibír, és iOS frissítéseket évekig kap.',
    image_url:'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=900&h=700&fit=crop',
-   unit_price:160000,stock:21,weight:0.187,category_name:'Mobil',avg_rating:4.8,review_count:124},
+   unit_price:589999,stock:21,weight:0.187,category_name:'Mobil',avg_rating:4.8,review_count:124},
 
   {id:2,sku:'P002',name:'Samsung Galaxy S24 Ultra',
    description:'Az S24 Ultra az a telefon, amit ha egyszer kézbe veszel, nehéz letenni. A beépített S Pen minden más kiegészítőt feleslegessé tesz, a 200 MP-es kamera pedig annyira részletes képeket készít, hogy utólag is tudod vágni, közelíteni. Az AI funkciók napról napra megkönnyítik az életed. Nagy képernyő, erős akku, profi fotó.',
    image_url:'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=900&h=700&fit=crop',
-   unit_price:170000,stock:22,weight:0.232,category_name:'Mobil',avg_rating:4.8,review_count:124},
+   unit_price:469999,stock:22,weight:0.232,category_name:'Mobil',avg_rating:4.8,review_count:124},
 
   {id:3,sku:'P003',name:'ASUS ROG Strix G16 (2024)',
    description:'Ha gaming laptopot keresel, de nem akarsz kompromisszumot kötni a teljesítménnyel, az ROG Strix G16 jó választás. Az RTX 4060 videokártya simán elboldogul a modern játékokkal, a 165 Hz-es kijelző pedig valóban érezhetően simább képet ad. Hosszabb játékmenetekre is tervezett hűtése van, és persze RGB, amennyit csak akarsz.',
    image_url:'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=900&h=700&fit=crop',
-   unit_price:180000,stock:23,weight:2.500,category_name:'Gaming',avg_rating:4.7,review_count:98},
+   unit_price:749999,stock:4,weight:2.500,category_name:'Gaming',avg_rating:4.7,review_count:98},
 
   {id:4,sku:'P004',name:'MacBook Air M2 (2023)',
    description:'A MacBook Air M2 az a laptop, amit szinte mindenki szeretne, aki Macet akar. Ventilátor nincs benne, tehát teljesen csendben működik, mégis meglepően gyors. Egész napra elég az akkuja, 1.24 kilós, és a kijelző gyönyörű. Jó filmekhez, irodai munkához, kreatív feladatokhoz – megbízható, nap mint nap.',
    image_url:'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=900&h=700&fit=crop',
-   unit_price:190000,stock:24,weight:1.240,category_name:'Laptop',avg_rating:4.6,review_count:67},
+   unit_price:549999,stock:24,weight:1.240,category_name:'Laptop',avg_rating:4.6,review_count:67},
 
   {id:5,sku:'P005',name:'Dell XPS 13 Plus (2023)',
    description:'Az XPS 13 Plus az a laptop, amit a dizájnja miatt is megszeretsz. Szinte nincs kerete a kijelzőnek, a billentyűzeten nincs hagyományos érintőpad – beolvadt a lapba. Könnyű, stílusos, és az OLED panel olyan képet mutat, hogy egyszer sem fogod nézni az órádat unalomból. Utazáshoz, kávézóba, prezentációkhoz tökéletes.',
    image_url:'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=900&h=700&fit=crop',
-   unit_price:200000,stock:25,weight:1.240,category_name:'Laptop',avg_rating:4.9,review_count:203},
+   unit_price:699999,stock:25,weight:1.240,category_name:'Laptop',avg_rating:4.9,review_count:203},
 
   {id:6,sku:'P006',name:'HP Pavilion 15-eh3 (2023)',
    description:'Ha egyszerűen csak egy jól működő, megbízható laptopot keresel mindennapi használatra, a HP Pavilion 15 pontosan erre való. Nagy a kijelzője, kényelmes a billentyűzete, és elég erős ahhoz, hogy böngészés, dokumentumok, videóhívások és filmek mind gond nélkül menjenek rajta. Nem csinál semmi extravagánsat – csak működik, mindig.',
    image_url:'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=900&h=700&fit=crop',
-   unit_price:210000,stock:26,weight:1.750,category_name:'Laptop',avg_rating:4.5,review_count:55},
+   unit_price:299999,stock:26,weight:1.750,category_name:'Laptop',avg_rating:4.5,review_count:55},
 
   {id:7,sku:'P007',name:'Lenovo ThinkPad X1 Carbon Gen 11',
    description:'A ThinkPad X1 Carbon az a laptop, amit az irodai emberek évek óta esküdnek rá – és nem véletlenül. Alig több mint egy kiló, mégis katonai teszteket állt ki. Az OLED kijelző gyönyörű, a billentyűzet a legjobb laptopbillentyűzetek közé tartozik, és ha bármikor leejted, valószínűleg túléli. Üzleti utakhoz, hosszú napokhoz kitalálva.',
    image_url:'https://images.unsplash.com/photo-1588702547919-26089e690ecc?w=900&h=700&fit=crop',
-   unit_price:220000,stock:27,weight:1.120,category_name:'Laptop',avg_rating:4.7,review_count:89},
+   unit_price:799999,stock:3,weight:1.120,category_name:'Laptop',avg_rating:4.7,review_count:89},
 
   {id:8,sku:'P008',name:'Sony WH-1000XM5',
    description:'Ha sokat utazol, dolgozol zajos helyen, vagy csak szeretnéd, ha a világ egy időre elhallgatna, a WH-1000XM5 az, amit kerestek. A zajszűrése annyira hatékony, hogy repülőn is úgy érzed, mintha egy hangstúdióban ülnél. A párnák puhák, órákon át kényelmes viselni, a hang mély és részletgazdag. 30 óra, egy feltöltéssel.',
    image_url:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=900&h=700&fit=crop',
-   unit_price:230000,stock:28,weight:0.250,category_name:'Fejhallgató',avg_rating:4.8,review_count:156},
+   unit_price:129999,stock:28,weight:0.250,category_name:'Fejhallgató',avg_rating:4.8,review_count:156},
 
   {id:9,sku:'P009',name:'Apple AirPods Pro 2. gen',
    description:'Az AirPods Pro 2 az a fülhallgató, amit egyszer felteszel, aztán nem akarod levenni. A zajszűrés meglepően hatásos ilyen kis eszköznél, a térhangzás filmekhez és zenéhez egyaránt élvezetes. Az USB-C tok bárhol tölthető, és a teljes rendszer IP54 minősítéssel rendelkezik, tehát esőtől sem kell félni. Apple eszközöknél a legjobb választás.',
    image_url:'https://images.unsplash.com/photo-1603351154351-5e2d0600bb77?w=900&h=700&fit=crop',
-   unit_price:240000,stock:29,weight:0.061,category_name:'Fejhallgató',avg_rating:4.8,review_count:312},
+   unit_price:109999,stock:29,weight:0.061,category_name:'Fejhallgató',avg_rating:4.8,review_count:312},
 
   {id:10,sku:'P010',name:'JBL Charge 5',
    description:'A JBL Charge 5 az a hangszóró, amit strandra, kertre, kirándulásra visznek az emberek, mert IP67 minősítéssel nemcsak a vízre, hanem a homokra és porra is immunis. A hang teli és basszusos, sokkal nagyobbnak hat, mint amekkora. 20 óra zene, és ha lemerül a telefonod, USB-A kimeneten tölt is.',
    image_url:'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=900&h=700&fit=crop',
-   unit_price:250000,stock:30,weight:0.960,category_name:'Fejhallgató',avg_rating:4.7,review_count:445},
-
-  {id:11,sku:'P011',name:'Samsung QLED 55" QN90C',
-   description:'Az QN90C nem csak egy tv – nappali ékszere is lehet. A Mini LED technológia miatt a fényes és sötét részek egyszerre tökéletesek a képen, és 144 Hz-en fut, tehát konzolon és PC-n is szép és gyors. A beépített Gaming Hub azt jelenti, hogy konzol nélkül is lehet felhőben játszani. Nappal sem mosódik el a kép az anti-reflection bevonat miatt.',
-   image_url:'https://images.unsplash.com/photo-1593359677879-a4bb92f829e1?w=900&h=700&fit=crop',
-   unit_price:260000,stock:31,weight:20.100,category_name:'TV & Monitor',avg_rating:4.6,review_count:89},
+   unit_price:54999,stock:30,weight:0.960,category_name:'Fejhallgató',avg_rating:4.7,review_count:445},
 
   {id:12,sku:'P012',name:'LG OLED C3 65"',
    description:'Az LG OLED C3 az a képernyő, ami után minden más kicsit fakónak tűnik. Az OLED technológia miatt minden egyes pixel maga kapcsol be és ki, így a feketék tényleg feketék – nem szürke. Filmekhez, sorozatokhoz ez a legjobb otthoni élmény. Gaminghez G-Sync és 120 Hz, okostv funkcióként pedig minden fontosabb streaming alkalmazás beépítve.',
    image_url:'https://images.unsplash.com/photo-1567690187548-f07b1d7bf5a9?w=900&h=700&fit=crop',
-   unit_price:270000,stock:32,weight:24.700,category_name:'TV & Monitor',avg_rating:4.5,review_count:134},
+   unit_price:899999,stock:5,weight:24.700,category_name:'TV & Monitor',avg_rating:4.5,review_count:134},
 
   {id:13,sku:'E001',name:'iPhone 15',
    description:'Az iPhone 15 az a pont, ahol az Apple Pro funkciói elkezdtek leszivárogni a normál modellbe. A Dynamic Island már itt is van, USB-C-re váltottak, és a 48 MP-es kamera is ide került. Szép, könnyű, jól a kézben van, és hosszú az akkuja. Ha nem kell minden Pro feature, de Apple minőséget szeretnél, ez az okos választás.',
    image_url:'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=900&h=700&fit=crop',
-   unit_price:429999,stock:40,weight:0.171,category_name:'Mobil',avg_rating:4.8,review_count:219},
+   unit_price:399999,stock:40,weight:0.171,category_name:'Mobil',avg_rating:4.8,review_count:219},
 
   {id:14,sku:'E002',name:'Samsung Galaxy S24',
    description:'A Galaxy S24 bizonyítja, hogy a kompakt méret nem jelent gyengébb telefont. Snapdragon 8 Gen 3 van benne, a Galaxy AI funkciók ugyanúgy elérhetők, és a kijelző 120 Hz-en fut. Kézre álló méret, erős teljesítmény, és a Samsung hét éves frissítési ígérete. Ha az Ultra túl nagy, ez a tökéletes alternatíva.',
    image_url:'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=900&h=700&fit=crop',
-   unit_price:389999,stock:35,weight:0.167,category_name:'Mobil',avg_rating:4.5,review_count:50},
+   unit_price:319999,stock:35,weight:0.167,category_name:'Mobil',avg_rating:4.5,review_count:50},
 
   {id:15,sku:'E003',name:'Xiaomi Redmi Note 13 Pro',
    description:'A Redmi Note 13 Pro az a telefon, amit nehéz megindokolni, hogy miért nem vesz meg mindenki – olyan jó az ára ahhoz képest, amit nyújt. 200 MP-es kamera, szép AMOLED kijelző, 67W gyorstöltés. Nem a legprémiumabb anyaghasználat, de az arc és ujjlenyomat-szenzor gyors, és az akkuja bírja. Praktikus, megbízható mindennapokra.',
    image_url:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=900&h=700&fit=crop',
-   unit_price:119999,stock:60,weight:0.187,category_name:'Mobil',avg_rating:4.5,review_count:50},
+   unit_price:99999,stock:60,weight:0.187,category_name:'Mobil',avg_rating:4.5,review_count:50},
 
   {id:16,sku:'E004',name:'Google Pixel 8',
    description:'A Pixel 8 az a telefon, amit a Google saját maga tervezett – hardvertől szoftverig. Ez azt jelenti, hogy a legtisztább Android élményt kapod, gyors frissítésekkel és olyan AI funkciókkal, amiket más telefonon nem találsz. A Magic Eraser és a Photo Unblur valóban hasznos. Hét évig kap biztonsági frissítést.',
    image_url:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=900&h=700&fit=crop',
-   unit_price:349999,stock:25,weight:0.187,category_name:'Mobil',avg_rating:4.5,review_count:50},
+   unit_price:289999,stock:25,weight:0.187,category_name:'Mobil',avg_rating:4.5,review_count:50},
 
   {id:17,sku:'E005',name:'MacBook Air M2',
    description:'Ugyanaz a MacBook Air M2 – ventilátor nélkül, csendes, gyors, gyönyörű Liquid Retina kijelző. Az Apple ökoszisztémán belül az egyik legjobb döntés, ha laptop kell. Ez a variáns esetlegesen eltérő konfigurációval érkezhet.',
@@ -761,42 +747,37 @@ function getDemoProducts(){return[
   {id:18,sku:'E006',name:'Dell XPS 13',
    description:'A Dell XPS 13 évek óta az egyik legelismertebb ultrabook – és ez nem véletlen. Kis méretbe sűrített nagy teljesítmény, szinte keret nélküli kijelző, és az a fajta tartósság, ami azt érezteti veled, hogy tartós dolgot vettél. Utazóknak és dolgozóknak, akiknek fontos, hogy a laptop szép is legyen és jó is.',
    image_url:'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=900&h=700&fit=crop',
-   unit_price:499999,stock:12,weight:1.200,category_name:'Laptop',avg_rating:4.5,review_count:50},
+   unit_price:649999,stock:12,weight:1.200,category_name:'Laptop',avg_rating:4.5,review_count:50},
 
   {id:19,sku:'E007',name:'Lenovo ThinkPad E14 Gen 5',
    description:'A ThinkPad E14 nem a legfeltűnőbb laptop a piacon, de pontosan ezt a célt szolgálja. Megbízható, tartós, a billentyűzete kényelmes, és fingerprint olvasóval is érkezik. Ha irodai munkára kell egy laptop, ami nem szokott problémákat okozni és nem merül le ebédre, ez a helyes irány.',
    image_url:'https://images.unsplash.com/photo-1588702547919-26089e690ecc?w=900&h=700&fit=crop',
-   unit_price:329999,stock:18,weight:1.690,category_name:'Laptop',avg_rating:4.5,review_count:50},
+   unit_price:349999,stock:18,weight:1.690,category_name:'Laptop',avg_rating:4.5,review_count:50},
 
   {id:20,sku:'E008',name:'HP Envy 15',
    description:'Az HP Envy 15 azoknak szól, akiknek az erős teljesítmény és a szép kép együtt kell. Az RTX 4060 videóexporthoz, fotószerkesztéshez és játékhoz is alkalmas, az OLED kijelző pedig megmutatja a munkád igazi színeit. Nagyobb és nehezebb, mint egy ultrabook, de cserébe sokkal többet tud.',
    image_url:'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=900&h=700&fit=crop',
-   unit_price:459999,stock:10,weight:2.100,category_name:'Laptop',avg_rating:4.5,review_count:50},
-
-  {id:21,sku:'E009',name:'Samsung 55" QLED 4K TV',
-   description:'Jó ár-érték arányú Samsung tévé, ha nem kell a legcsúcsabb panel, de szép képet és okostv funkciókat igen. A QLED élénk színeket hoz, 120 Hz-en fut, és a Tizen rendszeren minden fontos streaming alkalmazás ott van. Filmekhez, sorozatokhoz, sporthoz egyaránt megfelelő.',
-   image_url:'https://images.unsplash.com/photo-1593359677879-a4bb92f829e1?w=900&h=700&fit=crop',
-   unit_price:299999,stock:20,weight:14.500,category_name:'TV & Monitor',avg_rating:4.5,review_count:50},
+   unit_price:499999,stock:0,weight:2.100,category_name:'Laptop',avg_rating:4.5,review_count:50},
 
   {id:22,sku:'E010',name:'LG 65" OLED TV',
    description:'Ha valaha láttál már OLED tévén filmet, és azóta a többi képernyő egy kicsit fakónak tűnik, ismered az érzést. Az LG 65 colos OLED-je pontosan ezt adja – tökéletes feketék, élénk színek, és elég nagy ahhoz, hogy valóban moziteremnek érezzed a nappalit. G-Sync-el gaminghez is tökéletes.',
    image_url:'https://images.unsplash.com/photo-1567690187548-f07b1d7bf5a9?w=900&h=700&fit=crop',
-   unit_price:699999,stock:8,weight:19.400,category_name:'TV & Monitor',avg_rating:4.5,review_count:50},
+   unit_price:799999,stock:8,weight:19.400,category_name:'TV & Monitor',avg_rating:4.5,review_count:50},
 
   {id:23,sku:'E011',name:'Sony WH-1000XM5',
    description:'Az iparág legjobb zajszűrős fejhallgatója, 30 óra akku és Hi-Res LDAC audio. Ha csendre és minőségi hangra vágysz utazáshoz vagy irodához, ez az eszköz.',
    image_url:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=900&h=700&fit=crop',
-   unit_price:149999,stock:50,weight:0.250,category_name:'Fejhallgató',avg_rating:4.5,review_count:50},
+   unit_price:129999,stock:50,weight:0.250,category_name:'Fejhallgató',avg_rating:4.5,review_count:50},
 
   {id:24,sku:'E012',name:'Apple AirPods Pro 2. gen',
    description:'Apple H2 chip, adaptív zajszűrés, Spatial Audio és USB-C MagSafe tok. Az Apple fülhallgató-piac csúcsa – felteszi az ember és nem akarja levenni.',
    image_url:'https://images.unsplash.com/photo-1603351154351-5e2d0600bb77?w=900&h=700&fit=crop',
-   unit_price:119999,stock:70,weight:0.061,category_name:'Fejhallgató',avg_rating:4.5,review_count:50},
+   unit_price:109999,stock:70,weight:0.061,category_name:'Fejhallgató',avg_rating:4.5,review_count:50},
 
   {id:25,sku:'E013',name:'JBL Charge 5',
    description:'IP67 vízállóság, 40W hangzás, 20 óra akku és USB-A powerbank. A legnépszerűbb kerti és utazóhangszóró – bármilyen időben és helyszínen bevethető.',
    image_url:'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=900&h=700&fit=crop',
-   unit_price:69999,stock:45,weight:0.960,category_name:'Fejhallgató',avg_rating:4.5,review_count:50},
+   unit_price:54999,stock:45,weight:0.960,category_name:'Fejhallgató',avg_rating:4.5,review_count:50},
 
   {id:26,sku:'E014',name:'Logitech MX Master 3S',
    description:'Az MX Master 3S az a egér, amit ha egyszer kipróbálsz, az összes többi egyszerűnek tűnik mellette. A MagSpeed görgő az egyik legjobb dolog rajta – az ujjaid egy mozdulatával görgehetsz végig egy hosszú dokumentumon. Csendes kattintások, kényelmes ergonomikus forma, és üvegen is működik az érzékelője. Napokig tart az akkuja.',
@@ -811,72 +792,62 @@ function getDemoProducts(){return[
   {id:28,sku:'E016',name:'ASUS TUF Gaming VG27AQL1A 27"',
    description:'Az ASUS TUF Gaming monitor az a megjelenítő, amelyik belefér a budgetbe, de teljesítményben nem marad le a drágábbaktól. 170 Hz QHD felbontáson, G-Sync kompatibilis, és az ergonomikus talp sokféle pozícióba állítható. 60 Hz-ről upgradelve az első pillanattól érezni fogod a különbséget.',
    image_url:'https://images.unsplash.com/photo-1547119957-637f8679db1e?w=900&h=700&fit=crop',
-   unit_price:179999,stock:22,weight:6.500,category_name:'TV & Monitor',avg_rating:4.5,review_count:50},
+   unit_price:149999,stock:22,weight:6.500,category_name:'TV & Monitor',avg_rating:4.5,review_count:50},
 
   {id:29,sku:'E017',name:'Samsung Odyssey G5 27"',
    description:'Az Odyssey G5 ívelt képernyője az első pillanattól befogja a látóteredet, és valóban bevon a játékba. 165 Hz, FreeSync Premium, és a VA panel mélyen fekete. Ha long session-ökre játszol, az ívelt forma kevésbé fárasztja a szemet. Egy gaming setup fontos és megfizethető eleme.',
    image_url:'https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=900&h=700&fit=crop',
-   unit_price:159999,stock:19,weight:6.200,category_name:'TV & Monitor',avg_rating:4.5,review_count:50},
+   unit_price:119999,stock:19,weight:6.200,category_name:'TV & Monitor',avg_rating:4.5,review_count:50},
 
   {id:30,sku:'E018',name:'Canon EOS R10',
    description:'Az EOS R10 az a kamera, amivel az emberek lépnek az okostelefon-fotózás után. Nem bonyolult, de azonnal érezni, hogy ez valami más: a Dual Pixel AF szinte mindent automatikusan tart fókuszban, a 4K videó éles, az RF objektívrendszer pedig hosszú távon bővíthető. Könnyű, kompakt, és élvezetes bánni vele.',
    image_url:'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=900&h=700&fit=crop',
-   unit_price:349999,stock:14,weight:0.429,category_name:'Fotózás',avg_rating:4.5,review_count:50},
+   unit_price:329999,stock:2,weight:0.429,category_name:'Fotózás',avg_rating:4.5,review_count:50},
 
   {id:31,sku:'E019',name:'Sony Alpha A6400',
    description:'Az A6400 a videósok és portréfotósok kedvence azért az egy dologért: az Eye AF. A fényképezőgép valóságos rátalál a szemen, és ott tartja a fókuszt – mozgás közben, rossz fényviszonyban, mindenhol. Ha embereket, gyerekeket, állatokat fotózol, ez az automatika önmagában megéri a vételárat.',
    image_url:'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=900&h=700&fit=crop',
-   unit_price:329999,stock:11,weight:0.403,category_name:'Fotózás',avg_rating:4.5,review_count:50},
+   unit_price:279999,stock:11,weight:0.403,category_name:'Fotózás',avg_rating:4.5,review_count:50},
 
   {id:32,sku:'E020',name:'GoPro Hero 12 Black',
    description:'Ha extrém sport, utazás vagy kaland van a programban és szeretnéd megörökíteni, a GoPro Hero 12 Black az eszköz. Tok nélkül 10 méter mélységig vízálló, a HyperSmooth 6.0 stabilizáció azt jelenti, hogy futás, biciklizés, búvárkodás közben sem rázza össze a képet. Könnyű, robosztus, és könnyen szerkeszthető az anyag.',
    image_url:'https://images.unsplash.com/photo-1564466809058-bf4114d55352?w=900&h=700&fit=crop',
-   unit_price:199999,stock:30,weight:0.154,category_name:'Fotózás',avg_rating:4.5,review_count:50},
-
-  {id:33,sku:'E021',name:'Anker PowerCore 20000 PD 65W',
-   description:'Az Anker PowerCore 20000 PD 65W az a powerbank, amibe a laptopod is belefér. 65W USB-C kimenettel MacBookot és szinte bármilyen modern laptopot tölteni tud, a két USB-A kimenet közben a telefonokról is gondoskodik. Hosszú utazásokra, konferenciákra – ahol nem mindig van dugaszoló – ez az egyetlen töltő, amire szükséged van.',
-   image_url:'https://images.unsplash.com/photo-1609592806596-b9e6c2e90e98?w=900&h=700&fit=crop',
-   unit_price:24999,stock:100,weight:0.420,category_name:'PC Kiegészítők',avg_rating:4.5,review_count:50},
+   unit_price:169999,stock:0,weight:0.154,category_name:'Fotózás',avg_rating:4.5,review_count:50},
 
   {id:34,sku:'E022',name:'Samsung 990 Pro 1TB NVMe SSD',
    description:'A számítógéped vagy PS5-öd lassabb, mint lehetne? A Samsung 990 Pro SSD az egyik leggyorsabb consumer tároló a piacon. A telepítés egyszerű, az operációs rendszer betöltése, a játékok indítása – minden érezhetően gyorsabb lesz. PS5-be is belerakható tárhelybővítésként. Egyszerű upgrade, nagy hatás.',
    image_url:'https://images.unsplash.com/photo-1531492746076-161ca9bcad58?w=900&h=700&fit=crop',
-   unit_price:49999,stock:75,weight:0.050,category_name:'PC Kiegészítők',avg_rating:4.5,review_count:50},
+   unit_price:34999,stock:75,weight:0.050,category_name:'PC Kiegészítők',avg_rating:4.5,review_count:50},
 
   {id:35,sku:'E023',name:'TP-Link Archer AX55 WiFi 6 Router',
    description:'Ha a lakásod sarkában már gyenge a WiFi, itt az ideje routert cserélni. A TP-Link Archer AX55 WiFi 6-os, tehát a modern eszközök ki tudják belőle hozni a maximum sebességet. A 2.5G WAN port a gyorsabb internet-előfizetéseknek is kedvez, az OneMesh támogatással pedig mesh hálózatot is ki lehet belőle alakítani.',
    image_url:'https://images.unsplash.com/photo-1606904825846-647eb07f5be2?w=900&h=700&fit=crop',
-   unit_price:39999,stock:40,weight:0.510,category_name:'Hálózat',avg_rating:4.5,review_count:50},
+   unit_price:24999,stock:40,weight:0.510,category_name:'Hálózat',avg_rating:4.5,review_count:50},
 
   {id:36,sku:'E024',name:'Apple Watch Series 9 (GPS, 45mm)',
    description:'Az Apple Watch Series 9 az az okosóra, amit ha egyszer elkezdesz hordani, furán fogod érezni magad nélküle. Az értesítések, az edzéskövetés, az EKG mind hasznos – de a Double Tap gesztus az, ami igazán meglepő. Érintés nélkül vezérelheted az órát, amikor tele van a kezed. Szép, tartós, és watchOS-t kap évekig.',
    image_url:'https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=900&h=700&fit=crop',
-   unit_price:189999,stock:28,weight:0.045,category_name:'Okoseszközök',avg_rating:4.5,review_count:50},
+   unit_price:179999,stock:28,weight:0.045,category_name:'Okoseszközök',avg_rating:4.5,review_count:50},
 
   {id:37,sku:'E025',name:'Amazon Echo Dot 5. generáció',
    description:'Az Echo Dot az a kis kütyü, ami eldöntetlen, hogy hangszóró-e vagy okosotthon-vezérlő – mert mindkettő. Alexa bármilyen kérdésre válaszol, irányítja a lámpákat és a thermosztátot, és zenét is játszik le. Az 5. generáció beépített Eero WiFi-kiterjesztővel is rendelkezik. Elképesztő ár, rengeteg tudás.',
    image_url:'https://images.unsplash.com/photo-1543512214-318c7553f230?w=900&h=700&fit=crop',
-   unit_price:19999,stock:65,weight:0.304,category_name:'Okoseszközök',avg_rating:4.5,review_count:50},
-
-  {id:38,sku:'T001',name:'iPhone 14',
-   description:'Az iPhone 14 az a telefon, ami már megkapta az Emergency SOS via Satellite funkciót – tehát lefedettség nélküli területen is lehet segítséget kérni. Stabil, megbízható, iOS frissítéseket kap, és a kamera sötétben is szépen teljesít a Photonic Engine segítségével.',
-   image_url:'https://images.unsplash.com/photo-1664478546384-d57bbe74a6ce?w=900&h=700&fit=crop',
-   unit_price:399999,stock:45,weight:0.172,category_name:'Mobil',avg_rating:4.5,review_count:50},
+   unit_price:14999,stock:65,weight:0.304,category_name:'Okoseszközök',avg_rating:4.5,review_count:50},
 
   {id:39,sku:'T002',name:'Samsung Galaxy S23',
    description:'A Galaxy S23 az a Samsung, amivel semmit sem kockáztatsz. Bevált, stabil, gyors, és a 50 MP-es triple kamerarendszer szép képeket csinál napfényen és éjjel egyaránt. Kompakt méret, prémium minőség, egy napra bőven elég akku.',
    image_url:'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=900&h=700&fit=crop',
-   unit_price:299999,stock:36,weight:0.168,category_name:'Mobil',avg_rating:4.5,review_count:50},
+   unit_price:259999,stock:36,weight:0.168,category_name:'Mobil',avg_rating:4.5,review_count:50},
 
   {id:40,sku:'T003',name:'Dell Inspiron 15',
    description:'Az Inspiron 15 pontosan az, amire az ember gondol, ha mindennapi laptopot keres. Nem próbál semmi extrát mutatni – csak működik. Nagy kijelző, kényelmes billentyűzet, SD kártyaolvasó, HDMI a külső monitorhoz. Egyszerű, megbízható, jó ár.',
    image_url:'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=900&h=700&fit=crop',
-   unit_price:249999,stock:27,weight:1.920,category_name:'Laptop',avg_rating:4.5,review_count:50},
+   unit_price:219999,stock:27,weight:1.920,category_name:'Laptop',avg_rating:4.5,review_count:50},
 
   {id:41,sku:'T004',name:'HP Pavilion 14',
    description:'A HP Pavilion 14 kisebb és könnyebb, mint a 15 colos társa, és ha nem kell akkora képernyő, ez az okos választás. 14 colos micro-edge kijelző, kényelmes billentyűzet, és a HP True Vision kamera videokonferenciákhoz is rendesen teljesít. Terjedelmes táskába is belefér, egész napra elég az akkuja.',
    image_url:'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=900&h=700&fit=crop',
-   unit_price:239999,stock:23,weight:1.550,category_name:'Laptop',avg_rating:4.5,review_count:50},
+   unit_price:199999,stock:23,weight:1.550,category_name:'Laptop',avg_rating:4.5,review_count:50},
 ];}
 
 async function load(){

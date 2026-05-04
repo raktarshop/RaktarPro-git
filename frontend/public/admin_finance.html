@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="./assets/css/nav-unify.css?v=26">
   <link rel="stylesheet" href="./assets/css/admin.css?v=26">
   <link rel="stylesheet" href="./assets/css/rp-luxury.css?v=26">
-  <script>!function(){var t=localStorage.getItem("rp_theme")||"dark";document.documentElement.setAttribute("data-theme",t)}();</script>
+  <script>!function(){if(!localStorage.getItem("rp_theme"))localStorage.setItem("rp_theme","dark");document.documentElement.setAttribute("data-theme",localStorage.getItem("rp_theme"))}();</script>
   <style>
     :root { --font-display:'Syne',sans-serif; --font-body:'DM Sans',sans-serif; }
     *, *::before, *::after { box-sizing: border-box; }
@@ -408,6 +408,7 @@
     .fin-reveal { opacity: 0; transform: translateY(16px); transition: opacity 450ms ease, transform 450ms ease; }
     .fin-reveal.visible { opacity: 1; transform: translateY(0); }
   </style>
+  <link rel="stylesheet" href="./assets/css/mobile.css">
 </head>
 <body>
 
@@ -955,6 +956,40 @@ async function loadFinanceData() {
 }
 
 document.addEventListener('DOMContentLoaded', loadFinanceData);
+</script>
+
+<script>
+// ── DARK MODE FORCE ──
+(function(){
+  // Mindig dark mode az alapértelmezett
+  if (!localStorage.getItem('rp_theme')) {
+    localStorage.setItem('rp_theme', 'dark');
+  }
+  document.documentElement.setAttribute('data-theme', localStorage.getItem('rp_theme'));
+})();
+
+// ── OLDALVÁLTÁS ANIMÁCIÓ + BFCACHE FIX ──
+// bfcache fix: visszagomb esetén az oldal látható legyen
+window.addEventListener('pageshow', function(e) {
+  document.body.classList.remove('rp-page-out');
+  document.body.style.opacity = '1';
+  document.body.style.animation = 'none';
+  // force reflow then re-enable animation
+  void document.body.offsetHeight;
+  document.body.style.animation = '';
+});
+
+document.addEventListener('click', function(e) {
+  const a = e.target.closest('a[href]');
+  if (!a) return;
+  const href = a.getAttribute('href');
+  if (!href || href.startsWith('#') || href.startsWith('mailto') || href.startsWith('tel')) return;
+  if (a.target === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey) return;
+  if (href.startsWith('http') && !href.includes('localhost')) return;
+  e.preventDefault();
+  document.body.classList.add('rp-page-out');
+  setTimeout(() => { window.location.href = href; }, 120);
+});
 </script>
 </body>
 </html>

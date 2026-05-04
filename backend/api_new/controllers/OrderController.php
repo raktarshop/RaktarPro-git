@@ -66,11 +66,13 @@ class OrderController {
     
     /**
      * POST /orders
-     * Új rendelés leadása - CHECKOUT (USER)
+     * Új rendelés leadása - CHECKOUT (bejelentkezett VAGY vendég)
      */
     public function create(): void {
         try {
-            $user = AuthMiddleware::requireAuth();
+            // Vendég rendelés is engedélyezett — optionalAuth nem dob kivételt
+            $user = AuthMiddleware::optionalAuth();
+            $userId = $user ? (int)$user['id'] : 0;
             
             $data = Validator::getJsonInput();
             
@@ -88,7 +90,7 @@ class OrderController {
             $orderId = $this->orderService->createOrder(
                 $orderData,
                 $cartItems,
-                (int)$user['id']
+                $userId
             );
             
             Response::success(

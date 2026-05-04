@@ -35,6 +35,21 @@ class AuthMiddleware {
     }
     
     /**
+     * Optional auth — returns user or null for guests, never exits
+     */
+    public static function optionalAuth(): ?array {
+        $headers = getallheaders();
+        $authHeader = $headers['Authorization'] ?? '';
+        if (empty($authHeader)) return null;
+        if (!preg_match('/Bearer\s+(.*)$/i', $authHeader, $matches)) return null;
+        $token = $matches[1];
+        $payload = JWT::verifyAccessToken($token);
+        if (!$payload) return null;
+        $userModel = new UserModel();
+        return $userModel->find((int)$payload['user_id']) ?: null;
+    }
+
+    /**
      * Require authentication
      * Ellenőrzi a JWT tokent és visszaadja a user adatokat
      */

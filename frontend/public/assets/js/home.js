@@ -18,47 +18,43 @@ function dCat(p){const tx=((p.name||'')+(p.description||'')).toLowerCase();for(c
 function dBrand(p){const tx=((p.name||'')+(p.description||'')).toLowerCase();for(const b of BRANDS){if(tx.includes(b.toLowerCase()))return b;}return null;}
 
 const raw=[
-  {id:1,name:'iPhone 15 Pro',price:160000,cat:'Mobil',img:'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400&h=400&fit=crop'},
-  {id:2,name:'Samsung Galaxy S24 Ultra',price:170000,cat:'Mobil',img:'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop'},
-  {id:3,name:'ASUS ROG Strix G16',price:180000,cat:'Gaming',img:'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&h=400&fit=crop'},
-  {id:4,name:'MacBook Air M2',price:190000,cat:'Laptop',img:'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=400&fit=crop'},
-  {id:5,name:'Dell XPS 13 Plus',price:200000,cat:'Laptop',img:'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&h=400&fit=crop'},
-  {id:6,name:'HP Pavilion 15',price:210000,cat:'Laptop',img:'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400&h=400&fit=crop'},
-  {id:7,name:'Lenovo ThinkPad X1 Carbon',price:220000,cat:'Laptop',img:'https://images.unsplash.com/photo-1588702547919-26089e690ecc?w=400&h=400&fit=crop'},
-  {id:8,name:'Sony WH-1000XM5',price:230000,cat:'Fejhallgató',img:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop'},
-  {id:9,name:'Apple AirPods Pro 2',price:240000,cat:'Fejhallgató',img:'https://images.unsplash.com/photo-1603351154351-5e2d0600bb77?w=400&h=400&fit=crop'},
-  {id:10,name:'JBL Charge 5',price:250000,cat:'Fejhallgató',img:'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=400&fit=crop'},
-  {id:11,name:'Samsung QLED 55" QN90C',price:260000,cat:'TV & Monitor',img:'https://images.unsplash.com/photo-1593359677879-a4bb92f829e1?w=400&h=400&fit=crop'},
-  {id:12,name:'LG OLED C3 65"',price:270000,cat:'TV & Monitor',img:'https://images.unsplash.com/photo-1567690187548-f07b1d7bf5a9?w=400&h=400&fit=crop'},
-  {id:13,name:'iPhone 15',price:429999,cat:'Mobil',img:'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400&h=400&fit=crop'},
-  {id:14,name:'Samsung Galaxy S24',price:389999,cat:'Mobil',img:'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop'},
-  {id:15,name:'Xiaomi Redmi Note 13 Pro',price:119999,cat:'Mobil',img:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&h=400&fit=crop'},
-  {id:16,name:'Google Pixel 8',price:349999,cat:'Mobil',img:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&h=400&fit=crop'},
-  {id:17,name:'MacBook Air M2',price:549999,cat:'Laptop',img:'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=400&fit=crop'},
-  {id:18,name:'Dell XPS 13',price:499999,cat:'Laptop',img:'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&h=400&fit=crop'},
-  {id:19,name:'Lenovo ThinkPad E14 Gen 5',price:329999,cat:'Laptop',img:'https://images.unsplash.com/photo-1588702547919-26089e690ecc?w=400&h=400&fit=crop'},
-  {id:20,name:'HP Envy 15',price:459999,cat:'Laptop',img:'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400&h=400&fit=crop'},
-  {id:21,name:'Samsung 55" QLED 4K TV',price:299999,cat:'TV & Monitor',img:'https://images.unsplash.com/photo-1593359677879-a4bb92f829e1?w=400&h=400&fit=crop'},
-  {id:22,name:'LG 65" OLED TV',price:699999,cat:'TV & Monitor',img:'https://images.unsplash.com/photo-1567690187548-f07b1d7bf5a9?w=400&h=400&fit=crop'},
-  {id:23,name:'Sony WH-1000XM5',price:149999,cat:'Fejhallgató',img:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop'},
-  {id:24,name:'Apple AirPods Pro 2',price:119999,cat:'Fejhallgató',img:'https://images.unsplash.com/photo-1603351154351-5e2d0600bb77?w=400&h=400&fit=crop'},
-  {id:25,name:'JBL Charge 5',price:69999,cat:'Fejhallgató',img:'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=400&fit=crop'},
-  {id:26,name:'Logitech MX Master 3S',price:44999,cat:'PC Kiegészítők',img:'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&h=400&fit=crop'},
-  {id:27,name:'Keychron K8 Pro TKL',price:59999,cat:'PC Kiegészítők',img:'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&h=400&fit=crop'},
-  {id:28,name:'ASUS TUF Gaming VG27AQL1A 27"',price:179999,cat:'TV & Monitor',img:'https://images.unsplash.com/photo-1547119957-637f8679db1e?w=400&h=400&fit=crop'},
-  {id:29,name:'Samsung Odyssey G5 27"',price:159999,cat:'TV & Monitor',img:'https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=400&h=400&fit=crop'},
-  {id:30,name:'Canon EOS R10',price:349999,cat:'Fotózás',img:'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=400&fit=crop'},
-  {id:31,name:'Sony Alpha A6400',price:329999,cat:'Fotózás',img:'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400&h=400&fit=crop'},
-  {id:32,name:'GoPro Hero 12 Black',price:199999,cat:'Fotózás',img:'https://images.unsplash.com/photo-1564466809058-bf4114d55352?w=400&h=400&fit=crop'},
-  {id:33,name:'Anker PowerCore 20000',price:24999,cat:'PC Kiegészítők',img:'https://images.unsplash.com/photo-1609592806596-b9e6c2e90e98?w=400&h=400&fit=crop'},
-  {id:34,name:'Samsung 990 Pro 1TB NVMe SSD',price:49999,cat:'PC Kiegészítők',img:'https://images.unsplash.com/photo-1531492746076-161ca9bcad58?w=400&h=400&fit=crop'},
-  {id:35,name:'TP-Link Archer AX55',price:39999,cat:'Hálózat',img:'https://images.unsplash.com/photo-1606904825846-647eb07f5be2?w=400&h=400&fit=crop'},
-  {id:36,name:'Apple Watch Series 9',price:189999,cat:'Okoseszközök',img:'https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=400&h=400&fit=crop'},
-  {id:37,name:'Amazon Echo Dot 5.',price:19999,cat:'Okoseszközök',img:'https://images.unsplash.com/photo-1543512214-318c7553f230?w=400&h=400&fit=crop'},
-  {id:38,name:'iPhone 14',price:399999,cat:'Mobil',img:'https://images.unsplash.com/photo-1664478546384-d57bbe74a6ce?w=400&h=400&fit=crop'},
-  {id:39,name:'Samsung Galaxy S23',price:299999,cat:'Mobil',img:'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop'},
-  {id:40,name:'Dell Inspiron 15',price:249999,cat:'Laptop',img:'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400&h=400&fit=crop'},
-  {id:41,name:'HP Pavilion 14',price:239999,cat:'Laptop',img:'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400&h=400&fit=crop'},
+  {id:1, name:'iPhone 15 Pro',           price:589999, cat:'Mobil',          img:'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400&h=400&fit=crop'},
+  {id:2, name:'Samsung Galaxy S24 Ultra', price:469999, cat:'Mobil',          img:'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop'},
+  {id:3, name:'ASUS ROG Strix G16',       price:749999, cat:'Gaming',         img:'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&h=400&fit=crop'},
+  {id:4, name:'MacBook Air M2',           price:549999, cat:'Laptop',         img:'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=400&fit=crop'},
+  {id:5, name:'Dell XPS 13 Plus',         price:699999, cat:'Laptop',         img:'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&h=400&fit=crop'},
+  {id:6, name:'HP Pavilion 15',           price:299999, cat:'Laptop',         img:'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400&h=400&fit=crop'},
+  {id:7, name:'Lenovo ThinkPad X1 Carbon',price:799999, cat:'Laptop',         img:'https://images.unsplash.com/photo-1588702547919-26089e690ecc?w=400&h=400&fit=crop'},
+  {id:8, name:'Sony WH-1000XM5',          price:129999, cat:'Fejhallgató',    img:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop'},
+  {id:9, name:'Apple AirPods Pro 2',      price:109999, cat:'Fejhallgató',    img:'https://images.unsplash.com/photo-1603351154351-5e2d0600bb77?w=400&h=400&fit=crop'},
+  {id:10,name:'JBL Charge 5',             price:54999,  cat:'Fejhallgató',    img:'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=400&fit=crop'},
+  {id:12,name:'LG OLED C3 65"',          price:899999, cat:'TV & Monitor',   img:'https://images.unsplash.com/photo-1567690187548-f07b1d7bf5a9?w=400&h=400&fit=crop'},
+  {id:13,name:'iPhone 15',                price:399999, cat:'Mobil',          img:'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400&h=400&fit=crop'},
+  {id:14,name:'Samsung Galaxy S24',       price:319999, cat:'Mobil',          img:'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop'},
+  {id:15,name:'Xiaomi Redmi Note 13 Pro', price:99999,  cat:'Mobil',          img:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&h=400&fit=crop'},
+  {id:16,name:'Google Pixel 8',           price:289999, cat:'Mobil',          img:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&h=400&fit=crop'},
+  {id:17,name:'MacBook Air M2',           price:549999, cat:'Laptop',         img:'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=400&fit=crop'},
+  {id:18,name:'Dell XPS 13',              price:649999, cat:'Laptop',         img:'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&h=400&fit=crop'},
+  {id:19,name:'Lenovo ThinkPad E14 Gen 5',price:349999, cat:'Laptop',         img:'https://images.unsplash.com/photo-1588702547919-26089e690ecc?w=400&h=400&fit=crop'},
+  {id:20,name:'HP Envy 15',               price:499999, cat:'Laptop',         img:'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400&h=400&fit=crop'},
+  {id:22,name:'LG 65" OLED TV',          price:799999, cat:'TV & Monitor',   img:'https://images.unsplash.com/photo-1567690187548-f07b1d7bf5a9?w=400&h=400&fit=crop'},
+  {id:23,name:'Sony WH-1000XM5',          price:129999, cat:'Fejhallgató',    img:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop'},
+  {id:24,name:'Apple AirPods Pro 2',      price:109999, cat:'Fejhallgató',    img:'https://images.unsplash.com/photo-1603351154351-5e2d0600bb77?w=400&h=400&fit=crop'},
+  {id:25,name:'JBL Charge 5',             price:54999,  cat:'Fejhallgató',    img:'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=400&fit=crop'},
+  {id:26,name:'Logitech MX Master 3S',    price:44999,  cat:'PC Kiegészítők', img:'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&h=400&fit=crop'},
+  {id:27,name:'Keychron K8 Pro TKL',      price:59999,  cat:'PC Kiegészítők', img:'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&h=400&fit=crop'},
+  {id:28,name:'ASUS TUF Monitor 27"',    price:149999, cat:'TV & Monitor',   img:'https://images.unsplash.com/photo-1547119957-637f8679db1e?w=400&h=400&fit=crop'},
+  {id:29,name:'Samsung Odyssey G5 27"',  price:119999, cat:'TV & Monitor',   img:'https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=400&h=400&fit=crop'},
+  {id:30,name:'Canon EOS R10',            price:329999, cat:'Fotózás',        img:'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=400&fit=crop'},
+  {id:31,name:'Sony Alpha A6400',         price:279999, cat:'Fotózás',        img:'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400&h=400&fit=crop'},
+  {id:32,name:'GoPro Hero 12 Black',      price:169999, cat:'Fotózás',        img:'https://images.unsplash.com/photo-1564466809058-bf4114d55352?w=400&h=400&fit=crop'},
+  {id:34,name:'Samsung 990 Pro 1TB SSD',  price:34999,  cat:'PC Kiegészítők', img:'https://images.unsplash.com/photo-1531492746076-161ca9bcad58?w=400&h=400&fit=crop'},
+  {id:35,name:'TP-Link Archer AX55',      price:24999,  cat:'Hálózat',        img:'https://images.unsplash.com/photo-1606904825846-647eb07f5be2?w=400&h=400&fit=crop'},
+  {id:36,name:'Apple Watch Series 9',     price:179999, cat:'Okoseszközök',   img:'https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=400&h=400&fit=crop'},
+  {id:37,name:'Amazon Echo Dot 5.',       price:14999,  cat:'Okoseszközök',   img:'https://images.unsplash.com/photo-1543512214-318c7553f230?w=400&h=400&fit=crop'},
+  {id:39,name:'Samsung Galaxy S23',       price:259999, cat:'Mobil',          img:'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=400&fit=crop'},
+  {id:40,name:'Dell Inspiron 15',         price:219999, cat:'Laptop',         img:'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400&h=400&fit=crop'},
+  {id:41,name:'HP Pavilion 14',           price:199999, cat:'Laptop',         img:'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400&h=400&fit=crop'},
 ];
 raw.forEach(p=>{p._cat=p.cat||dCat(p); p._brand=dBrand(p);});
 return {products:raw, dBrand};
@@ -175,7 +171,123 @@ function rpFooterGuard(url) {
   if (token) {
     window.location.href = url;
   } else {
-    alert('Ehhez előbb jelentkezz be!');
+    window.rpToast('Ehhez előbb jelentkezz be!', '', 'info');
     window.location.href = './auth.html';
   }
 }
+
+
+// ── ÜDVÖZLŐ MODAL ──────────────────────────────────────────────────────
+const welcomeName = localStorage.getItem('rp_show_welcome');
+if (welcomeName !== null) {
+  localStorage.removeItem('rp_show_welcome');
+  setTimeout(() => {
+    if (window.rpShowWelcome) window.rpShowWelcome(welcomeName);
+  }, 400);
+}
+
+// ── DINAMIKUS NAV (bejelentkezés függvényében) ──────────────────────────
+(function updateHomeNav() {
+  const token  = localStorage.getItem('rp_token');
+  const guest  = localStorage.getItem('rp_guest') === '1';
+  const user   = JSON.parse(localStorage.getItem('rp_user') || 'null');
+  const loggedIn = !!token && !guest;
+  const navRight = document.querySelector('.hp-nav-right');
+  if (!navRight) return;
+
+  if (loggedIn) {
+    // Bejelentkezve: kosár + fiók dropdown (mint products oldalon)
+    const initial = (user?.full_name || user?.name || user?.email || 'F').charAt(0).toUpperCase();
+    const name    = user?.full_name || user?.name || '';
+    navRight.innerHTML = `
+      <button class="hp-nav-btn" id="themeBtn" title="Téma váltás"><i class="bi bi-moon-stars"></i></button>
+      <a class="hp-nav-btn position-relative" href="./favorites.html" title="Kedvencek">
+        <i class="bi bi-heart"></i>
+        <span class="hp-badge" id="favBadge" style="display:none;">0</span>
+      </a>
+      <a class="hp-nav-btn position-relative" href="./cart.html" title="Kosár">
+        <i class="bi bi-cart3"></i>
+        <span class="hp-badge" id="cartBadge" style="display:none;">0</span>
+      </a>
+      <div class="dropdown">
+        <button class="btn rp-pill-btn d-flex align-items-center gap-2 dropdown-toggle" data-bs-toggle="dropdown" style="min-height:38px;">
+          <span class="rp-avatar" style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#3b5cff,#0bc5ff);color:#fff;font-weight:800;font-size:12px;display:grid;place-items:center;flex-shrink:0;">${initial}</span>
+          <span class="d-none d-md-inline" style="font-size:13px;font-weight:700;">${name ? name.split(' ')[0] : 'Fiókom'}</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow">
+          <li class="dropdown-item-text small text-muted px-3 py-1">${name || ''}</li>
+          <li><hr class="dropdown-divider my-1"></li>
+          <li><a class="dropdown-item" href="./account.html"><i class="bi bi-person-gear me-2"></i>Fiókbeállítások</a></li>
+          <li><a class="dropdown-item" href="./orders.html"><i class="bi bi-receipt me-2"></i>Rendeléseim</a></li>
+          <li><a class="dropdown-item" href="./favorites.html"><i class="bi bi-heart me-2"></i>Kedvencek</a></li>
+          <li><hr class="dropdown-divider my-1"></li>
+          <li><a class="dropdown-item text-danger" href="#" id="homeLogoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Kijelentkezés</a></li>
+        </ul>
+      </div>`;
+
+    // Init Bootstrap dropdown on dynamically created element
+    const dropToggle = navRight.querySelector('.dropdown-toggle');
+    if (dropToggle && window.bootstrap?.Dropdown) {
+      new window.bootstrap.Dropdown(dropToggle);
+    } else if (dropToggle) {
+      // Fallback: manual toggle if Bootstrap not ready yet
+      const dropMenu = navRight.querySelector('.dropdown-menu');
+      dropToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const open = dropMenu.classList.toggle('show');
+        dropToggle.setAttribute('aria-expanded', open);
+      });
+      document.addEventListener('click', function() {
+        dropMenu.classList.remove('show');
+        dropToggle.setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    // Logout
+    document.getElementById('homeLogoutBtn')?.addEventListener('click', e => {
+      e.preventDefault();
+      localStorage.removeItem('rp_token');
+      localStorage.removeItem('rp_user');
+      localStorage.removeItem('rp_cart');
+      localStorage.setItem('rp_logged_out_at', Date.now().toString());
+      window.location.replace('./auth.html');
+    });
+
+    // Cart badge
+    try {
+      const cart = JSON.parse(localStorage.getItem('rp_cart') || '[]');
+      const n    = cart.reduce((s,i) => s+(i.qty||1), 0);
+      const cb   = document.getElementById('cartBadge');
+      if (cb && n > 0) { cb.textContent = n; cb.style.display = 'inline-flex'; }
+    } catch {}
+
+    // Fav badge
+    try {
+      const ws = JSON.parse(localStorage.getItem('rp_wishlist') || '[]');
+      const fb = document.getElementById('favBadge');
+      if (fb && ws.length > 0) { fb.textContent = ws.length; fb.style.display = 'inline-flex'; }
+    } catch {}
+
+  } else {
+    // Vendég / nincs bejelentkezve: csak auth gomb
+    navRight.innerHTML = `
+      <button class="hp-nav-btn" id="themeBtn" title="Téma váltás"><i class="bi bi-moon-stars"></i></button>
+      <a class="hp-auth-btn" href="./auth.html" id="authBtn">
+        <i class="bi bi-person"></i>
+        <span>Bejelentkezés / Regisztráció</span>
+      </a>`;
+  }
+
+  // Theme toggle (mindig kell)
+  const themeBtn = document.getElementById('themeBtn');
+  if (themeBtn) {
+    const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+    themeBtn.querySelector('i').className = cur === 'dark' ? 'bi bi-moon-stars' : 'bi bi-sun';
+    themeBtn.addEventListener('click', () => {
+      const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+      localStorage.setItem('rp_theme', t);
+      themeBtn.querySelector('i').className = t === 'dark' ? 'bi bi-moon-stars' : 'bi bi-sun';
+    });
+  }
+})();

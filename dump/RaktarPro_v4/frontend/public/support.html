@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="hu">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Raktár Pro – Support</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/common.css">
+  <link rel="stylesheet" href="./assets/css/auth.css">
+</head>
+
+<body class="rp-auth">
+  <div class="rp-auth-wrap">
+    <div class="rp-auth-card">
+
+      <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+        <div>
+          <div class="rp-auth-title" data-i18n="support_title">Belépési segítség</div>
+          <div class="rp-auth-sub" data-i18n="support_subtitle">Írj az adminnak, és hamarosan küldünk választ.</div>
+        </div>
+        <a class="rp-help-link" href="./auth.html" data-i18n="support_back_login">← Vissza a bejelentkezéshez</a>
+      </div>
+
+      <form id="supportForm" action="javascript:void(0)" novalidate>
+        <div class="mb-2">
+          <label class="form-label rp-label" data-i18n="support_email_label">E-mail cím</label>
+          <input class="form-control rp-input rp-input-sm" type="email" id="supportEmail" required data-i18n-ph="support_email_ph" />
+        </div>
+
+        <div class="mb-2">
+          <label class="form-label rp-label" data-i18n="support_msg_label">Mi a hiba?</label>
+          <textarea class="form-control rp-input" id="supportMessage" rows="5" required data-i18n-ph="support_msg_ph"></textarea>
+        </div>
+
+        <div class="rp-error mt-2" id="supportError" style="display:none;"></div>
+        <div class="rp-success mt-2" id="supportSuccess" style="display:none;"></div>
+
+        <button class="btn rp-primary w-100 mt-3 rp-primary-sm" type="submit" data-i18n="support_send_btn">Üzenet küldése</button>
+      </form>
+    </div>
+  </div>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script defer src="./assets/js/api.js"></script>
+  <script defer src="./assets/js/lang.js"></script>
+  <script defer src="./assets/js/support.js"></script>
+</body>
+
+</html>

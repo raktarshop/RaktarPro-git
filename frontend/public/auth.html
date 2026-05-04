@@ -7,7 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
-  <script>!function(){var t=localStorage.getItem("rp_theme")||"dark";document.documentElement.setAttribute("data-theme",t)}();</script>
+  <script>!function(){if(!localStorage.getItem("rp_theme"))localStorage.setItem("rp_theme","dark");document.documentElement.setAttribute("data-theme",localStorage.getItem("rp_theme"))}();</script>
   <style>
     :root {
       --accent: #3b5cff;
@@ -494,6 +494,7 @@
     }
     .auth-stat-label { font-size: 10.5px; color: var(--text-dim); font-weight: 600; }
   </style>
+  <link rel="stylesheet" href="./assets/css/mobile.css">
 </head>
 <body>
 
@@ -591,9 +592,15 @@
             <h1>Hozz létre fiókot</h1>
             <p>Pár lépés és máris bent vagy.</p>
           </div>
-          <div class="auth-field">
-            <label class="auth-label">Teljes név <span style="color:rgba(239,68,68,.7);">*</span></label>
-            <input class="auth-input" type="text" id="regName" placeholder="Pl. Kovács János" autocomplete="name">
+          <div class="row g-2 mb-0">
+            <div class="col-6 auth-field">
+              <label class="auth-label">Vezetéknév <span style="color:rgba(239,68,68,.7);">*</span></label>
+              <input class="auth-input" type="text" id="regLastName" placeholder="Kovács" autocomplete="family-name">
+            </div>
+            <div class="col-6 auth-field">
+              <label class="auth-label">Keresztnév <span style="color:rgba(239,68,68,.7);">*</span></label>
+              <input class="auth-input" type="text" id="regFirstName" placeholder="János" autocomplete="given-name">
+            </div>
           </div>
           <div class="auth-field">
             <label class="auth-label">E-mail cím <span style="color:rgba(239,68,68,.7);">*</span></label>
@@ -871,11 +878,12 @@
 
   byId('regStep1Btn').addEventListener('click', () => {
     clearAlerts();
-    const name = byId('regName').value.trim();
+    const firstName = byId('regFirstName').value.trim();
+    const lastName  = byId('regLastName').value.trim();
     const email = byId('regEmail').value.trim();
     const pw = byId('regPassword').value;
     const pw2 = byId('regPassword2').value;
-    if (!name || !email || !pw || !pw2) { showError('regError','Kérlek tölts ki minden kötelező mezőt.'); return; }
+    if (!firstName || !lastName || !email || !pw || !pw2) { showError('regError','Kérlek tölts ki minden kötelező mezőt.'); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('regError','Érvénytelen e-mail cím.'); return; }
     if (pw.length < 6) { showError('regError','A jelszónak legalább 6 karakter hosszúnak kell lennie.'); return; }
     if (pw !== pw2) { showError('regError','A két jelszó nem egyezik.'); return; }
@@ -891,11 +899,15 @@
     btn.disabled = true; btn.textContent = 'Folyamatban…';
     try {
       if (window.api) {
+        const _first = byId('regFirstName').value.trim();
+        const _last  = byId('regLastName').value.trim();
         await window.api.post('/auth/register', {
-          full_name: byId('regName').value.trim(),
-          email: byId('regEmail').value.trim(),
+          first_name:   _first,
+          last_name:    _last,
+          full_name:    _last + ' ' + _first,
+          email:        byId('regEmail').value.trim(),
           company_name: byId('regCompany').value.trim(),
-          password: byId('regPassword').value,
+          password:     byId('regPassword').value,
         });
       }
       goStep(3);
@@ -923,7 +935,10 @@
       const user = res?.data?.user || res?.user || null;
       if (user) localStorage.setItem('rp_user', JSON.stringify(user));
       else localStorage.removeItem('rp_user');
-      window.location.href = './products.html';
+      // Üdvözlő modal majd átirányítás
+      const userName = user?.first_name || (user?.full_name || '').split(' ').slice(-1)[0] || user?.email || '';
+      localStorage.setItem('rp_show_welcome', userName);
+      window.location.href = './home.html';
     } catch (err) {
       showError('loginError', err?.message || 'Hibás e-mail vagy jelszó.');
     } finally {
@@ -958,7 +973,7 @@
       return;
     }
     // Token megvan és nem volt friss logout → vissza a termékekhez
-    window.location.replace('./products.html');
+    window.location.replace('./home.html');
   })();
 
   // ── ROTATING REVIEW CARDS ──
@@ -1033,5 +1048,39 @@
   byId('authReviews').addEventListener('mouseleave', startTimer);
 </script>
 <script defer src="./assets/js/api.js?v=26"></script>
+
+<script>
+// ── DARK MODE FORCE ──
+(function(){
+  // Mindig dark mode az alapértelmezett
+  if (!localStorage.getItem('rp_theme')) {
+    localStorage.setItem('rp_theme', 'dark');
+  }
+  document.documentElement.setAttribute('data-theme', localStorage.getItem('rp_theme'));
+})();
+
+// ── OLDALVÁLTÁS ANIMÁCIÓ + BFCACHE FIX ──
+// bfcache fix: visszagomb esetén az oldal látható legyen
+window.addEventListener('pageshow', function(e) {
+  document.body.classList.remove('rp-page-out');
+  document.body.style.opacity = '1';
+  document.body.style.animation = 'none';
+  // force reflow then re-enable animation
+  void document.body.offsetHeight;
+  document.body.style.animation = '';
+});
+
+document.addEventListener('click', function(e) {
+  const a = e.target.closest('a[href]');
+  if (!a) return;
+  const href = a.getAttribute('href');
+  if (!href || href.startsWith('#') || href.startsWith('mailto') || href.startsWith('tel')) return;
+  if (a.target === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey) return;
+  if (href.startsWith('http') && !href.includes('localhost')) return;
+  e.preventDefault();
+  document.body.classList.add('rp-page-out');
+  setTimeout(() => { window.location.href = href; }, 120);
+});
+</script>
 </body>
 </html>

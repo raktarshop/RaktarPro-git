@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Raktár Pro – Bejelentkezés</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1 class="title">Raktár Pro</h1>
+    <p class="subtitle">Professzionális raktári megoldások</p>
+
+    <h2 class="section-title">Üdvözöljük újra</h2>
+    <p class="section-sub">Jelentkezzen be a raktár irányítópultjához</p>
+
+    <div class="tabs">
+      <button class="tab active" type="button" disabled>Bejelentkezés</button>
+      <a class="tab" href="regisztracio.html">Regisztráció</a>
+    </div>
+
+    <form action="bejelentkezes.php" method="POST" autocomplete="on">
+      <label for="email">E-mail cím</label>
+      <div class="input">
+        <span class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 4 8 8 8-8"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg>
+        </span>
+        <input id="email" name="email" type="email" placeholder="janos@ceg.hu" required />
+      </div>
+
+      <label for="jelszo">Jelszó</label>
+      <div class="input">
+        <span class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </span>
+        <input id="jelszo" name="jelszo" type="password" placeholder="Adja meg jelszavát" minlength="6" required />
+      </div>
+
+      <button class="submit-btn" type="submit">Bejelentkezés</button>
+    </form>
+
+    <div class="footer">
+      <div class="badge"><span class="emoji">🛡️</span> Biztonságos</div>
+      <div class="badge"><span class="emoji">📦</span> Megbízható</div>
+    </div>
+  </main>
+</body>
+</html>

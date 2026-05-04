@@ -449,11 +449,11 @@ CREATE PROCEDURE `users_get_all` ()   BEGIN
     SELECT * FROM `users`;
 END$$
 
-CREATE PROCEDURE `users_insert` (IN `p_email` VARCHAR(255), IN `p_password_hash` VARCHAR(255), IN `p_full_name` VARCHAR(255), IN `p_company_name` VARCHAR(255), IN `p_role_id` INT)   BEGIN
+CREATE PROCEDURE `users_insert` (IN `p_email` VARCHAR(255), IN `p_password_hash` VARCHAR(255), IN `p_full_name` VARCHAR(255), IN `p_first_name` VARCHAR(120), IN `p_last_name` VARCHAR(120), IN `p_company_name` VARCHAR(255), IN `p_role_id` INT)   BEGIN
     INSERT INTO `users`
-    (`email`, `password_hash`, `full_name`, `company_name`, `role_id`, `created_at`, `updated_at`)
+    (`email`, `password_hash`, `full_name`, `first_name`, `last_name`, `company_name`, `role_id`, `created_at`, `updated_at`)
     VALUES
-    (p_email, p_password_hash, p_full_name, p_company_name, p_role_id, NOW(), NOW());
+    (p_email, p_password_hash, p_full_name, p_first_name, p_last_name, p_company_name, p_role_id, NOW(), NOW());
     SELECT LAST_INSERT_ID() AS inserted_id;
 END$$
 
@@ -558,21 +558,15 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `name`, `parent_id`, `created_at`, `updated_at`) VALUES
-(1, 'Elektronika', NULL, '2025-08-28 17:21:19', NULL),
-(2, 'Mobil', 1, '2025-08-28 17:21:19', NULL),
-(3, 'Laptop', 1, '2025-08-28 17:21:19', NULL),
-(4, 'Ruházat', NULL, '2025-08-28 17:21:19', NULL),
-(5, 'Férfi ruházat', 4, '2025-08-28 17:21:19', NULL),
-(6, 'Női ruházat', 4, '2025-08-28 17:21:19', NULL),
-(7, 'Sporteszközök', NULL, '2025-08-28 17:21:19', NULL),
-(8, 'Élelmiszer', NULL, '2025-08-28 17:21:19', NULL),
-(9, 'Ital', 8, '2025-08-28 17:21:19', NULL),
-(10, 'Játék', NULL, '2025-08-28 17:21:19', NULL),
-(11, 'Bútor', NULL, '2025-08-28 17:21:19', NULL),
-(12, 'Papír', NULL, '2025-08-28 17:21:19', NULL),
-(14, 'Szerszám', NULL, '2025-08-28 17:21:19', NULL),
-(15, 'Autóalkatrész', NULL, '2025-08-28 17:21:19', NULL),
-(17, 'kurzus', NULL, '2026-01-13 11:28:46', NULL);
+(1, 'Mobil', NULL, NOW(), NULL),
+(2, 'Laptop', NULL, NOW(), NULL),
+(3, 'TV & Monitor', NULL, NOW(), NULL),
+(4, 'Fejhallgató', NULL, NOW(), NULL),
+(5, 'Fotózás', NULL, NOW(), NULL),
+(6, 'Okoseszközök', NULL, NOW(), NULL),
+(7, 'PC Kiegészítők', NULL, NOW(), NULL),
+(8, 'Gaming', NULL, NOW(), NULL),
+(9, 'Hálózat', NULL, NOW(), NULL);
 
 -- --------------------------------------------------------
 
@@ -1067,6 +1061,8 @@ CREATE TABLE `users` (
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password_hash` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `full_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `first_name` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_name` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `company_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `role_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
@@ -1077,26 +1073,26 @@ CREATE TABLE `users` (
 -- A tábla adatainak kiíratása `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `password_hash`, `full_name`, `company_name`, `role_id`, `created_at`, `updated_at`) VALUES
-(1, 'admin@bolt.hu', 'jelszo1', 'Admin Felhasználó', NULL, 1, '2025-08-28 17:21:19', NULL),
-(2, 'vezeto@bolt.hu', 'jelszo2', 'Raktár Vezető', NULL, 2, '2025-08-28 17:21:19', NULL),
-(3, 'user@bolt.hu', 'jelszo3', 'Nagy Béla', NULL, 3, '2025-08-28 17:21:19', NULL),
-(4, 'penz@bolt.hu', 'jelszo4', 'Pénzügyes Anna', NULL, 4, '2025-08-28 17:21:19', NULL),
-(5, 'mark@bolt.hu', 'jelszo5', 'Marketing Márk', NULL, 5, '2025-08-28 17:21:19', NULL),
-(6, 'log@bolt.hu', 'jelszo6', 'Logisztikás Lili', NULL, 6, '2025-08-28 17:21:19', NULL),
-(7, 'ugyf@bolt.hu', 'jelszo7', 'Ügyfélszolgálat Zoli', NULL, 7, '2025-08-28 17:21:19', NULL),
-(8, 'hr@bolt.hu', 'jelszo8', 'HR Emese', NULL, 8, '2025-08-28 17:21:19', NULL),
-(9, 'karb@bolt.hu', 'jelszo9', 'Karbantartó Ádám', NULL, 9, '2025-08-28 17:21:19', NULL),
-(10, 'elemzo@bolt.hu', 'jelszo10', 'Elemző Éva', NULL, 10, '2025-08-28 17:21:19', NULL),
-(11, 'mmate', 'asd', 'Molnár Máté', 'asd', 1, '2025-08-28 17:21:19', '2026-01-12 11:09:54'),
-(12, 'proj@bolt.hu', 'jelszo12', 'Projekt Vera', NULL, 12, '2025-08-28 17:21:19', NULL),
-(13, 'minoseg@bolt.hu', 'jelszo13', 'Minőség Misi', NULL, 13, '2025-08-28 17:21:19', NULL),
-(14, 'besz@bolt.hu', 'jelszo14', 'Beszerző Betti', NULL, 14, '2025-08-28 17:21:19', NULL),
-(15, 'termek@bolt.hu', 'jelszo15', 'Termék Tibor', NULL, 15, '2025-08-28 17:21:19', NULL),
-(17, 'mmate06625@gmail.com', '$2y$10$0rb7V4rEqhtvIcGU4kR3l..bRZidcq3I6cxPltTVXyWw3uEFC/TYu', 'Molnar Mate', 'molnar es tarsa', 1, '2025-09-26 11:10:25', '2025-12-10 10:55:36'),
-(18, 'mmate2577@gmail.com', '$2y$10$A5Wen0DvvPVtxcC5Sf05Xeh1M9toNNUGpsSctcjS5yQ.yfzSZhWHO', 'Molnar Mate', 'mmate', 3, '2025-10-17 10:12:27', '2025-11-11 09:51:59'),
-(19, 'molnar.mate@szechenyi.hu', '$2y$10$jCbCtZevIYfqTJh85rL2TOW/JyHvPz5HkO6y85z4V8Q1cEwUTQk36', 'trubics', 'asd', 3, '2025-11-07 09:32:55', '2025-11-07 09:34:01'),
-(20, 'trubics@gmail.com', '$2y$10$M8qffQo2kCVVps25Cu8kue0igk8WWFprvPnhXaMavDYuzIHFA6Zxm', 'Molnar Mate', 'mmate', 3, '2025-11-07 10:15:07', '2025-11-07 10:22:17');
+INSERT INTO `users` (`id`, `email`, `password_hash`, `full_name`, `first_name`, `last_name`, `company_name`, `role_id`, `created_at`, `updated_at`) VALUES
+(1,  'admin@bolt.hu',              'jelszo1',   'Admin Felhasználó',      'Admin',      'Felhasználó', NULL, 1,  '2025-08-28 17:21:19', NULL),
+(2,  'vezeto@bolt.hu',             'jelszo2',   'Raktár Vezető',          'Raktár',     'Vezető',      NULL, 2,  '2025-08-28 17:21:19', NULL),
+(3,  'user@bolt.hu',               'jelszo3',   'Nagy Béla',              'Béla',       'Nagy',        NULL, 3,  '2025-08-28 17:21:19', NULL),
+(4,  'penz@bolt.hu',               'jelszo4',   'Pénzügyes Anna',         'Anna',       'Pénzügyes',   NULL, 4,  '2025-08-28 17:21:19', NULL),
+(5,  'mark@bolt.hu',               'jelszo5',   'Marketing Márk',         'Márk',       'Marketing',   NULL, 5,  '2025-08-28 17:21:19', NULL),
+(6,  'log@bolt.hu',                'jelszo6',   'Logisztikás Lili',       'Lili',       'Logisztikás', NULL, 6,  '2025-08-28 17:21:19', NULL),
+(7,  'ugyf@bolt.hu',               'jelszo7',   'Ügyfélszolgálat Zoli',   'Zoli',       'Ügyfél',      NULL, 7,  '2025-08-28 17:21:19', NULL),
+(8,  'hr@bolt.hu',                 'jelszo8',   'HR Emese',               'Emese',      'HR',          NULL, 8,  '2025-08-28 17:21:19', NULL),
+(9,  'karb@bolt.hu',               'jelszo9',   'Karbantartó Ádám',       'Ádám',       'Karbantartó', NULL, 9,  '2025-08-28 17:21:19', NULL),
+(10, 'elemzo@bolt.hu',             'jelszo10',  'Elemző Éva',             'Éva',        'Elemző',      NULL, 10, '2025-08-28 17:21:19', NULL),
+(11, 'mmate',                      'asd',       'Molnár Máté',            'Máté',       'Molnár',      NULL, 1,  '2025-08-28 17:21:19', '2026-01-12 11:09:54'),
+(12, 'proj@bolt.hu',               'jelszo12',  'Projekt Vera',           'Vera',       'Projekt',     NULL, 12, '2025-08-28 17:21:19', NULL),
+(13, 'minoseg@bolt.hu',            'jelszo13',  'Minőség Misi',           'Misi',       'Minőség',     NULL, 13, '2025-08-28 17:21:19', NULL),
+(14, 'besz@bolt.hu',               'jelszo14',  'Beszerző Betti',         'Betti',      'Beszerző',    NULL, 14, '2025-08-28 17:21:19', NULL),
+(15, 'termek@bolt.hu',             'jelszo15',  'Termék Tibor',           'Tibor',      'Termék',      NULL, 15, '2025-08-28 17:21:19', NULL),
+(17, 'mmate06625@gmail.com',       '$2y$10$0rb7V4rEqhtvIcGU4kR3l..bRZidcq3I6cxPltTVXyWw3uEFC/TYu', 'Molnár Máté', 'Máté', 'Molnár', NULL, 1, '2025-09-26 11:10:25', '2025-12-10 10:55:36'),
+(18, 'mmate2577@gmail.com',        '$2y$10$A5Wen0DvvPVtxcC5Sf05Xeh1M9toNNUGpsSctcjS5yQ.yfzSZhWHO', 'Molnár Máté', 'Máté', 'Molnár', NULL, 3, '2025-10-17 10:12:27', '2025-11-11 09:51:59'),
+(19, 'molnar.mate@szechenyi.hu',   '$2y$10$jCbCtZevIYfqTJh85rL2TOW/JyHvPz5HkO6y85z4V8Q1cEwUTQk36', 'Molnár Máté', 'Máté', 'Molnár', NULL, 3, '2025-11-07 09:32:55', '2025-11-07 09:34:01'),
+(20, 'trubics@gmail.com',          '$2y$10$M8qffQo2kCVVps25Cu8kue0igk8WWFprvPnhXaMavDYuzIHFA6Zxm', 'Molnár Máté', 'Máté', 'Molnár', NULL, 3, '2025-11-07 10:15:07', '2025-11-07 10:22:17');
 
 -- --------------------------------------------------------
 
