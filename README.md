@@ -10,9 +10,9 @@ Egy központi webshop felület létrehozása, ahol a vásárlók és partnerek
 egyszerűen kereshetnek és rendelhetnek termékeket egy modern online felületen.
 
 ## 🛠 Technológiák
-- **Frontend:** HTML5, CSS3, JavaScript
+- **Frontend:** HTML5, CSS3, JavaScript, Boostrap
 - **Backend:** Node.js / PHP
-- **Adatbázis:** MongoDB
+- **Adatbázis:** MySQL
 - **Verziókezelés:** Git, GitHub
 - **Design:** Figma
 - **Projektmenedzsment:** Jira
@@ -22,8 +22,4 @@ egyszerűen kereshetnek és rendelhetnek termékeket egy modern online felülete
 - `backend/` → szerveroldali kód (API, logika)
 - `adatbazis/` → adatbázis modellek, seed fájlok
 - `docs/` → dokumentáció, vizsgaremek anyagok
-
-## 🚀 Indítás (tervezett)
-1. `cd backend`
-2. `npm install`
-3. `npm start`
+- `dump/` → az oldal előző verziói
