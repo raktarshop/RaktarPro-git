@@ -108,7 +108,7 @@
       align-items: center;
       gap: 5px;
       font-weight: 600;
-      transition: color 130ms;
+      transition: color 120ms;
     }
     .auth-back-link:hover { color: var(--text); }
     .auth-theme-btn {
@@ -120,7 +120,7 @@
       cursor: pointer;
       display: grid; place-items: center;
       font-size: 15px;
-      transition: all 130ms;
+      transition: all 120ms;
     }
     .auth-theme-btn:hover { background: var(--input-bg); }
 
@@ -166,7 +166,7 @@
       font-family: var(--font-body);
       font-weight: 700; font-size: 13px;
       border-radius: 9px; cursor: pointer;
-      transition: all 190ms ease;
+      transition: all 120ms ease;
     }
     .auth-tab.active {
       background: linear-gradient(135deg, var(--accent), var(--cyan));
@@ -195,13 +195,13 @@
 
     /* ── PANELS ── */
     .auth-form-panel { display: none; flex: 1; }
-    .auth-form-panel.active { display: flex; flex-direction: column; animation: slideIn 260ms cubic-bezier(.22,.68,0,1.05) both; }
+    .auth-form-panel.active { display: flex; flex-direction: column; animation: slideIn 120ms cubic-bezier(.22,.68,0,1.05) both; }
     @keyframes slideIn {
       from { opacity: 0; transform: translateX(14px); }
       to   { opacity: 1; transform: translateX(0); }
     }
     .reg-step-panel { display: none; flex: 1; flex-direction: column; }
-    .reg-step-panel.active { display: flex; animation: slideIn 230ms ease both; }
+    .reg-step-panel.active { display: flex; animation: slideIn 120ms ease both; }
 
     /* ── STEP INDICATOR ── */
     .auth-steps {
@@ -216,7 +216,7 @@
       display: grid; place-items: center;
       font-size: 11px; font-weight: 800;
       color: var(--text-dim);
-      transition: all 230ms ease; flex-shrink: 0;
+      transition: all 120ms ease; flex-shrink: 0;
     }
     .auth-step.active .auth-step-dot {
       background: linear-gradient(135deg, var(--accent), var(--cyan));
@@ -228,10 +228,10 @@
       box-shadow: 0 3px 10px rgba(16,185,129,.28);
     }
     .auth-step.done .auth-step-dot::after { content: '✓'; font-size: 11px; }
-    .auth-step-label { font-size: 11px; font-weight: 700; color: var(--text-dim); white-space: nowrap; transition: color 230ms; }
+    .auth-step-label { font-size: 11px; font-weight: 700; color: var(--text-dim); white-space: nowrap; transition: color 120ms; }
     .auth-step.active .auth-step-label { color: var(--text); }
     .auth-step.done .auth-step-label { color: var(--green); }
-    .auth-step-line { flex: 1; height: 1px; background: var(--border); margin: 0 7px; min-width: 12px; max-width: 36px; transition: background 300ms; }
+    .auth-step-line { flex: 1; height: 1px; background: var(--border); margin: 0 7px; min-width: 12px; max-width: 36px; transition: background 120ms; }
     .auth-step-line.done { background: var(--green); }
 
     /* ── FORM FIELDS ── */
@@ -246,7 +246,7 @@
       border: 1px solid var(--input-border);
       border-radius: 11px; color: var(--text);
       font-family: var(--font-body); font-size: 13.5px; font-weight: 500;
-      transition: all 165ms ease; outline: none; -webkit-appearance: none;
+      transition: all 120ms ease; outline: none; -webkit-appearance: none;
     }
     .auth-input::placeholder { color: var(--placeholder); }
     .auth-input:focus {
@@ -260,14 +260,14 @@
     .auth-eye {
       position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
       background: none; border: none; color: var(--text-dim);
-      cursor: pointer; font-size: 15px; padding: 2px; transition: color 130ms;
+      cursor: pointer; font-size: 15px; padding: 2px; transition: color 120ms;
     }
     .auth-eye:hover { color: var(--text); }
     .auth-field-hint { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
 
     /* ── PASSWORD STRENGTH ── */
     .pw-strength { height: 3px; background: var(--border); border-radius: 999px; margin-top: 7px; overflow: hidden; }
-    .pw-strength-bar { height: 100%; border-radius: 999px; width: 0; transition: width 280ms ease, background 280ms ease; }
+    .pw-strength-bar { height: 100%; border-radius: 999px; width: 0; transition: width 120ms ease, background 120ms ease; }
     .pw-strength-label { font-size: 10px; margin-top: 3px; font-weight: 700; }
 
     /* ── BUTTONS ── */
@@ -277,14 +277,14 @@
       background: linear-gradient(135deg, var(--accent), var(--cyan));
       color: #fff; font-family: var(--font-body);
       font-size: 14px; font-weight: 800; border: none; cursor: pointer;
-      transition: all 165ms ease;
+      transition: all 120ms ease;
       display: flex; align-items: center; justify-content: center; gap: 7px;
       position: relative; overflow: hidden;
     }
     .auth-btn-primary::after {
       content: ''; position: absolute; inset: 0;
       background: linear-gradient(135deg, rgba(255,255,255,.14), transparent);
-      opacity: 0; transition: opacity 180ms;
+      opacity: 0; transition: opacity 120ms;
     }
     .auth-btn-primary:hover::after { opacity: 1; }
     .auth-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 7px 24px rgba(59,92,255,.42); }
@@ -295,7 +295,7 @@
       border-radius: 11px; background: var(--surface2);
       border: 1px solid var(--border); color: var(--text);
       font-family: var(--font-body); font-size: 13px; font-weight: 700;
-      cursor: pointer; transition: all 150ms ease;
+      cursor: pointer; transition: all 120ms ease;
       display: flex; align-items: center; justify-content: center; gap: 7px;
     }
     .auth-btn-secondary:hover { background: var(--input-bg); border-color: rgba(59,92,255,.25); }
@@ -305,7 +305,7 @@
       padding: 10px 13px; border-radius: 10px;
       font-size: 12.5px; font-weight: 600;
       margin-bottom: 13px; display: none;
-      animation: slideIn 190ms ease;
+      animation: slideIn 120ms ease;
     }
     .auth-alert.error { background: rgba(239,68,68,.11); border: 1px solid rgba(239,68,68,.28); color: rgba(255,175,175,.95); }
     [data-theme="light"] .auth-alert.error { color: #7f1d1d; }
@@ -326,12 +326,12 @@
 
     /* ── GUEST LINK ── */
     .auth-guest { text-align: center; margin-top: 12px; }
-    .auth-guest a { font-size: 12px; color: var(--text-dim); text-decoration: none; font-weight: 600; transition: color 130ms; }
+    .auth-guest a { font-size: 12px; color: var(--text-dim); text-decoration: none; font-weight: 600; transition: color 120ms; }
     .auth-guest a:hover { color: var(--text); }
 
     /* ── SUCCESS STEP ── */
     .reg-success-step { text-align: center; padding: 16px 0; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .reg-success-emoji { font-size: 56px; margin-bottom: 16px; animation: popIn 380ms cubic-bezier(.22,.68,0,1.4) both; }
+    .reg-success-emoji { font-size: 56px; margin-bottom: 16px; animation: popIn 120ms cubic-bezier(.22,.68,0,1.4) both; }
     @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
     /* ══════════════════════════════════════════
@@ -408,7 +408,7 @@
       display: flex; flex-direction: column; justify-content: space-between;
       opacity: 0;
       transform: translateY(10px) scale(.98);
-      transition: opacity 600ms ease, transform 600ms ease;
+      transition: opacity 120ms ease, transform 120ms ease;
       pointer-events: none;
     }
     [data-theme="light"] .auth-review-card {
@@ -423,7 +423,7 @@
     .auth-review-card.leaving {
       opacity: 0;
       transform: translateY(-8px) scale(.98);
-      transition: opacity 400ms ease, transform 400ms ease;
+      transition: opacity 120ms ease, transform 120ms ease;
     }
     .auth-review-text {
       font-size: 13.5px; line-height: 1.6;
@@ -447,7 +447,7 @@
     }
     .auth-review-stars .star {
       font-size: 12px; color: #f59e0b;
-      animation: starPop 400ms cubic-bezier(.22,.68,0,1.4) both;
+      animation: starPop 120ms cubic-bezier(.22,.68,0,1.4) both;
     }
     @keyframes starPop {
       from { transform: scale(0) rotate(-20deg); opacity: 0; }
@@ -462,7 +462,7 @@
     .auth-review-dot {
       width: 6px; height: 6px; border-radius: 50%;
       background: var(--border);
-      transition: all 300ms ease; cursor: pointer;
+      transition: all 120ms ease; cursor: pointer;
     }
     .auth-review-dot.active { background: var(--accent); width: 18px; border-radius: 3px; }
 
@@ -475,7 +475,7 @@
       border: 1px solid rgba(255,255,255,.08);
       border-radius: 14px; padding: 14px 12px;
       text-align: center; backdrop-filter: blur(10px);
-      transition: all 180ms ease;
+      transition: all 120ms ease;
     }
     [data-theme="light"] .auth-stat {
       background: rgba(255,255,255,.62);
@@ -546,10 +546,9 @@
             <input class="auth-input" type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
             <button class="auth-eye" id="toggleLoginPw" type="button">👁</button>
           </div>
-        </div>
-
-        <div style="text-align:right;margin-bottom:16px;">
-          <a href="./support.html" style="font-size:11.5px;color:var(--text-dim);text-decoration:none;font-weight:600;transition:color 130ms;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-dim)'">Segítségre van szükséged a bejelentkezéshez?</a>
+          <div style="margin-top:7px;">
+            <a href="./support.html" style="font-size:11.5px;color:var(--text-dim);text-decoration:none;font-weight:600;transition:color 120ms;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-dim)'">Segítségre van szükséged?</a>
+          </div>
         </div>
 
         <button class="auth-btn-primary" id="loginBtn">
@@ -1047,7 +1046,7 @@
   byId('authReviews').addEventListener('mouseenter', () => clearInterval(reviewTimer));
   byId('authReviews').addEventListener('mouseleave', startTimer);
 </script>
-<script defer src="./assets/js/api.js?v=26"></script>
+<script defer src="./assets/js/api.js?v=27"></script>
 
 <script>
 // ── DARK MODE FORCE ──
@@ -1079,7 +1078,7 @@ document.addEventListener('click', function(e) {
   if (href.startsWith('http') && !href.includes('localhost')) return;
   e.preventDefault();
   document.body.classList.add('rp-page-out');
-  setTimeout(() => { window.location.href = href; }, 120);
+  setTimeout(() => { window.location.href = href; }, 80);
 });
 </script>
 </body>

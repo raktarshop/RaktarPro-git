@@ -42,7 +42,7 @@ body {
   gap: 14px;
   padding: 18px 22px;
   border-bottom: 1px solid var(--border);
-  transition: background 130ms ease;
+  transition: background 120ms ease;
 }
 .rp-row:last-child { border-bottom: 0; }
 .rp-row:hover { background: var(--glass); }
@@ -120,7 +120,7 @@ body {
   display: grid;
   place-items: center;
   cursor: pointer;
-  transition: all 130ms ease;
+  transition: all 120ms ease;
   flex-shrink: 0;
 }
 .rp-remove:hover {
@@ -161,7 +161,7 @@ body {
   background: var(--glass) !important;
   color: var(--text) !important;
   font-weight: 700 !important;
-  transition: all 130ms ease;
+  transition: all 120ms ease;
   padding: 10px 18px !important;
 }
 .rp-btn:hover {
@@ -178,7 +178,7 @@ body {
   background: linear-gradient(135deg, #3b5cff, #0bc5ff) !important;
   color: #fff !important;
   font-weight: 800 !important;
-  transition: all 130ms ease;
+  transition: all 120ms ease;
   padding: 10px 22px !important;
   box-shadow: 0 4px 18px rgba(59,92,255,.30);
 }
@@ -280,7 +280,7 @@ body {
   border-radius: 14px !important;
   padding: 11px 14px !important;
   font-size: 14px !important;
-  transition: border-color 150ms ease, box-shadow 150ms ease;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
 }
 .rp-input:focus {
   border-color: rgba(59,92,255,.5) !important;

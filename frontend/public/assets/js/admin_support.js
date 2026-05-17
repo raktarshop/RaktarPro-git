@@ -2,27 +2,20 @@ let tickets = [];
 
 function esc(str) {
   return String(str ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replaceAll("&", "&amp;").replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
 }
-
 function setMsg(text) {
   const el = document.getElementById("supportMsg");
   if (el) el.textContent = text || "";
 }
-
-function t(key) {
-  return (window.lang && typeof window.lang.t === "function") ? window.lang.t(key) : key;
-}
-
 function formatDate(s) {
   if (!s) return "";
-  return String(s).replace("T", " ").replace("Z", "");
+  return String(s).replace("T", " ").replace("Z", "").slice(0, 16);
 }
-
+function truncate(str, max) {
+  return str && str.length > max ? str.slice(0, max) + "…" : str || "";
+}
 function flashBtn(btn, success) {
   const icon = btn.querySelector("i");
   if (!icon) return;
@@ -32,79 +25,112 @@ function flashBtn(btn, success) {
     setTimeout(() => { icon.className = "bi bi-check2"; btn.style.transform = ""; }, 1200);
   } else {
     icon.className = "bi bi-x-circle-fill text-danger";
-    setTimeout(() => { icon.className = "bi bi-check2"; btn.style.transform = ""; }, 1200);
+    setTimeout(() => { icon.className = "bi bi-check2"; }, 1200);
   }
 }
 
+// ── Részlet modal ──────────────────────────────────────────
+function showModal(it) {
+  const resolved = Number(it.resolved) === 1;
+  let overlay = document.getElementById('rpSupportModal');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'rpSupportModal';
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);padding:20px;';
+    overlay.addEventListener('click', e => { if(e.target===overlay) overlay.remove(); });
+    document.body.appendChild(overlay);
+  }
+  overlay.innerHTML = `
+    <div style="background:var(--card,#161b2e);border:1px solid var(--glass-border,rgba(255,255,255,.1));border-radius:20px;max-width:500px;width:100%;box-shadow:0 24px 70px rgba(0,0,0,.5);padding:28px 28px 24px;position:relative;">
+      <button onclick="document.getElementById('rpSupportModal').remove()"
+        style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--text-dim,#888);font-size:22px;cursor:pointer;line-height:1;">&times;</button>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <i class="bi ${resolved?'bi-check-circle-fill text-success':'bi-envelope-fill'}" style="font-size:22px;"></i>
+        <div>
+          <div style="font-weight:700;font-size:15px;">${esc(it.email)}</div>
+          <div style="font-size:11px;color:var(--text-dim,#888);">#${it.id} · ${formatDate(it.created_at)}</div>
+        </div>
+        <span style="margin-left:auto;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;${resolved?'background:rgba(34,197,94,.15);color:#4ade80;':'background:rgba(251,191,36,.15);color:#fbbf24;'}">
+          ${resolved ? '✓ Megoldva' : '⏳ Nyitott'}
+        </span>
+      </div>
+      <div style="background:var(--glass,rgba(255,255,255,.04));border-radius:12px;padding:16px;font-size:14px;line-height:1.7;color:var(--text,#e8edf5);white-space:pre-wrap;margin-bottom:${resolved?'0':'16px'};">${esc(it.message)}</div>
+      ${resolved ? '' : `
+      <button class="btn btn-sm rp-admin-btn w-100" id="modalResolveBtn" data-id="${it.id}" style="margin-top:4px;">
+        <i class="bi bi-check2 me-2"></i>Megoldottnak jelölés
+      </button>`}
+    </div>`;
+
+  const resolveBtn = overlay.querySelector('#modalResolveBtn');
+  if (resolveBtn) {
+    resolveBtn.addEventListener('click', async () => {
+      resolveBtn.disabled = true;
+      resolveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Folyamatban...';
+      try {
+        await window.api.put(`/admin/support/${it.id}`, {});
+        overlay.remove();
+        await loadTickets();
+        setMsg("✓ Jegy lezárva.");
+      } catch(e) {
+        resolveBtn.disabled = false;
+        resolveBtn.innerHTML = '<i class="bi bi-check2 me-2"></i>Megoldottnak jelölés';
+        setMsg(e?.message || String(e));
+      }
+    });
+  }
+}
+
+// ── Render ─────────────────────────────────────────────────
 function render() {
   const tbody = document.getElementById("supportTbody");
   tbody.innerHTML = "";
 
   if (!tickets.length) {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `<td colspan="6" style="opacity:.75;">(Üres)</td>`;
-    tbody.appendChild(tr);
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;opacity:.6;padding:30px;">Nincsenek support jegyek</td></tr>`;
     return;
   }
 
   for (const it of tickets) {
     const resolved = Number(it.resolved) === 1;
-    const statusText = resolved ? t("admin_support_status_resolved") : t("admin_support_status_open");
-
     const tr = document.createElement("tr");
-    tr.style.animation = "rp-fade-in 0.25s ease both";
+    tr.style.cursor = "pointer";
+    tr.title = "Kattints a részletekért";
     tr.innerHTML = `
-      <td>${esc(it.id)}</td>
-      <td>${esc(it.email)}</td>
-      <td style="max-width:520px; white-space:pre-wrap;">${esc(it.message)}</td>
-      <td>${esc(formatDate(it.created_at))}</td>
-      <td>${esc(statusText)}</td>
-      <td>
-        ${resolved ? `<span class="text-success"><i class="bi bi-check-circle-fill me-1"></i>${esc(t("admin_support_status_resolved"))}</span>` 
-          : `<button class="btn btn-sm rp-admin-btn rp-icon-btn" data-act="resolve" data-id="${esc(it.id)}" 
-               title="${esc(t('admin_support_resolve'))}" style="transition: all 200ms ease;">
-              <i class="bi bi-check2"></i>
-            </button>`}
+      <td style="font-weight:600;width:40px;">${esc(it.id)}</td>
+      <td style="font-size:13px;">${esc(it.email)}</td>
+      <td style="max-width:260px;">
+        <span style="color:var(--text-dim,#888);font-size:13px;">${esc(truncate(it.message, 60))}</span>
       </td>
-    `;
+      <td style="font-size:12px;white-space:nowrap;">${formatDate(it.created_at)}</td>
+      <td>
+        ${resolved
+          ? `<span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:rgba(34,197,94,.15);color:#4ade80;"><i class="bi bi-check-circle-fill"></i> Megoldva</span>`
+          : `<span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:rgba(251,191,36,.15);color:#fbbf24;"><i class="bi bi-clock"></i> Nyitott</span>`
+        }
+      </td>`;
+    tr.addEventListener('click', () => showModal(it));
     tbody.appendChild(tr);
   }
-
-  tbody.querySelectorAll("button[data-act='resolve']").forEach((btn) => {
-    btn.addEventListener("click", async () => {
-      const id = btn.getAttribute("data-id");
-      btn.disabled = true;
-      setMsg(t("admin_support_resolve") + "...");
-      try {
-        await window.api.put(`/admin/support/${id}`, {});
-        flashBtn(btn, true);
-        setTimeout(async () => {
-          await loadTickets();
-          setMsg("✓ Kész.");
-        }, 600);
-      } catch (e) {
-        flashBtn(btn, false);
-        setMsg(e?.message || String(e));
-        btn.disabled = false;
-      }
-    });
-  });
 }
 
 async function loadTickets() {
   setMsg("Betöltés...");
-  const res = await window.api.get("/admin/support");
-  tickets = res?.data?.tickets || res?.tickets || [];
-  setMsg("");
-  render();
+  try {
+    const res = await window.api.get("/admin/support");
+    tickets = res?.data?.tickets || res?.tickets || [];
+    setMsg("");
+    render();
+  } catch(e) {
+    setMsg(e?.message || String(e));
+  }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
   let user = null;
   try { user = JSON.parse(localStorage.getItem("rp_user") || "null"); } catch {}
-  const isAdmin = user && (Number(user.role_id) === 1 || user.is_admin === true || user.role === "admin" || user.role === "ADMIN");
+  const isAdmin = user && (Number(user.role_id) === 1 || user.is_admin === true || user.role === "admin");
   if (!isAdmin) {
-    window.rpToast('Ehhez admin jogosultság kell.', '', 'info');
+    window.rpToast?.('Ehhez admin jogosultság kell.', '', 'info');
     window.location.href = "./products.html";
     return;
   }
@@ -115,10 +141,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     pill.innerHTML = `<span class="rp-admin-pill"><i class="bi bi-person-fill me-1"></i>Bejelentkezve: <strong>${esc(n)}</strong></span>`;
   }
 
-  // Re-render on lang change
-  window.addEventListener("storage", (e) => {
-    if (!e?.key || e.key === "rp_lang") render();
-  });
+  window.addEventListener("storage", e => { if (!e?.key || e.key === "rp_lang") render(); });
 
   try { await loadTickets(); }
   catch (e) { setMsg(e?.message || String(e)); }

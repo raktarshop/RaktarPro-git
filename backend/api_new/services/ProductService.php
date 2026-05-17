@@ -20,18 +20,7 @@ class ProductService {
      * If name_{lang}/description_{lang} exists and not empty, it replaces name/description.
      */
     private function applyProductLang(array $p, string $lang): array {
-        $lang = in_array($lang, ['hu','en','de'], true) ? $lang : 'hu';
-
-        $nameKey = 'name_' . $lang;
-        $descKey = 'description_' . $lang;
-
-        if (isset($p[$nameKey]) && $p[$nameKey] !== null && trim((string)$p[$nameKey]) !== '') {
-            $p['name'] = $p[$nameKey];
-        }
-        if (isset($p[$descKey]) && $p[$descKey] !== null && trim((string)$p[$descKey]) !== '') {
-            $p['description'] = $p[$descKey];
-        }
-
+        // description_hu/en/de columns removed — description column is always Hungarian
         return $p;
     }
 

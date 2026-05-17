@@ -46,9 +46,9 @@ function getUser() {
 }
 function isAdminUser(user) {
   if (!user) return false;
-  if (user.is_admin === true) return true;
-  if (Number(user.is_admin) === 1) return true;
+  // role_id === 1 = admin (is_admin column may not exist in DB)
   if (Number(user.role_id) === 1) return true;
+  if (user.is_admin === true || Number(user.is_admin) === 1) return true;
   if (typeof user.role === 'string' && user.role.toLowerCase() === 'admin') return true;
   return false;
 }
@@ -56,15 +56,12 @@ function isAdminUser(user) {
 function initAdminMenu() {
   const adminItem = document.getElementById('adminMenuItem');
   const adminDivider = document.getElementById('adminMenuDivider');
-  if (!adminItem) return;
-  if (isGuest()) {
-    adminItem.style.display = 'none';
-    if (adminDivider) adminDivider.style.display = 'none';
-    return;
-  }
-  const ok = Boolean(getToken()) && isAdminUser(getUser());
-  adminItem.style.display = ok ? 'block' : 'none';
-  if (adminDivider) adminDivider.style.display = ok ? 'block' : 'none';
+  const adminNavBtn = document.getElementById('adminNavBtn');
+  const user = getUser();
+  const show = !isGuest() && user && isAdminUser(user);
+  if (adminItem) adminItem.style.display = show ? '' : 'none';
+  if (adminDivider) adminDivider.style.display = show ? '' : 'none';
+  if (adminNavBtn) adminNavBtn.style.display = show ? '' : 'none';
 }
 
 function initUserDisplay() {
@@ -168,7 +165,18 @@ function initNav() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', initNav);
+document.addEventListener('DOMContentLoaded', () => {
+  initNav();
+  // Re-run admin check after a tick in case rp_user was set async
+  setTimeout(initAdminMenu, 50);
+  setTimeout(initAdminMenu, 300);
+});
+// Re-run when localStorage changes (e.g. after login)
+window.addEventListener('storage', (e) => {
+  if (e.key === 'rp_user' || e.key === 'rp_token') {
+    initAdminMenu();
+  }
+});
 window.addEventListener('storage', () => {
   updateCartBadge();
   updateFavBadge();

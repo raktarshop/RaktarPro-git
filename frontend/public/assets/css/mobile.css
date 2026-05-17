@@ -375,7 +375,7 @@ input, select, textarea {
 html { scroll-behavior: smooth; }
 
 /* ── OLDALVÁLTÁS ANIMÁCIÓ ── */
-body { animation: rp-page-in 200ms ease both; }
+body { animation: rp-page-in 100ms ease both; }
 @keyframes rp-page-in {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -384,8 +384,78 @@ a[href]:not([href^='#']):not([href^='mailto']):not([href^='tel']):not([data-no-t
   /* handled by JS */
 }
 .rp-page-out {
-  animation: rp-page-out 120ms ease forwards !important;
+  animation: rp-page-out 80ms ease forwards !important;
 }
 @keyframes rp-page-out {
   to { opacity: 0; transform: translateY(-8px); }
+}
+
+/* ── HOME PROD GRID KIEGÉSZÍTÉS ─────────────────────────────── */
+@media (max-width: 640px) {
+  .hp-prod-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+}
+@media (max-width: 380px) {
+  .hp-prod-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ── HOME KATEGÓRIA GRID ─────────────────────────────────────── */
+@media (max-width: 480px) {
+  .hp-cat-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+}
+
+/* ── ADMIN TÁBLÁK SCROLL ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  .table-responsive, .rp-admin-table-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  /* Admin nav buttons wrap */
+  .rp-admin-nav {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+  /* Admin KPI stats */
+  .rp-admin-stats-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+}
+@media (max-width: 480px) {
+  .rp-admin-stats-row { grid-template-columns: 1fr 1fr !important; }
+}
+
+/* ── PRODUCT DETAILS KÉP ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  .rp-detail-img-main {
+    max-height: 320px;
+  }
+  .rp-detail-img-wrap {
+    position: static !important;
+  }
+}
+
+/* ── CART TÁBLÁZAT ───────────────────────────────────────────── */
+@media (max-width: 576px) {
+  .rp-cart-img { width: 60px !important; height: 60px !important; }
+  .rp-qty-btn { width: 28px !important; height: 28px !important; font-size: 13px !important; }
+}
+
+/* ── NAV EGYSÉGES ────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .rp-nav .d-flex.gap-2 { gap: 6px !important; }
+  .rp-pill-btn { padding: 5px 8px !important; }
+}
+
+/* ── ADMIN SUPPORT TÁBLÁZAT ──────────────────────────────────── */
+@media (max-width: 768px) {
+  #supportTbody td:nth-child(4) { display: none; } /* dátum elrejtése */
+  #supportTbody td:first-child { display: none; }  /* ID elrejtése */
+  .table thead th:nth-child(4) { display: none; }
+  .table thead th:first-child { display: none; }
 }

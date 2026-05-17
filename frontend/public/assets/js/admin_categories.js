@@ -1,203 +1,142 @@
-function t(key, fallback) {
+// admin_categories.js
+const CAT_ICONS = {
+  'Mobil':'bi-phone','Laptop':'bi-laptop','TV & Monitor':'bi-display',
+  'Fejhallgató':'bi-headphones','Hangszóró':'bi-speaker','Fotózás':'bi-camera',
+  'Okoseszközök':'bi-smartwatch','PC Kiegészítők':'bi-mouse2',
+  'Gaming':'bi-controller','Hálózat':'bi-wifi',
+};
+
+function catIcon(name) {
+  for (const [k,v] of Object.entries(CAT_ICONS)) {
+    if (name.toLowerCase().includes(k.toLowerCase().split('/')[0].toLowerCase())) return v;
+  }
+  return 'bi-tag';
+}
+
+function setMsg(txt, color) {
+  const el = document.getElementById('catsMsg');
+  if (!el) return;
+  el.textContent = txt || '';
+  el.style.color = color || 'var(--text-dim)';
+}
+
+async function loadCategories() {
+  const grid = document.getElementById('catGrid');
   try {
-    const v = window.lang?.t ? window.lang.t(key) : null;
-    return v || fallback || key;
-  } catch {
-    return fallback || key;
-  }
-}
+    const res = await window.api.get('/categories');
+    const cats = Array.isArray(res) ? res
+      : Array.isArray(res?.data?.categories) ? res.data.categories
+      : Array.isArray(res?.categories) ? res.categories
+      : Array.isArray(res?.data) ? res.data : [];
 
-let categories = [];
-
-function escapeHtml(str) {
-  return String(str ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-function setMsg(t) {
-  const el = document.getElementById("catMsg");
-  if (el) el.textContent = t || "";
-}
-
-function extractCategories(res) {
-  if (!res) return [];
-  if (Array.isArray(res)) return res;
-  if (Array.isArray(res?.data?.categories)) return res.data.categories;
-  if (Array.isArray(res?.categories)) return res.categories;
-  if (Array.isArray(res?.data)) return res.data;
-  return [];
-}
-
-function isAdminUser(user) {
-  if (!user) return false;
-  if (user.is_admin === true) return true;
-  if (Number(user.is_admin) === 1) return true;
-  if (Number(user.role_id) === 1) return true;
-  const r = String(user.role || "").toLowerCase();
-  if (r === "admin") return true;
-  return false;
-}
-
-function fillParentSelect() {
-  const sel = document.getElementById("catParent");
-  if (!sel) return;
-  const current = sel.value;
-
-  sel.innerHTML = `<option value="">(nincs)</option>` +
-    categories
-      .slice()
-      .sort((a, b) => String(a.name || "").localeCompare(String(b.name || ""), "hu"))
-      .map(c => `<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`)
-      .join("");
-
-  sel.value = current || "";
-}
-
-function getCatNameById(id) {
-  const c = categories.find(x => String(x.id) === String(id));
-  return c?.name || "";
-}
-
-function renderTable() {
-  const tbody = document.getElementById("catTbody");
-  if (!tbody) return;
-  tbody.innerHTML = "";
-
-  const sorted = categories
-    .slice()
-    .sort((a, b) => String(a.name || "").localeCompare(String(b.name || ""), "hu"));
-
-  for (const c of sorted) {
-    const parentName = c.parent_id ? getCatNameById(c.parent_id) : "";
-
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${escapeHtml(c.id)}</td>
-      <td>
-        <input class="form-control form-control-sm rp-mini" type="text"
-               value="${escapeHtml(c.name || "")}" data-field="name" data-id="${escapeHtml(c.id)}">
-      </td>
-      <td style="min-width:180px;">
-        <select class="form-select form-select-sm rp-mini" data-field="parent_id" data-id="${escapeHtml(c.id)}">
-          <option value="">(nincs)</option>
-          ${categories
-            .filter(x => String(x.id) !== String(c.id))
-            .map(x => `<option value="${escapeHtml(x.id)}">${escapeHtml(x.name)}</option>`)
-            .join("")}
-        </select>
-      </td>
-      <td>
-        <div class="d-flex gap-2">
-          <button class="btn btn-sm rp-admin-btn rp-icon-btn" data-act="save" data-id="${escapeHtml(c.id)}" title="${escapeHtml(t('admin_orders_save','Mentés'))}" style="transition:all 200ms ease;"><i class="bi bi-check2"></i></button>
-          <button class="btn btn-sm rp-admin-btn-danger rp-icon-btn" data-act="del" data-id="${escapeHtml(c.id)}" title="${escapeHtml(t('admin_categories_delete','Törlés'))}" style="transition:all 200ms ease;"><i class="bi bi-x-lg"></i></button>
-        </div>
-      </td>
-    `;
-
-    tbody.appendChild(tr);
-
-    const sel = tr.querySelector(`select[data-field="parent_id"][data-id="${c.id}"]`);
-    if (sel) sel.value = c.parent_id ? String(c.parent_id) : "";
-  }
-
-  tbody.querySelectorAll("button[data-act='save']").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const id = btn.getAttribute("data-id");
-      const nameEl = tbody.querySelector(`input[data-field="name"][data-id="${id}"]`);
-      const parentEl = tbody.querySelector(`select[data-field="parent_id"][data-id="${id}"]`);
-
-      const name = (nameEl?.value || "").trim();
-      const parent_id = (parentEl?.value || "").trim();
-
-      if (!name) {
-        setMsg("A kategória neve kötelező.");
-        return;
-      }
-
-      setMsg("Mentés...");
-      try {
-        await window.api.put(`/categories/${id}`, {
-          name,
-          parent_id: parent_id === "" ? null : Number(parent_id)
-        });
-        await load();
-        setMsg("Mentve.");
-      } catch (e) {
-        setMsg(`Hiba: ${e.message || e}`);
-      }
-    });
-  });
-
-  tbody.querySelectorAll("button[data-act='del']").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const id = btn.getAttribute("data-id");
-      if (!confirm(`Biztos törlöd? (ID: ${id})`)) return;
-      setMsg("Törlés...");
-      try {
-        await window.api.del(`/categories/${id}`);
-        await load();
-        setMsg("Törölve.");
-      } catch (e) {
-        setMsg(`Hiba: ${e.message || e}`);
-      }
-    });
-  });
-}
-
-async function load() {
-  const res = await window.api.get("/categories");
-  categories = extractCategories(res);
-  fillParentSelect();
-  renderTable();
-}
-
-document.addEventListener("DOMContentLoaded", async () => {
-  let user = null;
-  try { user = JSON.parse(localStorage.getItem("rp_user") || "null"); } catch {}
-  if (!isAdminUser(user)) {
-    window.rpToast('Ehhez admin jogosultság kell.', '', 'info');
-    window.location.href = "./products.html";
-    return;
-  }
-
-  const pill = document.getElementById("adminNamePill");
-  if (pill) {
-    const n = user?.full_name || user?.name || user?.email || "Admin";
-    pill.innerHTML = `<span class="rp-admin-pill"><i class="bi bi-person-fill me-1"></i>Bejelentkezve: <strong>${n}</strong></span>`;
-  }
-
-  document.getElementById("catReload")?.addEventListener("click", load);
-  document.getElementById("catAdd")?.addEventListener("click", async () => {
-    const name = (document.getElementById("catName")?.value || "").trim();
-    const parent = (document.getElementById("catParent")?.value || "").trim();
-
-    if (!name) {
-      setMsg("A kategória neve kötelező.");
+    if (!cats.length) {
+      grid.innerHTML = '<div class="cat-empty"><i class="bi bi-tags" style="font-size:32px;opacity:.3;display:block;margin-bottom:10px;"></i>Még nincs kategória.</div>';
       return;
     }
 
-    setMsg("Létrehozás...");
-    try {
-      await window.api.post("/categories", {
-        name,
-        parent_id: parent === "" ? null : Number(parent)
-      });
-      document.getElementById("catName").value = "";
-      await load();
-      setMsg("Kategória létrehozva.");
-    } catch (e) {
-      setMsg(`Hiba: ${e.message || e}`);
-    }
-  });
+    // update count badge
+    const badge = document.getElementById('catCountBadge');
+    if (badge) badge.textContent = cats.length;
 
-  try {
-    await load();
-    setMsg("");
-  } catch (e) {
-    setMsg(`Hiba: ${e.message || e}`);
+    grid.innerHTML = cats.map(cat => `
+      <div class="cat-card" data-cat-id="${cat.id}">
+        <div class="cat-card-left">
+          <div class="cat-icon"><i class="bi ${catIcon(cat.name)}"></i></div>
+          <div class="cat-info">
+            <div class="cat-name">${esc(cat.name)}</div>
+            <div class="cat-id">#${cat.id}</div>
+          </div>
+        </div>
+        <button class="cat-del-btn" title="Törlés" data-id="${cat.id}">
+          <i class="bi bi-trash3"></i>
+        </button>
+      </div>
+    `).join('');
+
+    // Delete buttons
+    grid.querySelectorAll('.cat-del-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id   = btn.dataset.id;
+        const card = btn.closest('.cat-card');
+        const name = card.querySelector('.cat-name').textContent;
+        const ok = await window.rpConfirm('Kategória törlése', `Biztosan törlöd: "${name}"?\nAz ehhez rendelt termékek kategória nélkül maradnak.`);
+        if (!ok) return;
+        btn.disabled = true;
+        try {
+          await window.api.del(`/categories/${id}`);
+          card.style.transition = 'opacity 120ms, transform 120ms';
+          card.style.opacity = '0';
+          card.style.transform = 'scale(.95)';
+          setTimeout(() => { card.remove(); setMsg('✓ Törölve.', '#10b981'); }, 150);
+        } catch(e) {
+          setMsg('Hiba: ' + (e.message || e), '#ef4444');
+          btn.disabled = false;
+        }
+      });
+    });
+  } catch(e) {
+    // Show demo categories as fallback
+    const demoCats = [
+      {id:1,name:'Mobil'},{id:2,name:'Laptop'},{id:3,name:'TV & Monitor'},
+      {id:4,name:'Fejhallgató'},{id:5,name:'Fotózás'},
+      {id:6,name:'Okoseszközök'},{id:7,name:'PC Kiegészítők'},
+      {id:8,name:'Gaming'},{id:9,name:'Hálózat'},{id:10,name:'Hangszóró'},
+    ];
+    const badge2 = document.getElementById('catCountBadge');
+    if (badge2) badge2.textContent = demoCats.length;
+    grid.innerHTML = demoCats.map(cat => `
+      <div class="cat-card" data-cat-id="${cat.id}">
+        <div class="cat-card-left">
+          <div class="cat-icon"><i class="bi ${catIcon(cat.name)}"></i></div>
+          <div class="cat-info">
+            <div class="cat-name">${esc(cat.name)}</div>
+            <div class="cat-id">#${cat.id}</div>
+          </div>
+        </div>
+        <button class="cat-del-btn" title="Törlés (API nélkül nem aktív)" disabled>
+          <i class="bi bi-trash3"></i>
+        </button>
+      </div>
+    `).join('') + '<div style="grid-column:1/-1;font-size:12px;color:var(--text-dim);padding:8px 4px;background:var(--glass);border-radius:10px;padding:10px 14px;border:1px solid var(--glass-border);"><i class="bi bi-info-circle me-1"></i>API nem elérhető – demo adatok láthatók</div>';
+    console.error(e);
   }
+}
+
+function esc(s) {
+  return String(s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  // Auth check
+  let user = null;
+  try { user = JSON.parse(localStorage.getItem('rp_user')||'null'); } catch {}
+  const isAdmin = u => u && (u.is_admin===true||Number(u.is_admin)===1||Number(u.role_id)===1);
+  if (!isAdmin(user)) { window.rpToast?.('Hozzáférés megtagadva', 'Admin jogosultság szükséges.', 'error'); setTimeout(()=>{ window.location.href='./products.html'; }, 1500); return; }
+
+  await loadCategories();
+
+  // Add category
+  const addBtn   = document.getElementById('catAdd');
+  const nameInput = document.getElementById('catName');
+
+  const doAdd = async () => {
+    const name = nameInput.value.trim();
+    if (!name) { setMsg('Add meg a kategória nevét.', '#f59e0b'); return; }
+    addBtn.disabled = true;
+    setMsg('Mentés…');
+    try {
+      await window.api.post('/categories', { name });
+      nameInput.value = '';
+      setMsg('✓ Kategória hozzáadva!', '#10b981');
+      await loadCategories();
+      setTimeout(() => setMsg(''), 2500);
+    } catch(e) {
+      setMsg('Hiba: ' + (e.message || e), '#ef4444');
+    } finally {
+      addBtn.disabled = false;
+    }
+  };
+
+  addBtn.addEventListener('click', doAdd);
+  nameInput.addEventListener('keydown', e => { if (e.key === 'Enter') doAdd(); });
 });

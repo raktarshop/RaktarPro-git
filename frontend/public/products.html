@@ -6,10 +6,10 @@
   <title>Raktár Pro – Termékek</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="./assets/css/common.css?v=25">
+  <link rel="stylesheet" href="./assets/css/common.css?v=27">
   <script>!function(){if(!localStorage.getItem("rp_theme"))localStorage.setItem("rp_theme","dark");document.documentElement.setAttribute("data-theme",localStorage.getItem("rp_theme"))}();</script>
-  <link rel="stylesheet" href="./assets/css/nav-unify.css?v=25">
-  <link rel="stylesheet" href="./assets/css/rp-luxury.css?v=25">
+  <link rel="stylesheet" href="./assets/css/nav-unify.css?v=27">
+  <link rel="stylesheet" href="./assets/css/rp-luxury.css?v=27">
   <style>
     /* Márka filter chips */
     .rp-brand-chips { display:flex; flex-wrap:wrap; gap:5px; margin-top:6px; }
@@ -26,19 +26,67 @@
   
     /* ── PRICE RANGE SLIDER ── */
     .rp-slider-wrap { padding: 4px 0; }
-    .rp-slider-labels { display:flex; justify-content:space-between; font-size:12px; font-weight:700; color:var(--text-dim); margin-bottom:10px; }
-    .rp-range-track { position:relative; height:6px; background:var(--glass-border); border-radius:999px; margin:20px 8px; }
-    .rp-range-fill { position:absolute; height:100%; background:linear-gradient(90deg,#3b5cff,#0bc5ff); border-radius:999px; top:0; }
-    .rp-range-input { position:absolute; width:100%; height:6px; background:transparent; border:none; top:0; left:0; pointer-events:none; margin:0; }
-    .rp-range-input::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:#fff; border:2px solid #3b5cff; box-shadow:0 2px 8px rgba(59,92,255,.35); cursor:pointer; pointer-events:all; position:relative; z-index:2; transition:transform 120ms; }
-    .rp-range-input::-webkit-slider-thumb:hover { transform:scale(1.15); }
-    .rp-range-input::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background:#fff; border:2px solid #3b5cff; cursor:pointer; pointer-events:all; }
-    #priceRangeMax { z-index:1; }
-    #priceRangeMin { z-index:1; }
+    .rp-slider-labels { display:flex; justify-content:space-between; font-size:12px; font-weight:700; color:var(--text-dim); margin-bottom:8px; }
+    .rp-slider-wrap { padding: 4px 0 2px; }
+    .rp-range-track {
+      position: relative;
+      height: 4px;
+      background: var(--glass-border);
+      border-radius: 999px;
+      margin: 22px 0 14px;
+      overflow: visible;   /* critical: thumbs must not be clipped */
+    }
+    .rp-range-fill { position:absolute; height:100%; background:linear-gradient(90deg,#3b5cff,#0bc5ff); border-radius:999px; top:0; pointer-events:none; left:0; width:100%; }
+    .rp-range-input {
+      position: absolute;
+      width: 100%;
+      background: transparent;
+      border: none; outline: none;
+      -webkit-appearance: none; appearance: none;
+      pointer-events: none;
+      top: 50%; transform: translateY(-50%);
+      left: 0; margin: 0; padding: 0; height: 4px;
+    }
+    .rp-range-input::-webkit-slider-runnable-track { background:transparent; height:4px; }
+    .rp-range-input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2.5px solid #3b5cff;
+      box-shadow: 0 2px 10px rgba(59,92,255,.45);
+      cursor: grab;
+      pointer-events: all;
+      margin-top: -8px;
+      transition: transform 80ms, box-shadow 80ms;
+    }
+    .rp-range-input::-webkit-slider-thumb:hover { box-shadow: 0 2px 14px rgba(59,92,255,.7); }
+    .rp-range-input::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.18); }
+    .rp-range-input::-moz-range-thumb {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2.5px solid #3b5cff;
+      box-shadow: 0 2px 10px rgba(59,92,255,.45);
+      cursor: grab;
+      pointer-events: all;
+    }
+    .rp-range-input::-moz-range-track { background: transparent; }
+    #priceRangeMin { z-index: 3; }
+    #priceRangeMax { z-index: 2; }
+    .rp-price-row { display: flex; gap: 8px; margin-top: 12px; }
+    .rp-price-in {
+      flex: 1; min-width: 0;
+      background: var(--glass); border: 1px solid var(--glass-border);
+      border-radius: 10px; padding: 7px 10px;
+      color: var(--text); font-size: 12px; font-weight: 600;
+      outline: none; transition: border-color 120ms;
+    }
+    .rp-price-in:focus { border-color: rgba(59,92,255,.5); }
 
     /* ── STAR FILTER ── */
     .rp-star-filter { display:flex; flex-direction:column; gap:4px; }
-    .rp-star-btn { background:var(--glass); border:1px solid var(--glass-border); border-radius:10px; padding:7px 10px; cursor:pointer; transition:all 130ms; text-align:left; }
+    .rp-star-btn { background:var(--glass); border:1px solid var(--glass-border); border-radius:10px; padding:7px 10px; cursor:pointer; transition:all 120ms; text-align:left; }
     .rp-star-btn:hover, .rp-star-btn.active { background:rgba(245,158,11,.12); border-color:rgba(245,158,11,.35); }
     .rp-star-row { display:flex; align-items:center; gap:3px; font-size:13px; font-weight:600; color:var(--text); }
     .rp-star-row .bi-star-fill, .rp-star-row .bi-star-half { color:#f59e0b; font-size:12px; }
@@ -48,13 +96,13 @@
     /* ── IN-STOCK TOGGLE ── */
     .rp-toggle-label { display:flex; align-items:center; gap:10px; cursor:pointer; font-size:13px; font-weight:600; color:var(--text-dim); }
     .rp-toggle-label input { display:none; }
-    .rp-toggle-slider { width:38px; height:20px; background:var(--glass-border); border-radius:999px; position:relative; flex-shrink:0; transition:background 200ms; }
-    .rp-toggle-slider::after { content:''; position:absolute; width:14px; height:14px; border-radius:50%; background:#fff; top:3px; left:3px; transition:transform 200ms; }
+    .rp-toggle-slider { width:38px; height:20px; background:var(--glass-border); border-radius:999px; position:relative; flex-shrink:0; transition:background 120ms; }
+    .rp-toggle-slider::after { content:''; position:absolute; width:14px; height:14px; border-radius:50%; background:#fff; top:3px; left:3px; transition:transform 120ms; }
     .rp-toggle-label input:checked + .rp-toggle-slider { background:linear-gradient(90deg,#3b5cff,#0bc5ff); }
     .rp-toggle-label input:checked + .rp-toggle-slider::after { transform:translateX(18px); }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
   <style>:root{--font-display:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;}body{font-family:var(--font-body,'DM Sans',sans-serif);}</style>
   <link rel="stylesheet" href="./assets/css/mobile.css">
 </head>
@@ -70,7 +118,7 @@
       </div>
     </a>
     <div class="d-flex align-items-center gap-2">
-      <button id="themeToggle" class="btn rp-pill-btn" type="button">
+            <button id="themeToggle" class="btn rp-pill-btn" type="button">
         <i class="bi bi-moon-stars rp-icon"></i>
       </button>
       <a class="btn rp-pill-btn position-relative" href="./favorites.html" title="Kedvencek">
@@ -231,11 +279,11 @@
 </div>
 
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script defer src="./assets/js/rp-toast.js?v=25"></script>
-<script defer src="./assets/js/api.js?v=25"></script>
-<script defer src="./assets/js/nav.js?v=25"></script>
-<script defer src="./assets/js/animate.js?v=25"></script>
-<script defer src="./assets/js/products_new.js?v=25"></script>
+<script defer src="./assets/js/rp-toast.js?v=27"></script>
+<script defer src="./assets/js/api.js?v=27"></script>
+<script defer src="./assets/js/nav.js?v=27"></script>
+<script defer src="./assets/js/animate.js?v=27"></script>
+<script defer src="./assets/js/products_new.js?v=27"></script>
 
 <script>
 // ── DARK MODE FORCE ──
@@ -267,7 +315,7 @@ document.addEventListener('click', function(e) {
   if (href.startsWith('http') && !href.includes('localhost')) return;
   e.preventDefault();
   document.body.classList.add('rp-page-out');
-  setTimeout(() => { window.location.href = href; }, 120);
+  setTimeout(() => { window.location.href = href; }, 80);
 });
 </script>
 </body>

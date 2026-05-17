@@ -153,7 +153,7 @@ function render(list) {
       </td>
       <td style="min-width:80px;">
         <button class="btn btn-sm rp-admin-btn rp-icon-btn" data-act="save" data-id="${escapeHtml(id)}"
-                title="${escapeHtml(t('admin_orders_save','Mentés'))}" style="transition: all 200ms ease;">
+                title="${escapeHtml(t('admin_orders_save','Mentés'))}" style="transition: all 120ms ease;">
           <i class="bi bi-check2"></i>
         </button>
       </td>

@@ -566,7 +566,8 @@ INSERT INTO `categories` (`id`, `name`, `parent_id`, `created_at`, `updated_at`)
 (6, 'Okoseszközök', NULL, NOW(), NULL),
 (7, 'PC Kiegészítők', NULL, NOW(), NULL),
 (8, 'Gaming', NULL, NOW(), NULL),
-(9, 'Hálózat', NULL, NOW(), NULL);
+(9, 'Hálózat', NULL, NOW(), NULL),
+(10, 'Hangszóró', NULL, NOW(), NULL);
 
 -- --------------------------------------------------------
 
@@ -686,10 +687,6 @@ CREATE TABLE `products` (
   `sku` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` text COLLATE utf8mb4_unicode_ci,
-  `description_hu` text COLLATE utf8mb4_unicode_ci,
-  `description_en` text COLLATE utf8mb4_unicode_ci,
-  `description_de` text COLLATE utf8mb4_unicode_ci,
-  `avg_rating` decimal(3,2) DEFAULT NULL,
   `review_count` int NOT NULL DEFAULT 0,
   `image_url` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `category_id` int DEFAULT NULL,
@@ -1066,6 +1063,7 @@ CREATE TABLE `users` (
   `company_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `role_id` int DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `address` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

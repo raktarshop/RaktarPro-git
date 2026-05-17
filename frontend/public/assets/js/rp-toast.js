@@ -21,7 +21,7 @@
       pointer-events: auto;
       opacity: 0;
       transform: translateX(24px) scale(.96);
-      transition: opacity 280ms ease, transform 280ms cubic-bezier(.22,.68,0,1.2);
+      transition: opacity 120ms ease, transform 280ms cubic-bezier(.22,.68,0,1.2);
       position: relative;
     }
     .rp-gtoast.show { opacity: 1; transform: translateX(0) scale(1); }
@@ -34,7 +34,7 @@
     .rp-gtoast-body { flex: 1; min-width: 0; }
     .rp-gtoast-title { display: block; font-size: 13px; font-weight: 700; color: var(--text, #e8f1ff); line-height: 1.3; }
     .rp-gtoast-msg   { display: block; font-size: 12px; color: var(--text-dim, rgba(232,241,255,.6)); margin-top: 2px; line-height: 1.5; }
-    .rp-gtoast-close { position: absolute; top: 10px; right: 10px; background: none; border: none; color: var(--text-dim, rgba(232,241,255,.5)); cursor: pointer; font-size: 16px; line-height: 1; padding: 0; width: 20px; height: 20px; display: grid; place-items: center; border-radius: 6px; transition: background 140ms; }
+    .rp-gtoast-close { position: absolute; top: 10px; right: 10px; background: none; border: none; color: var(--text-dim, rgba(232,241,255,.5)); cursor: pointer; font-size: 16px; line-height: 1; padding: 0; width: 20px; height: 20px; display: grid; place-items: center; border-radius: 6px; transition: background 120ms; }
     .rp-gtoast-close:hover { background: rgba(255,255,255,.1); }
     .rp-gtoast-progress {
       position: absolute; bottom: 0; left: 0; height: 3px; border-radius: 0 0 16px 16px;
@@ -58,7 +58,7 @@
       backdrop-filter: blur(6px);
       display: flex; align-items: center; justify-content: center;
       padding: 16px;
-      opacity: 0; transition: opacity 300ms ease;
+      opacity: 0; transition: opacity 120ms ease;
     }
     .rp-welcome-overlay.show { opacity: 1; }
     .rp-welcome-card {
@@ -70,7 +70,7 @@
       text-align: center;
       box-shadow: 0 24px 80px rgba(0,0,0,.5);
       transform: scale(.9) translateY(20px);
-      transition: transform 350ms cubic-bezier(.22,.68,0,1.2);
+      transition: transform 120ms cubic-bezier(.22,.68,0,1.2);
       position: relative;
       overflow: hidden;
     }
@@ -106,7 +106,7 @@
       background: linear-gradient(135deg, #3b5cff, #0bc5ff);
       color: #fff; font-weight: 800; font-size: 15px;
       border: none; cursor: pointer;
-      transition: all 160ms ease;
+      transition: all 120ms ease;
       font-family: var(--font-body, 'DM Sans', sans-serif);
     }
     .rp-welcome-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(59,92,255,.4); }
@@ -118,7 +118,7 @@
       backdrop-filter: blur(5px);
       display: flex; align-items: center; justify-content: center;
       padding: 16px;
-      opacity: 0; transition: opacity 250ms ease;
+      opacity: 0; transition: opacity 120ms ease;
     }
     .rp-confirm-overlay.show { opacity: 1; }
     .rp-confirm-card {
@@ -129,7 +129,7 @@
       max-width: 360px; width: 100%;
       box-shadow: 0 20px 60px rgba(0,0,0,.45);
       transform: scale(.92) translateY(12px);
-      transition: transform 300ms cubic-bezier(.22,.68,0,1.2);
+      transition: transform 120ms cubic-bezier(.22,.68,0,1.2);
     }
     .rp-confirm-overlay.show .rp-confirm-card { transform: scale(1) translateY(0); }
     .rp-confirm-title { font-weight: 800; font-size: 17px; color: var(--text, #e8f1ff); margin-bottom: 10px; }
@@ -140,7 +140,7 @@
       border: 1px solid var(--glass-border, rgba(255,255,255,.12));
       background: transparent; color: var(--text, #e8f1ff);
       cursor: pointer; font-weight: 600; font-size: 13px;
-      font-family: inherit; transition: background 140ms;
+      font-family: inherit; transition: background 120ms;
     }
     .rp-confirm-cancel:hover { background: rgba(255,255,255,.06); }
     .rp-confirm-ok {
@@ -148,7 +148,7 @@
       border: none;
       background: linear-gradient(135deg, #3b5cff, #0bc5ff);
       color: #fff; cursor: pointer; font-weight: 700; font-size: 13px;
-      font-family: inherit; transition: all 140ms;
+      font-family: inherit; transition: all 120ms;
     }
     .rp-confirm-ok:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(59,92,255,.4); }
   `;

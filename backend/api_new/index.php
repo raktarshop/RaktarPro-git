@@ -51,6 +51,7 @@ require_once __DIR__ . '/controllers/ProductReviewController.php';
 require_once __DIR__ . '/controllers/RoleController.php';
 require_once __DIR__ . '/controllers/OrderItemController.php';
 require_once __DIR__ . '/controllers/SupportController.php';
+require_once __DIR__ . '/controllers/AccountController.php';
 require_once __DIR__ . '/utils/Response.php';
 
 // Get request info
@@ -75,7 +76,7 @@ function extractSegments(string $rawUri, string $scriptName): array {
     // Validate: first segment should be a known route
     $knownRoutes = ['auth','products','categories','orders','admin','suppliers',
                     'warehouses','locations','stock','favorites','coupons',
-                    'reviews','roles','order-items','support','debug'];
+                    'reviews','roles','order-items','support','account','debug'];
     if (!empty($segs) && in_array($segs[0], $knownRoutes)) {
         return $segs;
     }
@@ -408,6 +409,28 @@ try {
         }
     }
     
+
+    // ── ACCOUNT (profil, cím, jelszó) ──────────────────────────────────
+    if (isset($segments[0]) && $segments[0] === 'account') {
+        $accountController = new AccountController();
+        $sub = $segments[1] ?? '';
+        switch ($sub) {
+            case 'profile':
+                if ($method === 'PUT') $accountController->updateProfile();
+                break;
+            case 'address':
+                if ($method === 'PUT') $accountController->updateAddress();
+                break;
+            case 'password':
+                if ($method === 'PUT') $accountController->updatePassword();
+                break;
+            default:
+                if ($method === 'GET') $accountController->getProfile();
+                break;
+        }
+        exit;
+    }
+
     // If no route matched
     Response::error('Endpoint nem található', 404, 'NOT_FOUND');
     

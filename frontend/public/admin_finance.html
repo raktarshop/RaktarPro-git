@@ -7,11 +7,11 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./assets/css/common.css?v=26">
-  <link rel="stylesheet" href="./assets/css/nav-unify.css?v=26">
-  <link rel="stylesheet" href="./assets/css/admin.css?v=26">
-  <link rel="stylesheet" href="./assets/css/rp-luxury.css?v=26">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/common.css?v=27">
+  <link rel="stylesheet" href="./assets/css/nav-unify.css?v=27">
+  <link rel="stylesheet" href="./assets/css/admin.css?v=27">
+  <link rel="stylesheet" href="./assets/css/rp-luxury.css?v=27">
   <script>!function(){if(!localStorage.getItem("rp_theme"))localStorage.setItem("rp_theme","dark");document.documentElement.setAttribute("data-theme",localStorage.getItem("rp_theme"))}();</script>
   <style>
     :root { --font-display:'Syne',sans-serif; --font-body:'DM Sans',sans-serif; }
@@ -36,7 +36,7 @@
       background: transparent;
       color: var(--text-dim);
       cursor: pointer;
-      transition: all 160ms ease;
+      transition: all 120ms ease;
       font-family: var(--font-body);
     }
     .fin-pill.active {
@@ -60,7 +60,7 @@
       padding: 22px;
       position: relative;
       overflow: hidden;
-      transition: all 200ms ease;
+      transition: all 120ms ease;
     }
     .fin-kpi::before {
       content: '';
@@ -142,7 +142,7 @@
       border: 1px solid var(--glass-border);
       background: var(--glass);
       cursor: pointer;
-      transition: all 140ms;
+      transition: all 120ms;
     }
     .fin-legend-item:hover { color: var(--text); }
     .fin-legend-dot { width: 8px; height: 8px; border-radius: 50%; }
@@ -204,7 +204,7 @@
       border-radius: 6px 6px 0 0;
       position: relative;
       cursor: pointer;
-      transition: filter 150ms, transform 150ms;
+      transition: filter 120ms, transform 120ms;
       max-width: 18px;
     }
     .fin-bar:hover { filter: brightness(1.25); transform: scaleY(1.02); transform-origin: bottom; }
@@ -294,7 +294,7 @@
       height: 100%;
       border-radius: 999px;
       background: linear-gradient(90deg, #3b5cff, #0bc5ff);
-      transition: width 800ms cubic-bezier(.22,.68,0,1.1);
+      transition: width 120ms cubic-bezier(.22,.68,0,1.1);
     }
 
     /* ── DONUT CHART ── */
@@ -313,7 +313,7 @@
       padding: 8px 0;
       border-bottom: 1px solid rgba(255,255,255,.05);
       cursor: pointer;
-      transition: opacity 140ms;
+      transition: opacity 120ms;
     }
     .fin-donut-item:last-child { border-bottom: none; }
     .fin-donut-item:hover { opacity: .8; }
@@ -336,7 +336,7 @@
       border-radius: 12px;
       background: var(--glass);
       border: 1px solid var(--glass-border);
-      transition: all 140ms;
+      transition: all 120ms;
       cursor: pointer;
     }
     .fin-tx:hover { border-color: rgba(59,92,255,.25); transform: translateX(3px); }
@@ -372,7 +372,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: all 140ms;
+      transition: all 120ms;
     }
     .fin-export-btn:hover { background: rgba(59,92,255,.12); border-color: rgba(59,92,255,.3); }
 
@@ -388,7 +388,7 @@
       border: 3px solid var(--glass-border);
       border-top-color: #3b5cff;
       border-radius: 50%;
-      animation: spin 700ms linear infinite;
+      animation: spin 120ms linear infinite;
       margin: 0 auto 12px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
@@ -405,7 +405,7 @@
     }
 
     /* Reveal animation */
-    .fin-reveal { opacity: 0; transform: translateY(16px); transition: opacity 450ms ease, transform 450ms ease; }
+    .fin-reveal { opacity: 0; transform: translateY(16px); transition: opacity 120ms ease, transform 120ms ease; }
     .fin-reveal.visible { opacity: 1; transform: translateY(0); }
   </style>
   <link rel="stylesheet" href="./assets/css/mobile.css">
@@ -594,8 +594,8 @@
 <div class="fin-tooltip" id="finTooltip"></div>
 
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script defer src="./assets/js/api.js?v=26"></script>
-<script defer src="./assets/js/nav.js?v=26"></script>
+<script defer src="./assets/js/api.js?v=27"></script>
+<script defer src="./assets/js/nav.js?v=27"></script>
 <script>
 // ── UTILS ──
 function fmt(n) { return Math.round(Number(n)||0).toLocaleString('hu-HU') + ' Ft'; }
@@ -882,7 +882,7 @@ function renderDonut(orders) {
       stroke-dasharray="${len.toFixed(2)} ${(circ-len).toFixed(2)}"
       stroke-dashoffset="${(-offset).toFixed(2)}"
       transform="rotate(-90 ${cx} ${cy})"
-      style="transition:opacity 200ms;cursor:pointer;"
+      style="transition:opacity 120ms;cursor:pointer;"
       onmouseenter="this.style.opacity='.75'" onmouseleave="this.style.opacity='1'"/>`;
     offset += len;
     return el;
@@ -988,7 +988,7 @@ document.addEventListener('click', function(e) {
   if (href.startsWith('http') && !href.includes('localhost')) return;
   e.preventDefault();
   document.body.classList.add('rp-page-out');
-  setTimeout(() => { window.location.href = href; }, 120);
+  setTimeout(() => { window.location.href = href; }, 80);
 });
 </script>
 </body>

@@ -6,8 +6,31 @@ body {
     radial-gradient(ellipse 900px 600px at 88% 20%, rgba(11,197,255,0.09), transparent 55%),
     radial-gradient(ellipse 600px 500px at 50% 90%, rgba(120,40,255,0.07), transparent 60%),
     linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
   color: var(--text);
 }
+
+
+/* === HÁTTÉR OVERLAY (rácsozat) === */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0px, rgba(255,255,255,.018) 1px, transparent 1px, transparent 8px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.015) 0px, rgba(0,0,0,.015) 1px, transparent 1px, transparent 10px);
+  opacity: .45; mix-blend-mode: overlay;
+}
+[data-theme="light"] body::before { opacity: .12; mix-blend-mode: multiply; }
+
+/* Minden tartalom a z-index 0 fölé kerüljön */
+.rp-nav, .container, .container-fluid, main, .rp-admin-card,
+.rp-admin-header, .rp-admin-sidebar { position: relative; z-index: 1; }
 
 /* === GLASS CARDS === */
 .rp-admin-card {
@@ -26,7 +49,7 @@ body {
   background: var(--input) !important;
   color: var(--text) !important;
   backdrop-filter: blur(8px);
-  transition: border-color 150ms ease, box-shadow 150ms ease;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
 }
 .rp-admin-input:focus, .form-control:focus, .form-select:focus {
   border-color: rgba(59,92,255,.45) !important;
@@ -48,7 +71,7 @@ body {
   color: var(--text) !important;
   font-weight: 700 !important;
   backdrop-filter: blur(10px);
-  transition: all 140ms ease;
+  transition: all 120ms ease;
 }
 .rp-admin-btn:hover {
   background: rgba(255,255,255,.10) !important;
@@ -139,7 +162,7 @@ body {
   background: rgba(239,68,68,.12) !important;
   color: #fca5a5 !important;
   backdrop-filter: blur(10px);
-  transition: all 140ms ease;
+  transition: all 120ms ease;
 }
 .rp-admin-btn-danger:hover {
   background: rgba(239,68,68,.22) !important;
@@ -180,9 +203,9 @@ body {
 .rp-admin-table tbody tr:nth-child(3)  { animation-delay: 60ms; }
 .rp-admin-table tbody tr:nth-child(4)  { animation-delay: 90ms; }
 .rp-admin-table tbody tr:nth-child(5)  { animation-delay: 120ms; }
-.rp-admin-table tbody tr:nth-child(6)  { animation-delay: 150ms; }
-.rp-admin-table tbody tr:nth-child(7)  { animation-delay: 180ms; }
-.rp-admin-table tbody tr:nth-child(8)  { animation-delay: 210ms; }
+.rp-admin-table tbody tr:nth-child(6)  { animation-delay: 120ms; }
+.rp-admin-table tbody tr:nth-child(7)  { animation-delay: 120ms; }
+.rp-admin-table tbody tr:nth-child(8)  { animation-delay: 120ms; }
 
 /* Admin nav active */
 .rp-admin-btn.active {
@@ -252,7 +275,7 @@ body {
   border-radius: 20px !important;
 }
 .cat-chip {
-  transition: all 140ms ease !important;
+  transition: all 120ms ease !important;
 }
 .cat-chip:hover {
   border-color: rgba(59,92,255,.40) !important;
@@ -266,10 +289,25 @@ body {
   background: var(--glass);
   border: 1px solid var(--glass-border);
   padding: 20px;
-  transition: all 180ms ease;
+  transition: all 120ms ease;
 }
 .rp-admin-stat:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-sm);
   border-color: rgba(59,92,255,.18);
+}
+
+[data-theme="light"] body {
+  background:
+    radial-gradient(ellipse 1100px 700px at 15% 0%, rgba(59,92,255,0.06), transparent 60%),
+    radial-gradient(ellipse 900px 600px at 88% 20%, rgba(11,197,255,0.04), transparent 55%),
+    radial-gradient(ellipse 600px 500px at 50% 90%, rgba(120,40,255,0.03), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@media (max-width: 767px) {
+  body { background-attachment: scroll !important; background-color: var(--bg) !important; }
 }

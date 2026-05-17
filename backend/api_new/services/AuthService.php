@@ -85,7 +85,7 @@ class AuthService {
                 'last_name'  => $user['last_name']  ?? '',
                 'company_name' => $user['company_name'],
                 'role_id' => $user['role_id'],
-                'is_admin' => (int)($user['is_admin'] ?? 0)
+                'is_admin' => (int)($user['role_id'] == 1)
             ]
         ];
     }
@@ -116,7 +116,7 @@ class AuthService {
                 'first_name' => $user['first_name'] ?? '',
                 'last_name'  => $user['last_name']  ?? '',
                 'role_id' => $user['role_id'],
-                'is_admin' => (int)($user['is_admin'] ?? 0)
+                'is_admin' => (int)($user['role_id'] == 1)
             ]
         ];
     }
@@ -127,7 +127,7 @@ class AuthService {
             'email' => $user['email'],
             'full_name' => $user['full_name'],
             'role_id' => $user['role_id'],
-            'is_admin' => (int)($user['is_admin'] ?? 0)
+            'is_admin' => (int)($user['role_id'] == 1)
         ];
         
         $refreshPayload = [
