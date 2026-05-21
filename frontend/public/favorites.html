@@ -8,9 +8,9 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./assets/css/common.css?v=27">
+  <link rel="stylesheet" href="./assets/css/common.css?v=28">
   <script>!function(){if(!localStorage.getItem("rp_theme"))localStorage.setItem("rp_theme","dark");document.documentElement.setAttribute("data-theme",localStorage.getItem("rp_theme"))}();</script>
-  <link rel="stylesheet" href="./assets/css/rp-luxury.css?v=27">
+  <link rel="stylesheet" href="./assets/css/rp-luxury.css?v=28">
   <style>
     :root { --font-display:'Syne',sans-serif; --font-body:'DM Sans',sans-serif; }
     *, *::before, *::after { box-sizing:border-box; }
@@ -145,8 +145,8 @@
 <div class="rp-toast" id="rpToast"></div>
 
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script defer src="./assets/js/api.js?v=27"></script>
-<script defer src="./assets/js/nav.js?v=27"></script>
+<script defer src="./assets/js/api.js?v=28"></script>
+<script defer src="./assets/js/nav.js?v=28"></script>
 <script>
 // ── UTILS ──
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
@@ -214,42 +214,42 @@ function getPhoto(p){return p.image_url||p.img||'';}
 
 // Demo product data cache — same IDs as products_new.js
 const DEMO_PRODUCTS_MAP = {
-  1:{name:'iPhone 15 Pro',unit_price:589999,category_name:'Mobil',avg_rating:4.8,review_count:124,image_url:'https://image.alza.cz/products/HRI045b1/HRI045b1.jpg?width=500&height=500'},
-  2:{name:'Samsung Galaxy S24 Ultra',unit_price:469999,category_name:'Mobil',avg_rating:4.7,review_count:98,image_url:'https://p1.akcdn.net/full/1240638079.samsung-galaxy-s24-ultra-5g-1tb-12gb-ram-dual-sm-s928b.jpg'},
-  3:{name:'ASUS ROG Strix G16',unit_price:749999,category_name:'Gaming',avg_rating:4.6,review_count:67,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_jm1148rk.png?v=3'},
-  4:{name:'MacBook Air M2 (2023)',unit_price:549999,category_name:'Laptop',avg_rating:4.9,review_count:203,image_url:'https://images.euronics.hu/product_images/800x600/resize/s1_0gljqn0o.jpeg?v=3'},
-  5:{name:'Dell XPS 13 Plus',unit_price:699999,category_name:'Laptop',avg_rating:4.5,review_count:55,image_url:'https://images.euronics.hu/product_images/800x600/resize/1dell_140rqx64.png?v=3'},
-  6:{name:'HP Pavilion 15',unit_price:299999,category_name:'Laptop',avg_rating:4.3,review_count:41,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_0bxnxfwe.png?v=3'},
-  7:{name:'Lenovo ThinkPad X1 Carbon',unit_price:799999,category_name:'Laptop',avg_rating:4.7,review_count:88,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_9bm45yxi.jpg?v=3'},
-  8:{name:'Sony WH-1000XM5',unit_price:129999,category_name:'Fejhallgato',avg_rating:4.8,review_count:312,image_url:'https://images.euronics.hu/product_images/800x600/resize/111_wx83ssf0.jpg?v=4'},
-  9:{name:'Apple AirPods Pro 2',unit_price:109999,category_name:'Fejhallgato',avg_rating:4.7,review_count:445,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_rcr2ctja.jpg?v=3'},
-  10:{name:'JBL Charge 5',unit_price:54999,category_name:'Hangsoro',avg_rating:4.6,review_count:178,image_url:'https://images.euronics.hu/product_images/800x600/resize/6_rru9cyfo.png?v=3'},
-  12:{name:'LG OLED C3 65',unit_price:899999,category_name:'TV & Monitor',avg_rating:4.8,review_count:92,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_qa5u5m70.png?v=4'},
-  13:{name:'iPhone 15',unit_price:399999,category_name:'Mobil',avg_rating:4.6,review_count:211,image_url:'https://image.alza.cz/products/HRI045b1/HRI045b1.jpg?width=500&height=500'},
-  14:{name:'Samsung Galaxy S24',unit_price:319999,category_name:'Mobil',avg_rating:4.5,review_count:134,image_url:'https://s13emagst.akamaized.net/products/64817/64816439/images/res_fdecd9733172144ab6b418e28f699e1c.jpg?width=720&height=720&hash=91C5F7015A569F5237D415DE60CD1451'},
-  15:{name:'Xiaomi Redmi Note 13 Pro',unit_price:99999,category_name:'Mobil',avg_rating:4.4,review_count:67,image_url:'https://www.bestbyte.hu/Xiaomi_Redmi_Note_13_Pro_667_LTE_8256GB_DualSIM_fekete_okostelefon-i40357342.webp'},
-  16:{name:'Google Pixel 8',unit_price:289999,category_name:'Mobil',avg_rating:4.5,review_count:89,image_url:'https://p1.akcdn.net/full/1201801729.google-pixel-8-5g-128gb-8gb-ram-dual.jpg'},
-  17:{name:'MacBook Air M2',unit_price:499999,category_name:'Laptop',avg_rating:4.9,review_count:317,image_url:'https://images.euronics.hu/product_images/800x600/resize/s1_0gljqn0o.jpeg?v=3'},
-  18:{name:'Dell XPS 13',unit_price:579999,category_name:'Laptop',avg_rating:4.4,review_count:52,image_url:'https://images.euronics.hu/product_images/800x600/resize/1dell_140rqx64.png?v=3'},
-  19:{name:'Lenovo ThinkPad E14 Gen 5',unit_price:449999,category_name:'Laptop',avg_rating:4.3,review_count:38,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_9bm45yxi.jpg?v=3'},
-  20:{name:'HP Envy 15',unit_price:549999,category_name:'Laptop',avg_rating:4.4,review_count:44,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_0bxnxfwe.png?v=3'},
-  22:{name:'LG 65 OLED TV',unit_price:799999,category_name:'TV & Monitor',avg_rating:4.7,review_count:65,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_qa5u5m70.png?v=4'},
-  23:{name:'Sony WH-CH720N',unit_price:59999,category_name:'Fejhallgato',avg_rating:4.5,review_count:143,image_url:'https://images.euronics.hu/product_images/800x600/resize/111_wx83ssf0.jpg?v=4'},
-  24:{name:'Apple AirPods 4',unit_price:79999,category_name:'Fejhallgato',avg_rating:4.6,review_count:201,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_rcr2ctja.jpg?v=3'},
-  26:{name:'Logitech MX Master 3S',unit_price:49999,category_name:'PC Kiegeszitok',avg_rating:4.9,review_count:534,image_url:'https://images.euronics.hu/product_images/800x600/resize/s1_fbk4fyf7.jpg?v=2'},
-  27:{name:'Keychron K8 Pro',unit_price:39999,category_name:'PC Kiegeszitok',avg_rating:4.7,review_count:89,image_url:'https://image.alza.cz/products/KCHRON30HU/KCHRON30HU.jpg?width=500&height=500'},
-  28:{name:'ASUS TUF Gaming VG27AQL1A',unit_price:199999,category_name:'TV & Monitor',avg_rating:4.6,review_count:72,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_ats7x339.jpg?v=3'},
-  29:{name:'Samsung Odyssey G5 27',unit_price:149999,category_name:'TV & Monitor',avg_rating:4.5,review_count:58,image_url:'https://images.euronics.hu/product_images/800x600/resize/s1_gfnzsulc.jpg?v=4'},
-  30:{name:'Canon EOS R10',unit_price:299999,category_name:'Fotozas',avg_rating:4.7,review_count:94,image_url:'https://image.alza.cz/products/OC0989a3/OC0989a3.jpg?width=500&height=500'},
-  31:{name:'Sony Alpha A6400',unit_price:349999,category_name:'Fotozas',avg_rating:4.8,review_count:112,image_url:'https://image.alza.cz/products/OS072i1m12/OS072i1m12.jpg?width=500&height=500'},
-  32:{name:'GoPro Hero 12 Black',unit_price:149999,category_name:'Fotozas',avg_rating:4.6,review_count:87,image_url:'https://image.alza.cz/products/OG012a1ce/OG012a1ce.jpg?width=500&height=500'},
-  34:{name:'Samsung 990 Pro 1TB SSD',unit_price:49999,category_name:'PC Kiegeszitok',avg_rating:4.8,review_count:203,image_url:'https://image.alza.cz/products/SAS990ep4/SAS990ep4.jpg?width=500&height=500'},
-  35:{name:'TP-Link Archer AX55',unit_price:29999,category_name:'Halozat',avg_rating:4.5,review_count:67,image_url:'https://image.alza.cz/products/TP23_007/TP23_007.jpg?width=500&height=500'},
-  36:{name:'Apple Watch Series 9',unit_price:159999,category_name:'Okoseszkozok',avg_rating:4.8,review_count:289,image_url:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQDY3ref_AV1?wid=800&hei=800&fmt=jpeg&qlt=90'},
-  37:{name:'Amazon Echo Dot 5',unit_price:24999,category_name:'Okoseszkozok',avg_rating:4.5,review_count:134,image_url:'https://image.alza.cz/products/AMAECHDO5TH/AMAECHDO5TH.jpg?width=500&height=500'},
-  39:{name:'Samsung Galaxy S23',unit_price:259999,category_name:'Mobil',avg_rating:4.5,review_count:178,image_url:'https://s13emagst.akamaized.net/products/52576/52575504/images/res_675b5c9d6f650e7c7c6d275f906d8f6e.jpg?width=720&height=720&hash=BA59C6D73AB2704CC4825815A0759290'},
-  40:{name:'Dell Inspiron 15',unit_price:219999,category_name:'Laptop',avg_rating:4.2,review_count:55,image_url:'https://images.euronics.hu/product_images/800x600/resize/1dell_140rqx64.png?v=3'},
-  41:{name:'HP Pavilion 14',unit_price:199999,category_name:'Laptop',avg_rating:4.3,review_count:48,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_0bxnxfwe.png?v=3'},
+  1:{name:'iPhone 15 Pro',unit_price:489600,category_name:'Mobil',avg_rating:4.8,review_count:124,image_url:'https://image.alza.cz/products/HRI045b1/HRI045b1.jpg?width=500&height=500'},
+  2:{name:'Samsung Galaxy S24 Ultra',unit_price:393990,category_name:'Mobil',avg_rating:4.7,review_count:98,image_url:'https://p1.akcdn.net/full/1240638079.samsung-galaxy-s24-ultra-5g-1tb-12gb-ram-dual-sm-s928b.jpg'},
+  3:{name:'ASUS ROG Strix G16',unit_price:599990,category_name:'Gaming',avg_rating:4.6,review_count:67,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_jm1148rk.png?v=3'},
+  4:{name:'MacBook Air M2 (2023)',unit_price:369990,category_name:'Laptop',avg_rating:4.9,review_count:203,image_url:'https://images.euronics.hu/product_images/800x600/resize/s1_0gljqn0o.jpeg?v=3'},
+  5:{name:'Dell XPS 13 Plus',unit_price:549990,category_name:'Laptop',avg_rating:4.5,review_count:55,image_url:'https://images.euronics.hu/product_images/800x600/resize/1dell_140rqx64.png?v=3'},
+  6:{name:'HP Pavilion 15',unit_price:249990,category_name:'Laptop',avg_rating:4.3,review_count:41,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_0bxnxfwe.png?v=3'},
+  7:{name:'Lenovo ThinkPad X1 Carbon',unit_price:649990,category_name:'Laptop',avg_rating:4.7,review_count:88,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_9bm45yxi.jpg?v=3'},
+  8:{name:'Sony WH-1000XM5',unit_price:89990,category_name:'Fejhallgato',avg_rating:4.8,review_count:312,image_url:'https://images.euronics.hu/product_images/800x600/resize/111_wx83ssf0.jpg?v=4'},
+  9:{name:'Apple AirPods Pro 2',unit_price:99990,category_name:'Fejhallgato',avg_rating:4.7,review_count:445,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_rcr2ctja.jpg?v=3'},
+  10:{name:'JBL Charge 5',unit_price:44990,category_name:'Hangsoro',avg_rating:4.6,review_count:178,image_url:'https://images.euronics.hu/product_images/800x600/resize/6_rru9cyfo.png?v=3'},
+  12:{name:'LG OLED C3 65',unit_price:699990,category_name:'TV & Monitor',avg_rating:4.8,review_count:92,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_qa5u5m70.png?v=4'},
+  13:{name:'iPhone 15',unit_price:279990,category_name:'Mobil',avg_rating:4.6,review_count:211,image_url:'https://image.alza.cz/products/HRI045b1/HRI045b1.jpg?width=500&height=500'},
+  14:{name:'Samsung Galaxy S24',unit_price:249990,category_name:'Mobil',avg_rating:4.5,review_count:134,image_url:'https://s13emagst.akamaized.net/products/64817/64816439/images/res_fdecd9733172144ab6b418e28f699e1c.jpg?width=720&height=720&hash=91C5F7015A569F5237D415DE60CD1451'},
+  15:{name:'Xiaomi Redmi Note 13 Pro',unit_price:69990,category_name:'Mobil',avg_rating:4.4,review_count:67,image_url:'https://www.bestbyte.hu/Xiaomi_Redmi_Note_13_Pro_667_LTE_8256GB_DualSIM_fekete_okostelefon-i40357342.webp'},
+  16:{name:'Google Pixel 8',unit_price:219990,category_name:'Mobil',avg_rating:4.5,review_count:89,image_url:'https://p1.akcdn.net/full/1201801729.google-pixel-8-5g-128gb-8gb-ram-dual.jpg'},
+  17:{name:'MacBook Air M2',unit_price:369990,category_name:'Laptop',avg_rating:4.9,review_count:317,image_url:'https://images.euronics.hu/product_images/800x600/resize/s1_0gljqn0o.jpeg?v=3'},
+  18:{name:'Dell XPS 13',unit_price:499990,category_name:'Laptop',avg_rating:4.4,review_count:52,image_url:'https://images.euronics.hu/product_images/800x600/resize/1dell_140rqx64.png?v=3'},
+  19:{name:'Lenovo ThinkPad E14 Gen 5',unit_price:299990,category_name:'Laptop',avg_rating:4.3,review_count:38,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_9bm45yxi.jpg?v=3'},
+  20:{name:'HP Envy 15',unit_price:399990,category_name:'Laptop',avg_rating:4.4,review_count:44,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_0bxnxfwe.png?v=3'},
+  22:{name:'LG 65 OLED TV',unit_price:699990,category_name:'TV & Monitor',avg_rating:4.7,review_count:65,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_qa5u5m70.png?v=4'},
+  23:{name:'Sony WH-CH720N',unit_price:59990,category_name:'Fejhallgato',avg_rating:4.5,review_count:143,image_url:'https://images.euronics.hu/product_images/800x600/resize/111_wx83ssf0.jpg?v=4'},
+  24:{name:'Apple AirPods 4',unit_price:79990,category_name:'Fejhallgato',avg_rating:4.6,review_count:201,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_rcr2ctja.jpg?v=3'},
+  26:{name:'Logitech MX Master 3S',unit_price:44990,category_name:'PC Kiegeszitok',avg_rating:4.9,review_count:534,image_url:'https://images.euronics.hu/product_images/800x600/resize/s1_fbk4fyf7.jpg?v=2'},
+  27:{name:'Keychron K8 Pro',unit_price:34990,category_name:'PC Kiegeszitok',avg_rating:4.7,review_count:89,image_url:'https://image.alza.cz/products/KCHRON30HU/KCHRON30HU.jpg?width=500&height=500'},
+  28:{name:'ASUS TUF Gaming VG27AQL1A',unit_price:129990,category_name:'TV & Monitor',avg_rating:4.6,review_count:72,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_ats7x339.jpg?v=3'},
+  29:{name:'Samsung Odyssey G5 27',unit_price:99990,category_name:'TV & Monitor',avg_rating:4.5,review_count:58,image_url:'https://images.euronics.hu/product_images/800x600/resize/s1_gfnzsulc.jpg?v=4'},
+  30:{name:'Canon EOS R10',unit_price:249990,category_name:'Fotozas',avg_rating:4.7,review_count:94,image_url:'https://image.alza.cz/products/OC0989a3/OC0989a3.jpg?width=500&height=500'},
+  31:{name:'Sony Alpha A6400',unit_price:269990,category_name:'Fotozas',avg_rating:4.8,review_count:112,image_url:'https://image.alza.cz/products/OS072i1m12/OS072i1m12.jpg?width=500&height=500'},
+  32:{name:'GoPro Hero 12 Black',unit_price:139990,category_name:'Fotozas',avg_rating:4.6,review_count:87,image_url:'https://image.alza.cz/products/OG012a1ce/OG012a1ce.jpg?width=500&height=500'},
+  34:{name:'Samsung 990 Pro 1TB SSD',unit_price:29990,category_name:'PC Kiegeszitok',avg_rating:4.8,review_count:203,image_url:'https://image.alza.cz/products/SAS990ep4/SAS990ep4.jpg?width=500&height=500'},
+  35:{name:'TP-Link Archer AX55',unit_price:19990,category_name:'Halozat',avg_rating:4.5,review_count:67,image_url:'https://image.alza.cz/products/TP23_007/TP23_007.jpg?width=500&height=500'},
+  36:{name:'Apple Watch Series 9',unit_price:149990,category_name:'Okoseszkozok',avg_rating:4.8,review_count:289,image_url:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQDY3ref_AV1?wid=800&hei=800&fmt=jpeg&qlt=90'},
+  37:{name:'Amazon Echo Dot 5',unit_price:14990,category_name:'Okoseszkozok',avg_rating:4.5,review_count:134,image_url:'https://image.alza.cz/products/AMAECHDO5TH/AMAECHDO5TH.jpg?width=500&height=500'},
+  39:{name:'Samsung Galaxy S23',unit_price:219990,category_name:'Mobil',avg_rating:4.5,review_count:178,image_url:'https://s13emagst.akamaized.net/products/52576/52575504/images/res_675b5c9d6f650e7c7c6d275f906d8f6e.jpg?width=720&height=720&hash=BA59C6D73AB2704CC4825815A0759290'},
+  40:{name:'Dell Inspiron 15',unit_price:179990,category_name:'Laptop',avg_rating:4.2,review_count:55,image_url:'https://images.euronics.hu/product_images/800x600/resize/1dell_140rqx64.png?v=3'},
+  41:{name:'HP Pavilion 14',unit_price:159990,category_name:'Laptop',avg_rating:4.3,review_count:48,image_url:'https://images.euronics.hu/product_images/800x600/resize/1_0bxnxfwe.png?v=3'},
 };
 
 async function loadFavorites(){

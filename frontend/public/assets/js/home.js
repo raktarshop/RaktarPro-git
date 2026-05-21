@@ -8,43 +8,43 @@ function dCat(p){const tx=((p.name||'')+(p.description||'')).toLowerCase();for(c
 function dBrand(p){const tx=((p.name||'')+(p.description||'')).toLowerCase();for(const b of BRANDS){if(tx.includes(b.toLowerCase()))return b;}return null;}
 
 const raw=[
-  {id:1, name:'iPhone 15 Pro',           price:589999, cat:'Mobil',          img:'https://image.alza.cz/products/HRI045b1/HRI045b1.jpg?width=500&height=500'},
-  {id:2, name:'Samsung Galaxy S24 Ultra', price:469999, cat:'Mobil',          img:'https://p1.akcdn.net/full/1240638079.samsung-galaxy-s24-ultra-5g-1tb-12gb-ram-dual-sm-s928b.jpg'},
-  {id:3, name:'ASUS ROG Strix G16',       price:749999, cat:'Gaming',         img:'https://images.euronics.hu/product_images/800x600/resize/1_jm1148rk.png?v=3'},
-  {id:4, name:'MacBook Air M2',           price:549999, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/s1_0gljqn0o.jpeg?v=3'},
-  {id:5, name:'Dell XPS 13 Plus',         price:699999, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/1dell_140rqx64.png?v=3'},
-  {id:6, name:'HP Pavilion 15',           price:299999, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/1_0bxnxfwe.png?v=3'},
-  {id:7, name:'Lenovo ThinkPad X1 Carbon',price:799999, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/1_9bm45yxi.jpg?v=3'},
-  {id:8, name:'Sony WH-1000XM5',          price:129999, cat:'Fejhallgató',    img:'https://images.euronics.hu/product_images/800x600/resize/111_wx83ssf0.jpg?v=4'},
-  {id:9, name:'Apple AirPods Pro 2',      price:109999, cat:'Fejhallgató',    img:'https://images.euronics.hu/product_images/800x600/resize/1_rcr2ctja.jpg?v=3'},
-  {id:10,name:'JBL Charge 5',             price:54999,  cat:'Hangszóró',    img:'https://images.euronics.hu/product_images/800x600/resize/6_rru9cyfo.png?v=3'},
-  {id:12,name:'LG OLED C3 65"',          price:899999, cat:'TV & Monitor',   img:'https://images.euronics.hu/product_images/800x600/resize/1_qa5u5m70.png?v=4'},
-  {id:13,name:'iPhone 15',                price:399999, cat:'Mobil',          img:'https://image.alza.cz/products/HRI045b1/HRI045b1.jpg?width=500&height=500'},
-  {id:14,name:'Samsung Galaxy S24',       price:319999, cat:'Mobil',          img:'https://s13emagst.akamaized.net/products/64817/64816439/images/res_fdecd9733172144ab6b418e28f699e1c.jpg?width=720&height=720&hash=91C5F7015A569F5237D415DE60CD1451'},
-  {id:15,name:'Xiaomi Redmi Note 13 Pro', price:99999,  cat:'Mobil',          img:'https://www.bestbyte.hu/Xiaomi_Redmi_Note_13_Pro_667_LTE_8256GB_DualSIM_fekete_okostelefon-i40357342.webp'},
-  {id:16,name:'Google Pixel 8',           price:289999, cat:'Mobil',          img:'https://p1.akcdn.net/full/1201801729.google-pixel-8-5g-128gb-8gb-ram-dual.jpg'},
-  {id:17,name:'MacBook Air M2',           price:549999, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/s1_0gljqn0o.jpeg?v=3'},
-  {id:18,name:'Dell XPS 13',              price:649999, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/1dell_140rqx64.png?v=3'},
-  {id:19,name:'Lenovo ThinkPad E14 Gen 5',price:349999, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/1_9bm45yxi.jpg?v=3'},
-  {id:20,name:'HP Envy 15',               price:499999, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/1_0bxnxfwe.png?v=3'},
-  {id:22,name:'LG 65" OLED TV',          price:799999, cat:'TV & Monitor',   img:'https://images.euronics.hu/product_images/800x600/resize/1_qa5u5m70.png?v=4'},
-  {id:23,name:'Sony WH-1000XM5',          price:129999, cat:'Fejhallgató',    img:'https://images.euronics.hu/product_images/800x600/resize/111_wx83ssf0.jpg?v=4'},
-  {id:24,name:'Apple AirPods Pro 2',      price:109999, cat:'Fejhallgató',    img:'https://images.euronics.hu/product_images/800x600/resize/1_rcr2ctja.jpg?v=3'},
+  {id:1, name:'iPhone 15 Pro',           price:489600, cat:'Mobil',          img:'https://image.alza.cz/products/HRI045b1/HRI045b1.jpg?width=500&height=500'},
+  {id:2, name:'Samsung Galaxy S24 Ultra', price:393990, cat:'Mobil',          img:'https://p1.akcdn.net/full/1240638079.samsung-galaxy-s24-ultra-5g-1tb-12gb-ram-dual-sm-s928b.jpg'},
+  {id:3, name:'ASUS ROG Strix G16',       price:599990, cat:'Gaming',         img:'https://images.euronics.hu/product_images/800x600/resize/1_jm1148rk.png?v=3'},
+  {id:4, name:'MacBook Air M2',           price:369990, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/s1_0gljqn0o.jpeg?v=3'},
+  {id:5, name:'Dell XPS 13 Plus',         price:549990, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/1dell_140rqx64.png?v=3'},
+  {id:6, name:'HP Pavilion 15',           price:249990, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/1_0bxnxfwe.png?v=3'},
+  {id:7, name:'Lenovo ThinkPad X1 Carbon',price:649990, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/1_9bm45yxi.jpg?v=3'},
+  {id:8, name:'Sony WH-1000XM5',          price:89990, cat:'Fejhallgató',    img:'https://images.euronics.hu/product_images/800x600/resize/111_wx83ssf0.jpg?v=4'},
+  {id:9, name:'Apple AirPods Pro 2',      price:99990, cat:'Fejhallgató',    img:'https://images.euronics.hu/product_images/800x600/resize/1_rcr2ctja.jpg?v=3'},
+  {id:10,name:'JBL Charge 5',             price:44990,  cat:'Hangszóró',    img:'https://images.euronics.hu/product_images/800x600/resize/6_rru9cyfo.png?v=3'},
+  {id:12,name:'LG OLED C3 65"',          price:699990, cat:'TV & Monitor',   img:'https://images.euronics.hu/product_images/800x600/resize/1_qa5u5m70.png?v=4'},
+  {id:13,name:'iPhone 15',                price:279990, cat:'Mobil',          img:'https://image.alza.cz/products/HRI045b1/HRI045b1.jpg?width=500&height=500'},
+  {id:14,name:'Samsung Galaxy S24',       price:249990, cat:'Mobil',          img:'https://s13emagst.akamaized.net/products/64817/64816439/images/res_fdecd9733172144ab6b418e28f699e1c.jpg?width=720&height=720&hash=91C5F7015A569F5237D415DE60CD1451'},
+  {id:15,name:'Xiaomi Redmi Note 13 Pro', price:69990,  cat:'Mobil',          img:'https://www.bestbyte.hu/Xiaomi_Redmi_Note_13_Pro_667_LTE_8256GB_DualSIM_fekete_okostelefon-i40357342.webp'},
+  {id:16,name:'Google Pixel 8',           price:219990, cat:'Mobil',          img:'https://p1.akcdn.net/full/1201801729.google-pixel-8-5g-128gb-8gb-ram-dual.jpg'},
+  {id:17,name:'MacBook Air M2',           price:369990, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/s1_0gljqn0o.jpeg?v=3'},
+  {id:18,name:'Dell XPS 13',              price:499990, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/1dell_140rqx64.png?v=3'},
+  {id:19,name:'Lenovo ThinkPad E14 Gen 5',price:299990, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/1_9bm45yxi.jpg?v=3'},
+  {id:20,name:'HP Envy 15',               price:399990, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/1_0bxnxfwe.png?v=3'},
+  {id:22,name:'LG 65" OLED TV',          price:699990, cat:'TV & Monitor',   img:'https://images.euronics.hu/product_images/800x600/resize/1_qa5u5m70.png?v=4'},
+  {id:23,name:'Sony WH-1000XM5',          price:59990, cat:'Fejhallgató',    img:'https://images.euronics.hu/product_images/800x600/resize/111_wx83ssf0.jpg?v=4'},
+  {id:24,name:'Apple AirPods Pro 2',      price:79990, cat:'Fejhallgató',    img:'https://images.euronics.hu/product_images/800x600/resize/1_rcr2ctja.jpg?v=3'},
   {id:25,name:'JBL Charge 5',             price:54999,  cat:'Hangszóró',    img:'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=400&fit=crop'},
-  {id:26,name:'Logitech MX Master 3S',    price:44999,  cat:'PC Kiegészítők', img:'https://images.euronics.hu/product_images/800x600/resize/s1_fbk4fyf7.jpg?v=2'},
-  {id:27,name:'Keychron K8 Pro TKL',      price:59999,  cat:'PC Kiegészítők', img:'https://image.alza.cz/products/KCHRON30HU/KCHRON30HU.jpg?width=500&height=500'},
-  {id:28,name:'ASUS TUF Monitor 27"',    price:149999, cat:'TV & Monitor',   img:'https://images.euronics.hu/product_images/800x600/resize/1_ats7x339.jpg?v=3'},
-  {id:29,name:'Samsung Odyssey G5 27"',  price:119999, cat:'TV & Monitor',   img:'https://images.euronics.hu/product_images/800x600/resize/s1_gfnzsulc.jpg?v=4'},
-  {id:30,name:'Canon EOS R10',            price:329999, cat:'Fotózás',        img:'https://image.alza.cz/products/OC0989a3/OC0989a3.jpg?width=500&height=500'},
-  {id:31,name:'Sony Alpha A6400',         price:279999, cat:'Fotózás',        img:'https://image.alza.cz/products/OS072i1m12/OS072i1m12.jpg?width=500&height=500'},
-  {id:32,name:'GoPro Hero 12 Black',      price:169999, cat:'Fotózás',        img:'https://image.alza.cz/products/OG012a1ce/OG012a1ce.jpg?width=500&height=500'},
-  {id:34,name:'Samsung 990 Pro 1TB SSD',  price:34999,  cat:'PC Kiegészítők', img:'https://image.alza.cz/products/SAS990ep4/SAS990ep4.jpg?width=500&height=500'},
-  {id:35,name:'TP-Link Archer AX55',      price:24999,  cat:'Hálózat',        img:'https://image.alza.cz/products/TP23_007/TP23_007.jpg?width=500&height=500'},
-  {id:36,name:'Apple Watch Series 9',     price:179999, cat:'Okoseszközök',   img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQDY3ref_AV1?wid=800&hei=800&fmt=jpeg&qlt=90'},
-  {id:37,name:'Amazon Echo Dot 5.',       price:14999,  cat:'Okoseszközök',   img:'https://image.alza.cz/products/AMAECHDO5TH/AMAECHDO5TH.jpg?width=500&height=500'},
-  {id:39,name:'Samsung Galaxy S23',       price:259999, cat:'Mobil',          img:'https://s13emagst.akamaized.net/products/52576/52575504/images/res_675b5c9d6f650e7c7c6d275f906d8f6e.jpg?width=720&height=720&hash=BA59C6D73AB2704CC4825815A0759290'},
-  {id:40,name:'Dell Inspiron 15',         price:219999, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/1dell_140rqx64.png?v=3'},
-  {id:41,name:'HP Pavilion 14',           price:199999, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/1_0bxnxfwe.png?v=3'},
+  {id:26,name:'Logitech MX Master 3S',    price:44990,  cat:'PC Kiegészítők', img:'https://images.euronics.hu/product_images/800x600/resize/s1_fbk4fyf7.jpg?v=2'},
+  {id:27,name:'Keychron K8 Pro TKL',      price:34990,  cat:'PC Kiegészítők', img:'https://image.alza.cz/products/KCHRON30HU/KCHRON30HU.jpg?width=500&height=500'},
+  {id:28,name:'ASUS TUF Monitor 27"',    price:129990, cat:'TV & Monitor',   img:'https://images.euronics.hu/product_images/800x600/resize/1_ats7x339.jpg?v=3'},
+  {id:29,name:'Samsung Odyssey G5 27"',  price:99990, cat:'TV & Monitor',   img:'https://images.euronics.hu/product_images/800x600/resize/s1_gfnzsulc.jpg?v=4'},
+  {id:30,name:'Canon EOS R10',            price:249990, cat:'Fotózás',        img:'https://image.alza.cz/products/OC0989a3/OC0989a3.jpg?width=500&height=500'},
+  {id:31,name:'Sony Alpha A6400',         price:269990, cat:'Fotózás',        img:'https://image.alza.cz/products/OS072i1m12/OS072i1m12.jpg?width=500&height=500'},
+  {id:32,name:'GoPro Hero 12 Black',      price:139990, cat:'Fotózás',        img:'https://image.alza.cz/products/OG012a1ce/OG012a1ce.jpg?width=500&height=500'},
+  {id:34,name:'Samsung 990 Pro 1TB SSD',  price:29990,  cat:'PC Kiegészítők', img:'https://image.alza.cz/products/SAS990ep4/SAS990ep4.jpg?width=500&height=500'},
+  {id:35,name:'TP-Link Archer AX55',      price:19990,  cat:'Hálózat',        img:'https://image.alza.cz/products/TP23_007/TP23_007.jpg?width=500&height=500'},
+  {id:36,name:'Apple Watch Series 9',     price:149990, cat:'Okoseszközök',   img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQDY3ref_AV1?wid=800&hei=800&fmt=jpeg&qlt=90'},
+  {id:37,name:'Amazon Echo Dot 5.',       price:14990,  cat:'Okoseszközök',   img:'https://image.alza.cz/products/AMAECHDO5TH/AMAECHDO5TH.jpg?width=500&height=500'},
+  {id:39,name:'Samsung Galaxy S23',       price:219990, cat:'Mobil',          img:'https://s13emagst.akamaized.net/products/52576/52575504/images/res_675b5c9d6f650e7c7c6d275f906d8f6e.jpg?width=720&height=720&hash=BA59C6D73AB2704CC4825815A0759290'},
+  {id:40,name:'Dell Inspiron 15',         price:179990, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/1dell_140rqx64.png?v=3'},
+  {id:41,name:'HP Pavilion 14',           price:159990, cat:'Laptop',         img:'https://images.euronics.hu/product_images/800x600/resize/1_0bxnxfwe.png?v=3'},
 ];
 raw.forEach(p=>{p._cat=p.cat||dCat(p); p._brand=dBrand(p);});
 return {products:raw, dBrand};
@@ -113,7 +113,7 @@ async function buildFeatured() {
     };
   });
   const shuffled = [...products].sort(()=>Math.random()-.5).slice(0,8);
-  function fmt(n){return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' Ft';}
+  function fmt(n){const num=Math.round(Number(String(n).replace(/[^0-9.]/g,''))||0);return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' Ft';}
   grid.innerHTML = shuffled.map((p,i)=>`
     <a href="./product_details.html?id=${p.id}" class="hp-prod-card reveal" data-id="${p.id}" style="animation-delay:${i*50}ms;text-decoration:none;">
       <div style="width:100%;aspect-ratio:1;overflow:hidden;background:#fff;"><img class="hp-prod-img" src="${getPhoto(p)}" alt="${p.name}" onerror="this.style.opacity=0" ></div>
@@ -121,7 +121,7 @@ async function buildFeatured() {
         <div class="hp-prod-brand">${p._brand||p._cat}</div>
         <div class="hp-prod-name">${p.name}</div>
         <div class="hp-prod-bottom">
-          <div class="hp-prod-price">${fmt(p.price)} Ft</div>
+          <div class="hp-prod-price">${fmt(p.price)}</div>
           <button class="hp-prod-add" onclick="event.preventDefault()"><i class="bi bi-plus-lg"></i></button>
         </div>
       </div>
